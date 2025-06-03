@@ -1,0 +1,128 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url('/static/img/fondo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Header */
+.header {
+  background-color: #009E49;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px 1px;
+  border-radius: 5px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  border-radius: 10px;
+}
+
+.buttons button {
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.boton-registrar {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid #b1c0f4;
+      background-color: #b1c0f4;
+      border-radius: 50px;
+      color: #000000;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+.boton-login {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid rgba(255, 245, 0, 0.82);
+      background-color: #fff500;
+      border-radius: 50px;
+      color: #040404;
+      text-decoration: none;
+      font-family: sans-serif;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+/* Main section */
+.main {
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.main h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.main p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+/* Features section */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.card {
+  flex: 0 1 220px; /* Ancho base de 220px, no crecer */
+  min-width: 200px;
+  max-width: 240px;
+  border-radius: 20px;
+  padding: 20px;
+  color: white;
+}
+
+.descubre {
+  background-color: #F55600;
+}
+
+.desarrolla {
+  background-color: #1894F8;
+}
+
+.acompaña {
+  background-color: #FFC700;
+  color: #000;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.card p {
+  font-size: 16px;
+}

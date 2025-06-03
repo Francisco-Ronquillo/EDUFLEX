@@ -1,0 +1,52 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Niño</title>
+ <link rel="stylesheet" href="{% static 'css/dashboardKid.css' %}">
+</head>
+<body>
+  <!-- Botón del logo fuera del div azul -->
+  <button class="logo-btn" onclick="alert('Logo clicked!')">
+    <img src="{% static 'img/logo.png' %}" alt="Logo">
+  </button>
+
+  <div class="dashboard">
+    <!-- Panel Azul -->
+    <div class="sidebar">
+      <h3>Panel</h3>
+      <div class="Juegos">
+        <button onclick="alert('Juegos')">
+          <img src="{% static 'img/Juegos.png' %}" alt="Juegos">
+          Juegos
+        </button>
+        <button onclick="alert('Métricas')">
+          <img src="{% static 'img/Metrica.png' %}" alt="Métricas">
+          Métricas
+        </button>
+      </div>
+    </div>
+      <div class="edu"> <h2>Edu</h2>  </div>
+      <div class="flex"> <h2>flex</h2>  </div>
+
+      <img src="{% static 'img/Niño.png' %}" alt="Niño" class="Niño">
+      <div class="quick-access">
+        <h2 >Acceso Rápido</h2>
+
+      </div>
+      <div class="progreso"> Progreso</div>
+    <!-- Centro -->
+    <div class="main">
+
+
+      <div></div>
+      <div class="bottom-right">
+        <button class="logout-btn" onclick="alert('Cerrar Sesión')">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+</html>

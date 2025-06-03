@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar Sesión - Eduflex</title>
+  <link rel="stylesheet" href="{% static 'CSS/login.css' %}" />
+</head>
+<body>
+
+  <div class="logo">
+    <img src="{% static 'img/logo.png' %}" alt="Logo Eduflex">
+  </div>
+
+  <div class="container">
+    <div class="regresar">
+      <a href="{% url 'accounts:home' %}" class="boton-recuperar">←</a>
+    </div>
+
+    <h2>INICIAR SESIÓN</h2>
+
+    <!-- Mostrar errores -->
+
+    <!-- Botones para elegir rol -->
+    <div class="role-buttons">
+      <button type="button" onclick="mostrarFormulario('padre')">Padre</button>
+      <button type="button" onclick="mostrarFormulario('nino')">Niño</button>
+      <button type="button" onclick="mostrarFormulario('profesor')">Profesor</button>
+    </div>
+
+    <!-- Formulario PADRE -->
+    <form id="form-padre" class="form-role active" method="post">
+      {% csrf_token %}
+      <input type="text" name="usuario_padre" placeholder="Usuario del padre" required />
+      <input type="password" name="clave_padre" placeholder="Contraseña" required />
+
+      <div class="crear-cuenta">
+        <a href="{% url 'accounts:rol' %}" class="boton-crear">Crear cuenta</a>
+        <button type="submit" class="btn-ingresar">INGRESAR</button>
+      </div>
+
+      <div class="forgot-password">
+        <a href="{% url 'accounts:recover_password' 'padre' %}" class="boton-recuperar">¿Has olvidado tu contraseña?</a>
+      </div>
+    </form>
+
+    <!-- Formulario NIÑO -->
+    <form id="form-nino" class="form-role" method="post">
+      {% csrf_token %}
+      <input type="text" name="usuario_nino" placeholder="Usuario del niño" required />
+      <input type="password" name="clave_nino" placeholder="Contraseña" required />
+
+      <div class="crear-cuenta">
+        <a href="{% url 'accounts:rol' %}" class="boton-crear">Crear cuenta</a>
+        <button type="submit" class="btn-ingresar">INGRESAR</button>
+      </div>
+
+      <div class="forgot-password">
+        <a href="{% url 'accounts:recover_password' 'niño' %}" class="boton-recuperar">¿Has olvidado tu contraseña?</a>
+      </div>
+    </form>
+    <form id="form-profesor" class="form-role" method="post">
+      {% csrf_token %}
+      <input type="text" name="usuario_profesor" placeholder="Usuario del profesor" required />
+      <input type="password" name="clave_profesor" placeholder="Contraseña" required />
+
+      <div class="crear-cuenta">
+        <a href="{% url 'accounts:rol' %}" class="boton-crear">Crear cuenta</a>
+        <button type="submit" class="btn-ingresar">INGRESAR</button>
+      </div>
+
+      <div class="forgot-password">
+        <a href="{% url 'accounts:recover_password' 'profesor' %}" class="boton-recuperar">¿Has olvidado tu contraseña?</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function mostrarFormulario(rol) {
+      document.getElementById('form-padre').classList.remove('active');
+      document.getElementById('form-nino').classList.remove('active');
+      document.getElementById('form-profesor').classList.remove('active');
+      if (rol === 'padre') {
+        document.getElementById('form-padre').classList.add('active');
+      } else if (rol==='nino') {
+        document.getElementById('form-nino').classList.add('active');
+      }else {
+          document.getElementById('form-profesor').classList.add('active');
+      }
+    }
+  </script>
+
+</body>
+</html>

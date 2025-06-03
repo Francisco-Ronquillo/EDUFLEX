@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+ background: linear-gradient(to right, #53ae63 50%, #a7d69e 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.container h2 {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 22px;
+  line-height: 1.2;
+}
+.regresar {
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  width: fit-content;
+}
+.boton-recuperar {
+  text-decoration: none;
+  color: #000000;
+  padding: 5px 5px;
+  border-radius: 5px;
+}
+.container {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 600px;
+  height: 550px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.container h2 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.field {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.field label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.field input,
+.field select {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+.full-width {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  background: gold;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-align: center;
+}
+
+.logo img {
+  height: 60px;
+}

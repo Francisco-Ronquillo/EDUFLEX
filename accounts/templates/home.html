@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EDUFLEX</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Eduflex - Aprende Jugando</title>
+    <link rel="stylesheet" href="{% static 'CSS/home.css' %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <img src="{% static 'img/logo.png' %}" alt="Logo Eduflex" width="70">
+    </div>
+    <div class="buttons">
+      <a href="{% url 'accounts:login' %}" class="boton-login">Iniciar sesión</a>
+      <a href="{% url 'accounts:rol' %}" class="boton-registrar">Registrar</a>
+
+    </div>
+  </div>
+
+  <div class="main">
+    <h1>Aprende Jugando</h1>
+    <p>Bienvenido! Este es tu espacio para aprender y divertirte cada día.</p>
+  </div>
+
+  <div class="features">
+    <div class="card descubre">
+      <h3>Descubre</h3>
+      <p>Explora actividades diseñadas para aprender jugando. Colores, sonidos, formas y más, ¡todo a tu ritmo!</p>
+    </div>
+    <div class="card desarrolla">
+      <h3>Desarrolla</h3>
+      <p>Mejora habilidades con tareas sencillas y divertidas. Pensamiento lógico, creatividad y memoria. ¡Todo a tu ritmo!</p>
+    </div>
+    <div class="card acompaña">
+      <h3>Acompaña</h3>
+      <p>Esta app está pensada para niños con necesidades especiales. Ofrece apoyo visual, auditivo y guía paso a paso.</p>
+    </div>
+  </div>
+
+</body>
+</html>

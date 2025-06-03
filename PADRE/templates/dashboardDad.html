@@ -1,0 +1,59 @@
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dashboard Padre - Eduflex</title>
+        <link rel="stylesheet" href="{% static 'css/dashboardDad.css' %}">
+    </head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="{% static 'img/logo.png' %}" alt="Eduflex Logo">
+      <a href="{% url 'padre:reportKid' %}" class="btn">Reportes</a>
+    </div>
+    <a href="{% url 'accounts:logout' %}" class="btn">Cerrar sesion</a>
+
+
+  </header>
+
+  <div class="container">
+    <div class="welcome">
+      ¡Bienvenida,{{padre.nombre_completo}} !<br>
+      Accede al seguimiento de tus hijos.
+    </div>
+
+    <div class="content">
+      <div class="progress-courses {% if not reportes_recientes %}sin-reportes{% endif %}">
+          <div class="progress-title">Últimos reportes de tus hijos</div>
+          {% if reportes_recientes %}
+            <div class="card-container">
+              {% for reporte in reportes_recientes %}
+              <div class="card">
+                <div><strong>{{ reporte.titulo }}</strong></div>
+                  <div><strong>Niño:</strong></div>
+                  <div>  {{ reporte.niño.nombres }} {{ reporte.niño.apellidos }}</div>
+                <div>Puntaje: {{ reporte.puntaje }}</div>
+                <div>Distracciones: {{ reporte.distracciones }}</div>
+                <div>Duración: {{ reporte.duracion }}</div>
+                <div>Fecha: {{ reporte.fecha|date:"M d, Y" }}</div>
+              </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p>No hay reportes recientes disponibles.</p>
+          {% endif %}
+      </div>
+      <div class="imagen-con-circulo">
+          <div class="circulo-beis"></div>
+          <img src="{% static 'img/padre_hijo.png' %}" alt="Padre e hijo">
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+</body>
+</html>
+

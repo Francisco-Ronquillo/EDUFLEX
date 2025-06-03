@@ -1,0 +1,184 @@
+body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #b3e5fc, #fff);
+      position: relative; /* Para posicionar el logo fuera del div */
+      background-image: url('/static/img/dashboard_niño_interface.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .dashboard {
+      display: flex;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar {
+      background-color: rgba(55, 108, 203, 1);
+      padding: 20px;
+      border-radius: 20px;
+      width: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      position: relative;
+    }
+
+    .sidebar button {
+      background-color: rgba(55, 108, 203, 1); /* Color azul del div */
+      color: white;
+      border: 2px solid aqua;
+      padding: 10px;
+      border-radius: 12px;
+      margin: 10px 0;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column; /* Alinea imagen y texto verticalmente */
+      align-items: center;
+      justify-content: center;
+      height: 125px; /* Ajusta la altura automáticamente */
+      width: 125px; /* Ajusta el ancho del botón */
+    }
+
+    .sidebar button img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 5px; /* Espacio entre la imagen y el texto */
+    }
+
+    .sidebar button:hover {
+      color: aquamarine;
+      background-color: dodgerblue;
+    }
+
+    .Juegos {
+      margin-top: 40px; /* Mueve los botones más abajo */
+      display: flex;
+      flex-direction: column;
+      gap: 60px; /* Aumenta la separación entre los botones */
+    }
+
+    .logo-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border: none;
+      border-radius: 100%;
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1; /* Para que esté sobre otros elementos */
+    }
+
+    .logo-btn img {
+      width: 90px;
+      height: 90px;
+    }
+
+    .main {
+      flex: 1;
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quick-access {
+      margin-top: 40px;
+    }
+
+    .button-card {
+      background-color: #4caf50;
+      color: white;
+      padding: 20px;
+      border-radius: 16px;
+      width: 200px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .metrics-btn {
+      background-color: #00aaff;
+    }
+
+    .bottom-right {
+      align-self: flex-end;
+    }
+
+    .logout-btn {
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /*imagen del niño*/
+    .Niño {
+        position: relative;
+        left: 750px;
+        top: 100px;
+        height: 400px;
+        width: 300px;
+        border-radius: 60px;
+    }
+
+    .quick-access {
+        position: relative;
+        right: 100px;
+        top: 1px;
+        font-size: 25px;
+    }
+
+    .progreso{
+        position: relative;
+        top: 200px;
+        right: 725px;
+        font-size: 30px;
+
+    }
+
+    .edu{
+        position: relative;
+        left: 40px;
+        font-size: 40px;
+        color: rebeccapurple;
+
+    }
+    .flex{
+        position: relative;
+        left: 40px;
+        font-size: 40px;
+        color: #4caf50;
+
+    }

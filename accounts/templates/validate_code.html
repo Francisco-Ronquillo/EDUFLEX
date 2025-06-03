@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificar código</title>
+  <link rel="stylesheet" href="{% static 'CSS/recuperacion.css' %}">
+</head>
+<body>
+  <div class="recuperacion-container">
+    <div class="left-panel">
+      <img src="{% static 'img/logo.png' %}" alt="Logo Eduflex" class="logo">
+    </div>
+    <div class="right-panel">
+      <div class="form-box">
+        <a href="{% url 'accounts:login' %}" class="back-arrow">←</a>
+        <h2>Recuperar contraseña</h2>
+        <p>Hemos enviado un código de verificación al correo <strong>{{ request.session.recuperacion_email }}</strong>.<br>Revisa tu bandeja de entrada y también la carpeta de spam.</p>
+
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          {{ form.codigo }}
+          <button type="submit" class="btn">Verificar código</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

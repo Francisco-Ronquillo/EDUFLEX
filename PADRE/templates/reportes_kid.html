@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Padre - Eduflex</title>
+  <link rel="stylesheet" href="{% static 'css/reportKid.css' %}">
+</head>
+<body>
+
+<header>
+  <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
+  <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">Home</a>
+  <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+</header>
+
+<main>
+    {% if messages %}
+      <div class="toast-container">
+        {% for message in messages %}
+          <div class="toast {{ message.tags }}">
+            <span class="toast-close" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  <h2>Listado de estudiantes y materias</h2>
+
+  <div style="text-align: center; margin-bottom: 20px;">
+    <button class="btn-agregar" onclick="abrirModal()">+ Añadir Niño</button>
+  </div>
+
+  {% for item in niños %}
+  <section class="estudiante {% if item.reportes|length == 0 %}sin-reportes{% endif %}">
+    <div class="header-estudiante">
+      <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
+     <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">
+      Quitar Niño
+    </button>
+    </div>
+
+    <div class="contenido-reportes">
+      {% if item.reportes %}
+        <h4 style="margin-left: 10px;">Reportes:</h4>
+        <div class="reportes">
+          {% for reporte in item.reportes|slice:":5" %}
+          <div class="card reporte">
+            <strong>Discalculia</strong>
+            <span>Puntaje: 9.00</span>
+            <span>Distracciones: 12</span>
+            <span>Duración: 0:12:02</span>
+            <span>Fecha: May 31, 2025</span>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p style="margin-left: 10px;">No hay reportes para este niño.</p>
+      {% endif %}
+    </div>
+  </section>
+  {% endfor %}
+</main>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <h3>Agregar Niño por Código</h3>
+    <form method="POST" action="{% url 'padre:reportKid' %}">
+      {% csrf_token %}
+      <input type="text" name="codigo" placeholder="Ingrese el código del niño" required>
+      <button type="submit" class="btn-agregar">Agregar</button>
+    </form>
+  </div>
+</div>
+<div id="modal-desvincular" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar" onclick="cerrarModalDesvincular()">&times;</span>
+    <h3>¿Estás seguro de que deseas desvincular al niño?</h3>
+    <form id="formDesvincular" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn-eliminar">Sí, desvincular</button>
+      <button type="button" onclick="cerrarModalDesvincular()" class="btn-cancelar">Cancelar</button>
+    </form>
+  </div>
+</div>
+<!-- Scripts -->
+<script>
+  function abrirModal() {
+    document.getElementById('modal').style.display = 'block';
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  function abrirModalDesvincular(ninoId) {
+    const modal = document.getElementById('modal-desvincular');
+    const form = document.getElementById('formDesvincular');
+    form.action = `/desvincular-nino/${ninoId}/`;  // Asegúrate que esta es tu ruta
+    modal.style.display = 'block';
+  }
+
+  function cerrarModalDesvincular() {
+    document.getElementById('modal-desvincular').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('modal-desvincular');
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  setTimeout(() => {
+    document.querySelectorAll('.toast').forEach(toast => {
+      toast.style.display = 'none';
+    });
+  }, 5000);
+</script>
+
+</body>
+</html>

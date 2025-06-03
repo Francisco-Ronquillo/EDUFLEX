@@ -1,0 +1,277 @@
+/* --- Estilos Generales --- */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #000;
+}
+
+/* --- Encabezado --- */
+header {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.logo {
+    height: 50px;
+}
+
+.btn-nav {
+    background: #c2ff47;
+    border: none;
+    font-size: 20px;
+    padding: 10px 10px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+.btn-cerrar {
+    background: rgba(239, 64, 77, 0.76);
+    border: none;
+    padding: 10px 10px;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+
+/* --- Título Principal --- */
+main h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* --- Botón Agregar Niño --- */
+.btn-agregar {
+    background: #a6ffe5;
+    color: #000;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* --- Sección por Niño --- */
+.estudiante {
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 85%;
+    transition: all 0.3s ease;
+}
+
+/* Encabezado por niño */
+.header-estudiante {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Título de la sección de reportes */
+.titulo-reportes {
+    margin: 10px 10px 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Texto si no hay reportes */
+.no-reportes {
+    margin-left: 10px;
+    font-style: italic;
+}
+
+
+.reportes{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+
+/* Tarjeta individual del reporte */
+.card.reporte{
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 180px;
+    height: 180px;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.card.reporte strong {
+    color: #0d47a1;
+    font-size: 14px;
+}
+
+/* --- Modal (Añadir Niño) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-contenido {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.modal-contenido h3 {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.modal-contenido input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+.btn-eliminar {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 15px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 50px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* Estilos del modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-contenido {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.cerrar {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  position: relative;
+  min-width: 250px;
+  max-width: 300px;
+  animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+
+/* Tipos de mensajes */
+.toast.success {
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 6px solid #28a745;
+}
+
+.toast.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 6px solid #dc3545;
+}
+
+.toast.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 6px solid #ff0707;
+}
+
+/* Botón cerrar */
+.toast-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #555;
+  cursor: pointer;
+}
+
+/* Animaciones */
+@keyframes fadein {
+  from {opacity: 0; right: 0;}
+  to {opacity: 1; right: 20px;}
+}
+
+@keyframes fadeout {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+.sin-reportes {
+  padding: 10px 20px;
+  min-height: auto;
+  background-color: #e0e0e0;
+}
+

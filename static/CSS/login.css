@@ -1,0 +1,153 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body, html {
+  height: 100%;
+  background: linear-gradient(to right, #53ae63 50%, #a7d69e 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h2 {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container {
+  background: white;
+  width: 320px;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  padding: 30px 25px;
+  position: relative;
+}
+
+/* Logo en esquina superior izquierda */
+.logo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.logo img {
+  width: 120px;
+  height: 120px;
+  padding: 5px;
+}
+
+/* Selector de rol */
+.role-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.role-buttons button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f0d479;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.role-buttons button:hover {
+  background-color: #e6c759;
+}
+
+/* Formularios dinámicos */
+.form-role {
+    display: none;
+}
+.form-role.active {
+    display: block;
+}
+/* Inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 40px;
+  border-radius: 20px;
+  border: none;
+  background: #e0e0e0;
+  font-size: 14px;
+  outline: none;
+  color: #666;
+}
+
+/* Crear cuenta + botón ingresar */
+.crear-cuenta {
+  margin-top: 5px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.boton-crear {
+  padding: 5px 5px;
+  border-radius: 5px;
+  background-color: transparent;
+  color: #000000;
+  text-decoration: none;
+}
+
+.btn-ingresar {
+  padding: 5px 20px;
+  background-color: #64f49e;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-ingresar:hover {
+  background-color: rgba(86, 250, 1, 0.82);
+}
+
+/* Texto olvidado */
+.forgot-password {
+  margin-top: 30px;
+  font-size: 13px;
+  text-align: center;
+  color: #222;
+  cursor: pointer;
+  user-select: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.boton-recuperar {
+  border-radius: 5px;
+  background-color: transparent;
+  color: #000000;
+  text-decoration: none;
+}
+
+.regresar {
+  font-size: 30px;
+  border-radius: 5px;
+  background-color: transparent;
+  color: #000000;
+  text-decoration: none;
+}
