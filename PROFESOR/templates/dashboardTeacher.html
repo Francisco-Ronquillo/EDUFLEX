@@ -27,7 +27,7 @@
 
         <div class="content">
           <div class="progress-courses {% if not reportes_recientes %}sin-reportes{% endif %}">
-              <div class="progress-title">Últimos reportes de tus hijos</div>
+              <div class="progress-title">Cursos visitados recientemente</div>
               {% if reportes_recientes %}
                 <div class="card-container">
                   {% for reporte in reportes_recientes %}
@@ -43,7 +43,9 @@
                   {% endfor %}
                 </div>
               {% else %}
-                <p>No hay reportes recientes disponibles.</p>
+                    <p>No tienes cursos disponibles</p>
+                   <a href="#" class="btn">Crear curso</a>
+
               {% endif %}
           </div>
           <div class="imagen-con-circulo">
