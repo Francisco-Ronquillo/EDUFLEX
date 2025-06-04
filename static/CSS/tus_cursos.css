@@ -1,0 +1,93 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.btn-home {
+  background-color: #ebffdc;
+  padding: 10px 15px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.btn-logout {
+  background-color: #f8a6c8;
+  padding: 10px 15px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+main {
+  padding: 30px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.curso-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.curso-card {
+  border-radius: 15px;
+  padding: 20px;
+  width: 250px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  background-color: white;
+}
+
+.ciencias {
+  background-color: #d9f6de;
+}
+
+.matematicas {
+  background-color: #bff2ef;
+}
+
+.crear {
+  border: 2px dashed #ccc;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.btn-crear {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #7cff49;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}

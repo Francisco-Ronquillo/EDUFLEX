@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cursos - Eduflex</title>
+  <link rel="stylesheet" href="{% static 'css/tus_cursos.css' %}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="{% static 'img/logo.png' %}" alt="Eduflex Logo">
+      <a href="{% url 'profesor:dashboardTeacher' %}" class="btn-home">Home</a>
+    </div>
+    <a href="{% url 'accounts:logout' %}" class="btn-logout">Cerrar sesión</a>
+  </header>
+
+  <main>
+    <h2>Cursos</h2>
+    <div class="curso-container">
+      <div class="curso-card ciencias">
+        <h3>🧪 Ciencias</h3>
+        <p><strong>2° B</strong><br>
+        Descubre el mundo que te rodea a través de experimentos, observación y exploración.</p>
+      </div>
+
+      <div class="curso-card matematicas">
+        <h3>➗ Matemáticas</h3>
+        <p><strong>2° C</strong><br>
+        Desarrolla habilidades lógicas y numéricas con actividades interactivas.</p>
+      </div>
+
+      <div class="curso-card crear">
+        <h3>📚 Crear curso</h3>
+        <p>Diseña tus propias clases, contenidos interactivos y organiza las tareas para tus estudiantes</p>
+        <a ></a>
+        <button class="btn-crear">Crear curso</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

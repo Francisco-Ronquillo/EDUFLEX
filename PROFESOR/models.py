@@ -1,7 +1,5 @@
 from django.db import models
-
-from NIÑO.models import ESPECIALIDAD
-
+Jornadas_CHOICES=[('M','Matutina'),('V','Vespertina')]
 SEX_CHOICES=[('M', 'Masculino'), ('F', 'Femenino')]
 ESPECIALIDAD=[('P','psicopedagogo'),('T','Trastornos de la escritura'),('N','neuroeducación aplicada al TDAH')]
 class Profesor(models.Model):
@@ -17,3 +15,10 @@ class Profesor(models.Model):
     def nombre_completo(self):
         return f"{self.nombres} {self.apellidos}"
 
+class Curso(models.Model):
+    nombre_curso=models.CharField(max_length=100)
+    seccion=models.CharField(max_length=1,choices=Jornadas_CHOICES)
+    descripcion=models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.nombre_curso} - {self.get_seccion_display()}"

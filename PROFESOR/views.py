@@ -20,3 +20,17 @@ class DashboardTeacher(TemplateView):
         profesor = get_object_or_404(Profesor, id=profesor_id)
         context['profesor'] = profesor
         return context
+
+class CursoTeacher(TemplateView):
+    template_name = 'tus_cursos.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'profesor_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profesor_id = self.request.session.get('profesor_id')
+        profesor = get_object_or_404(Profesor, id=profesor_id)
+        context['profesor'] = profesor
+        return context
