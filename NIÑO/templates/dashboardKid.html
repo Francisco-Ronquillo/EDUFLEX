@@ -32,18 +32,13 @@
       <div class="flex"> <h2>flex</h2>  </div>
 
       <img src="{% static 'img/Niño.png' %}" alt="Niño" class="Niño">
-      <div class="quick-access">
-        <h2 >Acceso Rápido</h2>
-
-      </div>
-      <div class="progreso"> Progreso</div>
     <!-- Centro -->
     <div class="main">
 
 
       <div></div>
       <div class="bottom-right">
-        <button class="logout-btn" onclick="alert('Cerrar Sesión')">Cerrar Sesión</button>
+        <a href="{% url 'accounts:logout' %}" class="logout-btn">Cerrar sesión</a>
       </div>
     </div>
   </div>
