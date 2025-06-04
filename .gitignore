@@ -3,7 +3,7 @@ venv/
 ent/
 env/
 .venv/
-
+.idea
 # Otros comunes que podrías querer ignorar:
 __pycache__/
 *.pyc
