@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Monitoreo en Tiempo Real</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #video-box {
+            margin-top: 20px;
+            border: 5px solid #444;
+            display: inline-block;
+        }
+
+        #alerta {
+            font-size: 1.2em;
+            margin-top: 15px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Detección de Somnolencia y Distracción</h1>
+
+    <!-- 🔴 Cuadro de video en vivo -->
+    <div id="video-box">
+        <img src="{% url 'video_feed' %}" width="720" height="540">
+    </div>
+
+    <!-- ⚠️ Alerta visual -->
+    <div id="alerta"></div>
+
+    <!-- 🔊 Audio (desde static/) -->
+    <audio id="alertSound" src="{% static 'alert.wav' %}" preload="auto"></audio>
+
+    <!-- JS para revisar alerta -->
+    <script>
+        function verificarAlerta() {
+            fetch("{% url 'estado_alerta' %}")
+                .then(response => response.json())
+                .then(data => {
+                    const alerta = document.getElementById("alerta");
+                    const sonido = document.getElementById("alertSound");
+
+                    if (data.somnolencia) {
+                        alerta.textContent = "⚠️ Somnolencia detectada";
+                        sonido.play();
+                    } else if (data.distraccion) {
+                        alerta.textContent = "⚠️ Distracción detectada";
+                        sonido.play();
+                    } else {
+                        alerta.textContent = "";
+                    }
+                });
+        }
+
+        setInterval(verificarAlerta, 3000); // cada 3 segundos
+    </script>
+</body>
+</html>

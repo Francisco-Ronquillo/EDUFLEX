@@ -18,7 +18,7 @@
     <div class="sidebar">
       <h3>Panel</h3>
       <div class="Juegos">
-        <button onclick="alert('Juegos')">
+
           <img src="{% static 'img/Juegos.png' %}" alt="Juegos">
           Juegos
         </button>
@@ -40,6 +40,7 @@
       <div class="bottom-right">
         <a href="{% url 'accounts:logout' %}" class="logout-btn">Cerrar sesión</a>
       </div>
+        <a href="{% url 'niño:video_feed' %}" class="logout-btn">Juego</a>
     </div>
   </div>
 </body>
