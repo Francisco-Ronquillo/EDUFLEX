@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juegos Educativos</title>
+  <link rel="stylesheet" href="{% static 'CSS/juegos_Styles.css' %}">
+</head>
+<body>
+  <h1>¡Elige un juego y empieza a divertirte! </h1>
+
+  <div class="game-card-wrapper">
+       {% if juego == "Traza y gana" %}
+      <a href="{% url 'niño:niveles_disgrafia' %}" class="game-card traza-y-gana-card"> {# CAMBIO AQUÍ: de {% url 'seleccionar_nivel' %} a href="#" #}
+        <span class="game-icon">
+          <img src="{% static 'img/lapiz.png' %}" alt="lapiz" class="pencil-image-icon">
+        </span>
+        <span class="game-name">Traza y gana</span>
+      </a>
+    {% elif juego == "Cuenta conmigo" %}
+      <button class="game-card cuenta-conmigo-card">
+        <span class="game-numbers">
+          <img src="{% static 'img/numero.png' %}" alt="numero" class="numero-image-icon">
+        </span>
+        <span class="game-name">Cuenta conmigo</span>
+      </button>
+    {% elif juego == "Desafío de concentración" %}
+      <button class="game-card desafio-concentracion-card">
+        <span class="game-icon">
+          <div class="traffic-light-body">
+            <img src="{% static 'img/semaforof.png' %}" alt="semaforo" class="semaforo-image-icon">
+          </div>
+        </span>
+        <span class="game-name">Desafío de concentración</span>
+      </button>
+    {% else %}
+      <p>No se encontró un juego recomendado para esta discapacidad.</p>
+    {% endif %}
+
+  </div>
+  <br />
+  <a href="{% url 'niño:dashboardKid' %}" class="back-link">&#8592;</a>
+</body>
+</html>
