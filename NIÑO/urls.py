@@ -5,4 +5,7 @@ urlpatterns = [
 path('dashboarKid/',DashboardKid.as_view(),name='dashboardKid'),
 path('juegos_recomendados/', JuegosRecomendadosView.as_view(), name='juegos_recomendados'),
 path('niveles_disgrafia/', niveles_disgrafiaView.as_view(), name='niveles_disgrafia'),
+path('ia_inicio/', InicioDeteccionView.as_view(), name='ia_inicio'),
+path('ia_fin/',FinalizarDeteccionView.as_view(), name='ia_fin'),
+
 ]

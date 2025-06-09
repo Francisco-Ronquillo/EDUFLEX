@@ -14,6 +14,6 @@ class ProfesorAdmin(admin.ModelAdmin):
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
-    list_display = ('nombre_curso', 'seccion', 'descripcion')
+    list_display = ('nombre_curso', 'seccion', 'descripcion','periodo')
     list_filter = ('seccion',)
     search_fields = ('nombre_curso', 'descripcion')

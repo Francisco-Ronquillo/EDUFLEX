@@ -8,7 +8,7 @@
 </head>
 <body>
   <h1>¡Elige un juego y empieza a divertirte! </h1>
-
+  <a href="{% url 'niño:ia_inicio' %}">IA</a>
   <div class="game-card-wrapper">
        {% if juego == "Traza y gana" %}
       <a href="{% url 'niño:niveles_disgrafia' %}" class="game-card traza-y-gana-card"> {# CAMBIO AQUÍ: de {% url 'seleccionar_nivel' %} a href="#" #}

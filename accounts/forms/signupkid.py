@@ -1,6 +1,10 @@
 
 from django import forms
 from NIÑO.models import Niño
+import datetime
+import re
+from EDUFLEX.utils import *
+
 
 class NiñoForm(forms.ModelForm):
     confirmar_contraseña = forms.CharField(
@@ -30,3 +34,37 @@ class NiñoForm(forms.ModelForm):
 
         if contraseña and confirmar and contraseña != confirmar:
             self.add_error('confirmar_contraseña', 'Las contraseñas no coinciden.')
+    def clean_fecha_nac(self):
+        fecha = self.cleaned_data.get('fecha_nac')
+        if fecha:
+            if fecha > datetime.date.today():
+                raise forms.ValidationError('La fecha de nacimiento no puede ser en el futuro.')
+
+            edad = calcular_edad(fecha)
+            if edad < 4:
+                raise forms.ValidationError('La edad mínima es de 4 años.')
+
+        return fecha
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if Niño.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este correo ya está registrado.")
+
+        return email
+    def clean_usuario(self):
+        usuario = self.cleaned_data.get('usuario')
+        if Niño.objects.filter(usuario=usuario).exists():
+            raise forms.ValidationError("Este usario ya existe.")
+        return usuario
+
+    def clean_contraseña(self):
+        contraseña = self.cleaned_data.get('contraseña')
+
+        if len(contraseña) < 8:
+            raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
+        if not re.search(r'\d', contraseña):
+            raise forms.ValidationError("La contraseña debe contener al menos un número.")
+
+        return contraseña

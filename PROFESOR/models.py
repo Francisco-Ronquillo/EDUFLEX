@@ -1,4 +1,5 @@
 from django.db import models
+from NIÑO.models import *
 Jornadas_CHOICES=[('M','Matutina'),('V','Vespertina')]
 SEX_CHOICES=[('M', 'Masculino'), ('F', 'Femenino')]
 ESPECIALIDAD=[('P','psicopedagogo'),('T','Trastornos de la escritura'),('N','neuroeducación aplicada al TDAH')]
@@ -19,6 +20,9 @@ class Curso(models.Model):
     nombre_curso=models.CharField(max_length=100)
     seccion=models.CharField(max_length=1,choices=Jornadas_CHOICES)
     descripcion=models.CharField(max_length=100)
-
+    niños = models.ManyToManyField(Niño, related_name='cursos')
+    periodo=models.CharField(max_length=9 , null=True, blank=True)
+    fecha_inicio=models.DateField(null=True, blank=True)
+    fecha_final=models.DateField(null=True, blank=True)
     def __str__(self):
         return f"{self.nombre_curso} - {self.get_seccion_display()}"

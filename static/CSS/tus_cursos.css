@@ -25,12 +25,13 @@ header {
 }
 
 .btn-home {
-  background-color: #ebffdc;
+  background-color: rgba(86, 250, 1, 0.82);
   padding: 10px 15px;
   border-radius: 30px;
   font-weight: bold;
   text-decoration: none;
   color: black;
+  margin-left: 20px;
 }
 
 .btn-logout {
@@ -53,16 +54,40 @@ h2 {
 
 .curso-container {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
+  background: #f1f1f1;
+  border-radius: 30px;
+  padding: 20px;
 }
 
 .curso-card {
+  width: 250px;
+  height: 250px;
   border-radius: 15px;
   padding: 20px;
-  width: 250px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.crear {
+  border: 2px dashed #ccc;
+  background-color: #fff;
+}
+
+.btn-crear {
+  margin-top: auto;
+  padding: 10px;
+  background-color: #7cff49;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
 }
 
 .ciencias {
@@ -73,21 +98,3 @@ h2 {
   background-color: #bff2ef;
 }
 
-.crear {
-  border: 2px dashed #ccc;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.btn-crear {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #7cff49;
-  border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}

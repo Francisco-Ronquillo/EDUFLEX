@@ -16,41 +16,33 @@
     {% csrf_token %}
 
     <div class="regresar">
-      <a href="{% url 'accounts:rol' %}" class="boton-recuperar">←</a>
+      <a href="{% url 'profesor:tuscursos' %}" class="boton-recuperar">←</a>
     </div>
 
-    <h2>CREAR CUENTA</h2>
+    <h2>CREAR CURSO</h2>
 
     <div class="field">
-      {{ form.nombres.label_tag }}
-      {{ form.nombres }}
-    </div>
-
-    <div class="field">
-      {{ form.email.label_tag }}
-      {{ form.email }}
+      {{ form.nombre_curso.label }}
+      {{ form.nombre_curso }}
     </div>
 
     <div class="field">
-      {{ form.apellidos.label_tag }}
-      {{ form.apellidos }}
-    </div>
- 
-    <div class="field">
-      {{ form.especialidad.label_tag }}
-      {{ form.especialidad }}
+      {{ form.seccion.label }}
+      {{ form.seccion }}
     </div>
 
     <div class="field">
-      {{ form.fecha_nac.label_tag }}
-      {{ form.fecha_nac }}
-      {{ form.fecha_nac.errors }}
+      {{ form.periodo.label }}
+      {{ form.periodo }}
+    </div>
+    <div class="field">
+      {{ form.descripcion.label }}
+      {{ form.descripcion }}
     </div>
 
     <div class="field">
       {{ form.usuario.label_tag }}
       {{ form.usuario }}
-      {{ form.usuario.errors }}
     </div>
 
     <div class="field">
@@ -61,10 +53,8 @@
     <div class="field">
       {{ form.contraseña.label }}
       {{ form.contraseña }}
-      {{ form.contraseña.errors }}
       {{ form.confirmar_contraseña.label_tag }}
       {{ form.confirmar_contraseña }}
-      {{ form.confirmar_contraseña.errors }}
     </div>
 
     <div class="full-width">
@@ -73,12 +63,4 @@
   </form>
 </body>
 {% endblock %}
-<script>
-  setTimeout(() => {
-    document.querySelectorAll('.errorlist').forEach(el => {
-      el.classList.add('fade-out');
-      setTimeout(() => el.style.display = 'none', 600);
-    });
-  }, 4000);
-</script>
 </html>

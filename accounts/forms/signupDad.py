@@ -1,4 +1,8 @@
+import datetime
+
 from django import forms
+
+import PADRE
 from PADRE.models import Padre
 class PadreForm(forms.ModelForm):
     confirmar_contraseña = forms.CharField(
@@ -27,3 +31,28 @@ class PadreForm(forms.ModelForm):
 
         if contraseña and confirmar and contraseña != confirmar:
             self.add_error('confirmar_contraseña', 'Las contraseñas no coinciden.')
+
+    def clean_fecha_nac(self):
+        fecha = self.cleaned_data.get('fecha_nac')
+        if fecha:
+            if fecha > datetime.date.today():
+                raise forms.ValidationError('La fecha de nacimiento no puede ser en el futuro.')
+
+            edad = calcular_edad(fecha)
+            if edad > 14:
+                raise forms.ValidationError('La edad mínima es de 4 años.')
+
+        return fecha
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if Padre.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este correo ya está registrado.")
+
+        return email
+    def clean_usuario(self):
+        usuario = self.cleaned_data.get('usuario')
+        if Padre.objects.filter(usuario=usuario).exists():
+            raise forms.ValidationError("Este usario ya existe.")
+        return usuario
