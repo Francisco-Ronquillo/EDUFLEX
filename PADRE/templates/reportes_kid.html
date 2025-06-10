@@ -35,6 +35,7 @@
   <section class="estudiante {% if item.reportes|length == 0 %}sin-reportes{% endif %}">
     <div class="header-estudiante">
       <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
+     <a href="#" class="btn-ver" >Ver todos</a>
      <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">
       Quitar Niño
     </button>
@@ -44,9 +45,10 @@
       {% if item.reportes %}
         <h4 style="margin-left: 10px;">Reportes:</h4>
         <div class="reportes">
-          {% for reporte in item.reportes|slice:":5" %}
+          {% for reporte in item.reportes|slice:":6" %}
           <div class="card reporte">
-            <strong>Discalculia</strong>
+            <strong></strong>
+             <span>{{ reporte.titulo }}</span>
             <span>Puntaje: 9.00</span>
             <span>Distracciones:{{reporte.distracciones}}</span>
             <span>Duración: 0:12:02</span>

@@ -170,6 +170,16 @@ main h2 {
   border-radius: 50px;
   cursor: pointer;
 }
+.btn-ver {
+  background-color: #58d94f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  text-decoration: none;
+}
 
 .btn-cancelar {
   background-color: #6c757d;

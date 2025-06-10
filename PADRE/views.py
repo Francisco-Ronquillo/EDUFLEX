@@ -44,7 +44,7 @@ class reportKid(FormView,ListView):
             for niño in niños:
                 lista_con_reportes.append({
                     'niño': niño,
-                    'reportes': niño.reportes.all()
+                    'reportes': niño.reportes.order_by('-fecha')[:5]
                 })
 
             context['niños'] = lista_con_reportes
