@@ -3,18 +3,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Selecciona un Nivel</title>
-    <link rel="stylesheet" href="{% static 'CSS/juegos_Styles.css' %}">
+  <meta charset="UTF-8">
+  <title>Selecciona un Nivel</title>
+  <link rel="stylesheet" href="{% static 'CSS/juegos_Styles.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
-    <h1 style="text-align: center;"> QUE EMPIECE EL JUEGO </h1>
-    <div class="grid-niveles-estatico">
-        <a href="#" class="nivel-boton-estatico">Nivel 1</a>
-        <a href="#" class="nivel-boton-estatico">Nivel 2</a>
-        <a href="#" class="nivel-boton-estatico">Nivel 3</a>
-        <a href="#" class="nivel-boton-estatico">Nivel 4</a>
-        <a href="#" class="nivel-boton-estatico">Nivel 5</a>
-        </div>
+<!-- Mensaje flotante -->
+<div id="mensaje-flotante"></div>
+
+
+<h1 style="text-align: center;">¡QUE EMPIECE EL JUEGO!</h1>
+
+<div class="grid-niveles-estatico">
+  {% for i in "01234"|make_list %}
+    {% with forloop.counter0 as numero_nivel %}
+      {% if numero_nivel < nivel_desbloqueado %}
+        <a href="{% url 'niño:completar_palabra' %}?nivel={{ numero_nivel }}" class="nivel-boton-estatico">Nivel {{ numero_nivel|add:1 }}</a>
+      {% else %}
+        <a href="#" class="nivel-boton-estatico bloqueado" onclick="mostrarMensajeFlotante('Debes completar el nivel anterior', 'orange')">Nivel {{ numero_nivel|add:1 }}</a>
+      {% endif %}
+    {% endwith %}
+  {% endfor %}
+</div>
+
+
+<a href="{% url 'niño:juegos_recomendados' %}" class="back-link">&#8592;</a>
+
+<script>
+  function mostrarMensajeFlotante(texto, color) {
+    const mensaje = document.getElementById('mensaje-flotante');
+    if (!mensaje) return;
+    mensaje.textContent = texto;
+    mensaje.style.backgroundColor = color || 'rgba(0,0,0,0.8)';
+    mensaje.style.display = 'block';
+    setTimeout(() => {
+      mensaje.style.display = 'none';
+    }, 2000);
+  }
+</script>
+
 </body>
 </html>

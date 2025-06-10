@@ -1,0 +1,70 @@
+[
+  {
+    "nombre": "Nivel 1",
+    "palabras": [
+      { "palabra": "CASA", "imagen": "img/casa.png", "letras": ["A", "E", "O"] },
+      { "palabra": "GATO", "imagen": "img/gato.png", "letras": ["G", "A", "T", "O", "E"] },
+      { "palabra": "PERRO", "imagen": "img/perro.png", "letras": ["P", "E", "R", "O", "A"] },
+      { "palabra": "SILLA", "imagen": "img/silla.png", "letras": ["S", "I", "L", "A", "E"] },
+      { "palabra": "MESA", "imagen": "img/mesa.png", "letras": ["M", "E", "S", "A", "O"] },
+      { "palabra": "LUNA", "imagen": "img/luna.png", "letras": ["L", "U", "N", "A", "E"] },
+       { "palabra": "SOL", "imagen": "img/sol.png", "letras": ["S", "O", "L", "A", "E"] },
+      { "palabra": "PEZ", "imagen": "img/pez.png", "letras": ["P", "E", "Z", "A", "O"] },
+      { "palabra": "FLOR", "imagen": "img/flor.png", "letras": ["F", "L", "O", "R", "E"] },
+      { "palabra": "NUBE", "imagen": "img/nube.png", "letras": ["N", "U", "B", "E", "A"] }
+    ]
+  },
+  {
+    "nombre": "Nivel 2",
+    "palabras": [
+      { "palabra": "CAMION", "imagen": "img/camion.png", "letras": ["C", "A", "M", "I", "O", "N"] },
+      { "palabra": "PUERTA", "imagen": "img/puerta.png", "letras": ["P", "U", "E", "R", "T", "A"] },
+      { "palabra": "ARBOL", "imagen": "img/arbol.png", "letras": ["A", "R", "B", "O", "L", "E"] },
+      { "palabra": "ESPEJO", "imagen": "img/espejo.png", "letras": ["E", "S", "P", "E", "J", "O"] },
+      { "palabra": "SOMBRERO", "imagen": "img/sombrero.png", "letras": ["S", "O", "M", "B", "R", "E", "R", "O"] },
+      { "palabra": "RELOJ", "imagen": "img/reloj.png", "letras": ["R", "E", "L", "O", "J", "A"] },
+      { "palabra": "CIELO", "imagen": "img/cielo.png", "letras": ["C", "I", "E", "L", "O", "A"] },
+      { "palabra": "LÁPIZ", "imagen": "img/lapiz.png", "letras": ["L", "A", "P", "I", "Z", "E"] },
+      { "palabra": "BICICLETA", "imagen": "img/bicicleta.png", "letras": ["B", "I", "C", "I", "L", "E", "T", "A", "S"] },
+      { "palabra": "TELEVISIÓN", "imagen": "img/television.png", "letras": ["T", "E", "L", "E", "V", "I", "S", "I", "O", "N"] }
+    ]
+  },
+  {
+    "nombre": "Nivel 3",
+    "palabras": [
+      { "palabra": "ELEFANTE", "imagen": "img/elefante.png", "letras": ["E", "L", "E", "F", "A", "N", "T", "E"] },
+      { "palabra": "JARDÍN", "imagen": "img/jardin.png", "letras": ["J", "A", "R", "D", "I", "N"] }
+    ]
+  },
+  {
+    "nombre": "Nivel 4",
+    "palabras": [
+      { "palabra": "HIPOPÓTAMO", "imagen": "img/hipopotamo.png", "letras": ["H", "I", "P", "O", "P", "O", "T", "A", "M", "O"] },
+      { "palabra": "ORQUESTA", "imagen": "img/orquesta.png", "letras": ["O", "R", "Q", "U", "E", "S", "T", "A"] },
+      { "palabra": "BALANZA", "imagen": "img/balanza.png", "letras": ["B", "A", "L", "A", "N", "Z", "A"] },
+      { "palabra": "AUTOBÚS", "imagen": "img/autobus.png", "letras": ["A", "U", "T", "O", "B", "U", "S"] },
+      { "palabra": "BIBLIOTECA", "imagen": "img/biblioteca.png", "letras": ["B", "I", "B", "L", "I", "O", "T", "E", "C", "A"] },
+      { "palabra": "ESCUELA", "imagen": "img/escuela.png", "letras": ["E", "S", "C", "U", "E", "L", "A"] },
+      { "palabra": "TELEFONO", "imagen": "img/telefono.png", "letras": ["T", "E", "L", "E", "F", "O", "N", "O"] },
+      { "palabra": "FARMACIA", "imagen": "img/farmacia.png", "letras": ["F", "A", "R", "M", "A", "C", "I", "A"] },
+      { "palabra": "GIMNASIO", "imagen": "img/gimnasio.png", "letras": ["G", "I", "M", "N", "A", "S", "I", "O"] },
+      { "palabra": "JARDINERIA", "imagen": "img/jardineria.png", "letras": ["J", "A", "R", "D", "I", "N", "E", "R", "I", "A"] }
+    ]
+  },
+  {
+  "nombre": "Nivel 5",
+  "palabras": [
+    { "palabra": "CAMISETA", "imagen": "img/camiseta.png", "letras": ["C", "I", "S", "A", "T"] },
+    { "palabra": "PIRATA", "imagen": "img/pirata.png", "letras": ["P", "I", "R", "A", "T", "A"] },
+    { "palabra": "CASTILLO", "imagen": "img/castillo.png", "letras": ["C", "A", "S", "T", "I", "L", "L", "O"] },
+    { "palabra": "MAGIA", "imagen": "img/magia.png", "letras": ["M", "A", "G", "I", "A"] },
+    { "palabra": "DULCE", "imagen": "img/dulce.png", "letras": ["D", "U", "L", "C", "E"] },
+    { "palabra": "ROBOT", "imagen": "img/robot.png", "letras": ["R", "O", "B", "O", "T"] },
+    { "palabra": "JARDÍN", "imagen": "img/jardin.png", "letras": ["J", "A", "R", "D", "I", "N"] },
+    { "palabra": "PANDA", "imagen": "img/panda.png", "letras": ["P", "A", "N", "D", "A"] },
+    { "palabra": "SANDÍA", "imagen": "img/sandia.png", "letras": ["S", "A", "N", "D", "I", "A"] },
+    { "palabra": "MARIPOSA", "imagen": "img/mariposa.png", "letras": ["M", "A", "R", "I", "P", "O", "S", "A"] }
+  ]
+}
+
+]

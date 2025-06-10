@@ -1,43 +1,114 @@
+/* === ESTILO GENERAL DEL BODY === */
 body {
   font-family: 'Inter', sans-serif;
   color: #fff;
   text-align: center;
   padding: 0;
   margin: 0;
-
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
 
-  background-image: url('../img/fondo_parajuegod.png');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
+  background: url('../img/fondo_parajuegod.png') center center / cover no-repeat;
   background-color: #aaeb87;
 }
 
+/* === TÍTULO PRINCIPAL === */
 h1 {
   font-size: 2.8em;
   margin-bottom: 40px;
-  color: #ffffff; /* Color de título actualizado a blanco */
+  color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* === MENSAJE FLOTANTE === */
+#mensaje-flotante {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: orange;
+  color: #fff;
+  padding: 24px 48px;
+  border-radius: 16px;
+  display: none;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+/* === BOTÓN DE VOLVER === */
+.back-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #004d40;
+  font-size: 1.8em;
+  font-weight: bold;
+  background-color: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.back-link:hover {
+  background-color: #e6c200;
+}
+
+/* === BOTONES DE NIVELES === */
+.nivel-boton-estatico {
+  width: 120px;
+  height: 120px;
+  padding: 20px;
+  margin: 10px;
+  background-color: #ddffdd;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  color: black;
+  font-size: 2em;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
+  flex-direction: column;
 }
 
-.sun-icon {
-  font-size: 1.2em;
+.nivel-boton-estatico:hover {
+  background-color: #c9e8c9;
+  transform: translateY(-3px);
 }
 
+.nivel-boton-estatico.bloqueado {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* === CONTENEDOR DE BOTONES DE NIVELES === */
+.grid-niveles-estatico {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+/* === TARJETAS DE JUEGOS === */
 .game-card-wrapper {
   display: flex;
   justify-content: center;
@@ -50,19 +121,20 @@ h1 {
   height: 300px;
   padding: 20px;
   margin: 20px;
-  border: none;
   border-radius: 25px;
-  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
   color: #004d40;
+  background-color: #fff;
+  text-align: center;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* Centra los hijos horizontalmente por defecto */
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .game-card:hover {
@@ -70,126 +142,46 @@ h1 {
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
 }
 
-.cuenta-conmigo-card {
-  background-color: #fbc301; /* Color de fondo actualizado a amarillo más vibrante */
-}
-
+/* === COLORES ESPECÍFICOS DE CADA JUEGO === */
 .traza-y-gana-card {
   background-color: #f74e44;
-  align-items: flex-start; /* Alinea los hijos a la izquierda */
-  padding-left: 20px; /* Ajusta el padding para que el contenido no toque el borde */
+  align-items: flex-start;
+  padding-left: 20px;
+}
+
+.cuenta-conmigo-card {
+  background-color: #fbc301;
 }
 
 .desafio-concentracion-card {
   background-color: #36a704;
 }
 
-/* Estilo para el contenedor principal de números (ahora contiene la imagen) */
+/* === IMÁGENES DE LOS JUEGOS === */
+.game-icon,
 .game-numbers {
   display: flex;
-  flex-direction: column; /* Para apilar la imagen y el nombre del juego si fuera necesario */
-  align-items: center; /* Centra la imagen horizontalmente */
-  justify-content: center; /* Centra la imagen verticalmente */
-  margin-bottom: 10px;
-  width: 100%; /* Asegura que ocupe  */
-  height: 150px; /* Altura para el contenedor de la imagen */
-}
-
-/* Estilo para la imagen de los números */
-.numero-image-icon {
-  max-width: 180px; /* Tamaño de la imagen de números */
-  height: auto; /* Mantiene la proporción */
-  display: block; /* Asegura que no haya espacio extra */
-  margin: 0 auto; /* Centra la imagen horizontalmente dentro de su contenedor */
-}
-
-/* Estilo general para el contenedor de iconos (game-icon) */
-.game-icon {
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente */
-  align-items: center; /* Centra el contenido verticalmente */
+  justify-content: center;
+  align-items: center;
+  height: 150px;
   width: 100%;
-  height: 150px; /* Altura fija para el contenedor del icono */
+  margin-bottom: 10px;
 }
 
-/* Estilo específico para la imagen del lápiz */
-.pencil-image-icon {
-  width: 180px; /* Tamaño del lápiz */
-  height: auto; /* Mantiene la proporción */
-  display: block; /* Elimina espacio extra */
-  margin-bottom: 15px; /* Espacio entre el lápiz y el texto */
-  /* margin-right: auto; y margin-left: 0; eliminados para centrado por game-card */
-}
-
-/* Estilo específico para la imagen del semáforo */
+.pencil-image-icon,
+.numero-image-icon,
 .semaforo-image-icon {
-  max-width: 180px; /* Ajustado el tamaño de la imagen del semáforo (más pequeña) */
-  height: auto; /* Mantiene la proporción */
+  max-width: 180px;
+  height: auto;
   display: block;
+  margin: 0 auto 15px;
 }
 
+/* === NOMBRE DEL JUEGO === */
 .game-name {
   font-size: 1.5em;
   color: #fff;
   margin-top: 15px;
-  align-self: center; /* Centra el texto dentro del botón */
-}
-
-.back-link {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: inline-block;
-  color: #004d40;
+  align-self: center;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 1.8em;
-  padding: 10px 15px;
-  background-color: #ffffff; /* Color de fondo actualizado a blanco */
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
-  z-index: 1000;
-}
-
-.back-link:hover {
-  background-color: #e6c200;
-  text-decoration: none;
-}
-
-
-.nivel-boton-estatico {
-            border: 2px solid #4CAF50; /* Borde verde */            padding: 20px;
-            margin: 10px; /* Espacio alrededor de cada botón */
-            border-radius: 10px; /* Bordes redondeados */
-            background-color: #ddffdd; /* Fondo verde claro */
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            text-decoration: none; /* Quita el subrayado del enlace */
-            color: black; /* Color del texto */
-            display: flex; /* Para centrar contenido */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 120px; /* Ancho fijo para que se vean uniformes */
-            height: 120px; /* Altura fija */
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Sombra suave */
-            font-size: 2em; /* Tamaño de la fuente para el número */
-            font-weight: bold; /* Negrita para el número */
-}
-
-.nivel-boton-estatico:hover {
-            background-color: #c9e8c9; /* Color al pasar el ratón */
-            transform: translateY(-3px); /* Efecto de elevación */
-}
-
-        /* Contenedor de los botones */
-.grid-niveles-estatico {
-            display: flex;
-            flex-wrap: wrap; /* Permite que los botones salten de línea */
-            justify-content: center; /* Centra los botones en la línea */
-            gap: 20px; /* Espacio entre los botones */
-            max-width: 900px; /* Ancho máximo del contenedor */
-            margin: 20px auto; /* Centra el contenedor horizontalmente */
 }

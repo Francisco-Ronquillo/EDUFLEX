@@ -1,0 +1,283 @@
+/* ======= ESTILO GENERAL ======= */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  background-color: #001b30;
+  padding: 30px;
+  position: relative;
+  background-image: url('../img/fondo_disgrafia.png');
+  background-size: cover;       /* Para que cubra todo el fondo */
+  background-repeat: no-repeat; /* Evitar repetición */
+  background-position: center;  /* Centrar la imagen */
+  background-attachment: fixed; /* Que no se mueva al hacer scroll */
+}
+
+/* Título con sombra más ancha y fuente más gruesa */
+h1 {
+  color: #000000;
+  margin-bottom: 30px;
+  font-weight: 900;
+  font-size: 3rem;
+  text-shadow:
+    2px 2px 4px rgba(0,0,0,0.3),
+    0 0 15px rgba(255,255,255,0.6);
+}
+
+/* Palabra a completar con más espacio entre letras y sombra */
+.palabra {
+  font-size: 40px;
+  margin-bottom: 36px;
+  text-shadow: 2px 2px 5px rgb(54, 167, 4);
+  font-weight: 700;
+}
+
+.espacio-vacio {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: 2px dashed #3498db;
+  margin: 0 10px;
+  vertical-align: center;
+  position: relative;
+  z-index: 1; /* por debajo de la capa interactiva */
+  text-align: center;
+}
+
+
+.letras-disponibles {
+  text-align: center;
+  display: flex;
+  font-size: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
+  background-color: rgba(11, 165, 158, 0.1); /* fondo leve, ayuda a delimitar */
+  border: 2px solid #0ba59e;
+  border-radius: 10px;
+  min-height: 80px;
+  margin-bottom: 30px;
+  z-index: 10;
+}
+
+
+
+.letra {
+  font-size: 30px;
+  padding: 10px 20px;
+  background-color: #0ba59e;
+  color: white;
+  border-radius: 8px;
+  cursor: grab;
+  user-select: none;
+}
+
+#resultado {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* ======= BOTÓN PAUSA ======= */
+.button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #c80606;
+  padding: 15px 25px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* ======= MODAL OVERLAY (FONDO OPACO) ======= */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* Gris translúcido */
+  z-index: 999;
+}
+
+/* Se muestra cuando se activa */
+.modal-overlay.show {
+  display: block;
+}
+
+/* ======= MODAL DE PAUSA ======= */
+.container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgb(54, 167, 4);
+  z-index: 1000;
+  text-align: center;
+  width: 300px;
+}
+
+.container.show {
+  display: block;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.button-input {
+  padding: 12px;
+  font-size: 16px;
+  background-color: #0ba59e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.button-input:hover {
+  background-color: #0b0487;
+}
+
+
+/* Imagen con bordes redondeados y sombra */
+.imagen-guia {
+  border-radius: 20px; /* Bordes redondeados */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra */
+  margin: 20px auto; /* Espacio arriba y abajo y centrado */
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Botones de "Verificar" e "Intentar de nuevo" */
+button {
+  background-color: #f74e44; /* Color de fondo */
+  color: #ffffff;              /* Color de texto */
+  border: none;
+  border-radius: 12px;       /* Bordes redondeados */
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0b0487; /* Color al pasar mouse */
+}
+
+
+#mensaje-flotante {
+
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 128, 0, 0.85); /* verde semi-transparente */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  font-size: 20px;
+  font-weight: 700;
+  z-index: 2000;
+  display: none; /* oculto por defecto */
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Ventana sombreada transparente, oculta por defecto */
+.ventana-nivel-oculta {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* fondo negro translúcido */
+  z-index: 1500;
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor blanco redondeado */
+.contenedor-ventana {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 30px 50px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+/* Botón */
+.btn-nivel {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 15px 35px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: #0ba59e;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-nivel:hover {
+  background-color: #087e75;
+}
+
+/* Flecha multicolor animada */
+.flecha {
+  font-size: 28px;
+  animation: cambioColores 3s infinite alternate;
+  display: inline-block;
+}
+
+/* Animación cambio de colores */
+@keyframes cambioColores {
+  0% { color: #ff0000; }
+  25% { color: #ff7f00; }
+  50% { color: #ffff00; }
+  75% { color: #00ff00; }
+  100% { color: #0000ff; }
+}
+#ventanaSiguienteNivel.show {
+  display: flex; /* visible y centrado */
+}
+
+.ventana-estadisticas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.contenedor-estadisticas {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+}
