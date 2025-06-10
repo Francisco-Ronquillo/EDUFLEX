@@ -9,7 +9,7 @@ from .models import ProgresoNiño
 from NIÑO.models import Niño,Reporte
 from threading import Thread
 from NIÑO.modelo_deteccion import resultado_final,gen_frames_background,stop_event,deteccion_finalizada
-import datetime
+from datetime import datetime
 from datetime import timedelta
 
 

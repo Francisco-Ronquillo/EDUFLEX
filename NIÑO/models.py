@@ -25,6 +25,9 @@ class Reporte(models.Model):
     titulo = models.CharField(max_length=100, null=True, blank=True)
     puntaje = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     distracciones = models.IntegerField(null=True, blank=True, help_text="Cantidad de distracciones detectadas")
+    somnolencias = models.IntegerField(null=True, blank=True)
+    tiempos_somnolencia = models.JSONField(null=True, blank=True)
+    tiempos_distraccion = models.JSONField(null=True, blank=True)
     fecha = models.DateField(auto_now_add=True, null=True, blank=True)
     duracion_evaluacion = models.DurationField(null=True, blank=True, help_text="Duración total de la evaluación")
 
