@@ -7,6 +7,4 @@ urlpatterns = [
     path('niveles_disgrafia/', niveles_disgrafiaView.as_view(), name='niveles_disgrafia'),
     path('juego_completar/', juego_completar_palabraView.as_view(), name='completar_palabra'),
     path('guardar_progreso/', GuardarProgresoView.as_view(), name='guardar_progreso'),
-    path('ia_inicio/', InicioDeteccionView.as_view(), name='ia_inicio'),
-    path('ia_fin/',FinalizarDeteccionView.as_view(), name='ia_fin'),
 ]

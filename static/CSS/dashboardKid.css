@@ -55,12 +55,15 @@ body {
   color: aquamarine;
   background-color: dodgerblue;
 }
-
+.btnjugar{
+  text-decoration: none;
+}
 .Juegos {
   margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 60px;
+  text-decoration: none;
 }
 
 .logo-btn {

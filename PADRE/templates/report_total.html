@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Padre - Eduflex</title>
+  <link rel="stylesheet" href="{% static 'css/report_total.css' %}">
+</head>
+<body>
+
+<header>
+  <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
+  <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">Home</a>
+  <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+</header>
+
+<main>
+  <section class="estudiante ">
+    <div class="contenido-reportes">
+        <h4 >Reportes:</h4>
+        <a class="reportes" href="#">
+          {% for reporte in reportes %}
+          <div class="card reporte">
+            <strong></strong>
+             <span>{{ reporte.titulo }}</span>
+            <span>Puntaje: 9.00</span>
+            <span>Distracciones:{{reporte.distracciones}}</span>
+            <span>Duración: 0:12:02</span>
+            <span>Fecha: May 31, 2025</span>
+          </div>
+          {% endfor %}
+        </a>
+    </div>
+  </section>
+</main>
+</body>
+</html>
+
+
+
+
+

@@ -63,108 +63,75 @@ class niveles_disgrafiaView(View):
 class juego_completar_palabraView(TemplateView):
     template_name = 'completar_palabra.html'
 
+    def dispatch(self, request, *args, **kwargs):
+
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return redirect('accounts:login')
+
+        session_key = f"deteccion_iniciada_{nino_id}"
+
+        if not request.session.get(session_key):
+            request.session[session_key] = True
+            request.session.modified = True
+
+            def run_detection():
+                gen_frames_background()
+
+            t = Thread(target=run_detection)
+            t.daemon = True
+            t.start()
+
+        return super().dispatch(request, *args, **kwargs)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class GuardarProgresoView(View):
     def post(self, request):
-        print("📩 Petición recibida:", request.POST)
         nino_id = request.session.get('nino_id')
-        print("🔐 Niño ID desde sesión:", nino_id)
-
         if not nino_id:
-            return JsonResponse({'error': 'No autenticado'}, status=403)
+            return JsonResponse({}, status=204)
 
         try:
-            nivel = int(request.POST.get('nivel', 0))  # Asegura que es entero
+
+            nivel = int(request.POST.get('nivel', 0))
             puntaje = Decimal(request.POST.get('puntaje', '0'))
             tiempo = int(request.POST.get('tiempo', 0))
 
             niño = Niño.objects.get(pk=nino_id)
             progreso, _ = ProgresoNiño.objects.get_or_create(niño=niño)
 
-            print(f"📊 Nivel recibido: {nivel}")
-            print(f"📈 Nivel desbloqueado actual: {progreso.nivel_desbloqueado}")
-
             if nivel + 1 > progreso.nivel_desbloqueado:
                 progreso.nivel_desbloqueado = nivel + 1
-                print(f"🔓 Nuevo nivel desbloqueado: {progreso.nivel_desbloqueado}")
-
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
             progreso.save()
 
-            print("✅ Progreso actualizado:", progreso.nivel_desbloqueado)
-            return JsonResponse({'estado': 'ok'})
 
-        except Exception as e:
-            print("❌ Error guardando progreso:", str(e))
-            return JsonResponse({'error': str(e)}, status=500)
-
-class InicioDeteccionView(TemplateView):
-        template_name = 'ia.html'
-
-        def dispatch(self, request, *args, **kwargs):
-
-            nino_id = request.session.get('nino_id')
-            if not nino_id:
-                print("❌ Niño no autenticado")
-                return redirect('accounts:login')
-
-            session_key = f"deteccion_iniciada_{nino_id}"
-
-            if not request.session.get(session_key):
-                request.session[session_key] = True
-                request.session.modified = True
-
-                def run_detection():
-                    gen_frames_background()
-
-                t = Thread(target=run_detection)
-                t.daemon = True
-                t.start()
-
-            return super().dispatch(request, *args, **kwargs)
-
-class FinalizarDeteccionView(View):
-        def get(self, request, *args, **kwargs):
-
-            nino_id = request.session.get('nino_id')
-            if not nino_id:
-                return JsonResponse({'error': 'No autenticado'}, status=403)
-
-            try:
-                nino = Niño.objects.get(id=nino_id)
-            except Niño.DoesNotExist:
-                return JsonResponse({'error': 'Niño no encontrado'}, status=404)
             stop_event.set()
-            print("🛑 Señal enviada para detener la detección")
             if not deteccion_finalizada.wait(timeout=60):
-                return JsonResponse({'error': 'La detección no ha terminado a tiempo.'}, status=408)
+                return JsonResponse({}, status=204)
 
             global resultado_final
-
-            if not resultado_final or "somnolencias" not in resultado_final:
-                return JsonResponse({'error': 'No se obtuvieron resultados válidos de la detección'}, status=500)
-
-            titulo_auto = f"Evaluación del {datetime.now().strftime('%d/%m/%Y')}"
-            try:
+            if resultado_final and "somnolencias" in resultado_final:
                 Reporte.objects.create(
-                    niño=nino,
-                    titulo=titulo_auto,
+                    niño=niño,
+                    titulo=f"Evaluación del {datetime.now().strftime('%d/%m/%Y')}",
+                    puntaje=puntaje,
                     somnolencias=resultado_final.get("somnolencias", 0),
                     distracciones=resultado_final.get("distracciones", 0),
                     tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
                     tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
                     duracion_evaluacion=timedelta(seconds=resultado_final.get("duracion_total", 0))
                 )
-            except Exception as e:
-                return JsonResponse({'error': 'Error al guardar el reporte'}, status=500)
-            session_key = f"deteccion_iniciada_{nino_id}"
-            request.session[session_key] = False
-            request.session.modified = True
+                session_key = f"deteccion_iniciada_{nino_id}"
+                request.session[session_key] = False
+                request.session.modified = True
 
-            resultado = resultado_final.copy()
-            resultado_final.clear()
-            deteccion_finalizada.clear()
+                resultado_final.clear()
+                deteccion_finalizada.clear()
 
-            return JsonResponse(resultado)
+            return JsonResponse({}, status=204)  # Todo bien, sin contenido
+
+        except Exception:
+            return JsonResponse({}, status=500)

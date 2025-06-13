@@ -18,11 +18,11 @@
     <div class="sidebar">
       <h3>Panel</h3>
       <div class="Juegos">
-        <a href="{% url 'niño:juegos_recomendados' %}">
+        <a href="{% url 'niño:juegos_recomendados' %}" class="btnjugar">
             <button>
             <img src="{% static 'img/Juegos.png' %}" alt="Juegos">
             Juegos
-          </button>
+            </button>
         </a>
         <button onclick="alert('Métricas')">
           <img src="{% static 'img/Metrica.png' %}" alt="Métricas">

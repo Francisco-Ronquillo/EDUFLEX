@@ -73,28 +73,4 @@ h2 {
   justify-content: space-between;
 }
 
-.crear {
-  border: 2px dashed #ccc;
-  background-color: #fff;
-}
-
-.btn-crear {
-  margin-top: auto;
-  padding: 10px;
-  background-color: #7cff49;
-  border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-}
-
-.ciencias {
-  background-color: #d9f6de;
-}
-
-.matematicas {
-  background-color: #bff2ef;
-}
 

@@ -37,8 +37,6 @@ class LoginView(TemplateView):
             except Padre.DoesNotExist:
                 messages.error(request, "Credenciales incorrectas para padre.")
                 return render(request, self.template_name)
-
-            # ¿Se envió el formulario del niño?
         elif 'usuario_nino' in request.POST:
             usuario = request.POST['usuario_nino']
             clave = cifrar_contraseña(request.POST['clave_nino'])
@@ -64,10 +62,12 @@ class LoginView(TemplateView):
 
         messages.error(request, "Formulario no válido.")
         return render(request, self.template_name)
+
 class LogoutView(View):
     def get(self, request):
-        request.session.flush()  # Elimina toda la sesión
-        return redirect('accounts:login')  # Redirige al login
+        request.session.flush()
+        return redirect('accounts:login')
+
 class RolView(TemplateView):
     template_name = 'rol.html'
     def get_context_data(self, **kwargs):
@@ -122,7 +122,7 @@ class EnviarCodigoView(View):
     template_name = 'recover_password.html'
 
     def get(self, request, rol):
-        request.session['tipo_usuario'] = rol  # Guarda el rol directamente
+        request.session['tipo_usuario'] = rol
         return render(request, self.template_name, {'form': SolicitarCodigoForm()})
 
     def post(self, request, rol):
@@ -130,7 +130,7 @@ class EnviarCodigoView(View):
 
         if form.is_valid():
             email = form.cleaned_data['email']
-            tipo_usuario = rol.lower()  # Convertir a minúsculas por seguridad
+            tipo_usuario = rol.lower()
             usuario_obj = None
 
             if tipo_usuario == 'padre':
@@ -142,7 +142,6 @@ class EnviarCodigoView(View):
                     return render(request, self.template_name, {'form': form})
 
             elif tipo_usuario == 'niño':
-                print('→ Solicitud de niño')
                 if Niño.objects.filter(email=email).exists():
                     usuario_obj = Niño.objects.get(email=email)
                 else:
@@ -152,27 +151,26 @@ class EnviarCodigoView(View):
                 messages.error(request, "Tipo de usuario inválido.")
                 return render(request, self.template_name, {'form': form})
 
-            # Guardar en sesión
+
             request.session['recuperacion_email'] = email
             request.session['tipo_usuario'] = tipo_usuario
 
-            # Generar y guardar código
+
             codigo = str(random.randint(100000, 999999))
             CodigoRecuperacion.objects.create(email=email, codigo=codigo)
-            print(f"✅ Generando código {codigo} para {email} como {tipo_usuario}")
 
-            # Enviar el correo
+            # Enviar el correo con el remitente verificado
             try:
                 send_mail(
                     'Código de recuperación - Eduflex',
                     f'Tu código es: {codigo}',
-                    settings.EMAIL_HOST_USER,
+                    settings.DEFAULT_FROM_EMAIL,
                     [email],
                     fail_silently=False,
                 )
-                print("✉️ Correo enviado correctamente.")
+
             except Exception as e:
-                print(f"❌ Error al enviar el correo: {e}")
+
                 messages.error(request, f"Error al enviar el correo: {e}")
                 return render(request, self.template_name, {'form': form})
 

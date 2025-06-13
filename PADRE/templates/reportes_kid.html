@@ -35,7 +35,7 @@
   <section class="estudiante {% if item.reportes|length == 0 %}sin-reportes{% endif %}">
     <div class="header-estudiante">
       <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
-     <a href="#" class="btn-ver" >Ver todos</a>
+     <a href="{% url 'padre:report_total' item.niño.id %}" class="btn-ver" >Ver todos</a>
      <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">
       Quitar Niño
     </button>

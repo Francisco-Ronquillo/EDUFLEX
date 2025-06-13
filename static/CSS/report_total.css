@@ -1,0 +1,113 @@
+/* --- Estilos Generales --- */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #000;
+}
+
+/* --- Encabezado --- */
+header {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.logo {
+    height: 50px;
+}
+
+.btn-nav {
+    background: #c2ff47;
+    border: none;
+    font-size: 20px;
+    padding: 10px 10px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+.btn-cerrar {
+    background: rgba(239, 64, 77, 0.76);
+    border: none;
+    padding: 10px 10px;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+
+
+main h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+
+.estudiante {
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 85%;
+    transition: all 0.3s ease;
+}
+
+
+
+
+.titulo-reportes {
+    margin: 10px 10px 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+
+.reportes{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 10px;
+    text-decoration: none;
+}
+
+
+/* Tarjeta individual del reporte */
+.card.reporte{
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 180px;
+    height: 180px;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1.4;
+    text-decoration: none;
+    color:black;
+}
+
+.card.reporte strong {
+    color: #0d47a1;
+    font-size: 14px;
+}
+
+
+
+
