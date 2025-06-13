@@ -3,8 +3,9 @@ let nivelActual = 0;
 let palabraActual = 0;
 let contenedorOriginal = null;
 let tiempoInicio = Date.now();
-let respuestasCorrectas= 0;
+let respuestasCorrectas = 0;
 let respuestasIncorrectas = 0;
+let tiempoTotal = 0;  // Variable para almacenar el tiempo total en segundos
 
 function obtenerNivelDesdeURL() {
   const params = new URLSearchParams(window.location.search);
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     pausaBtn.addEventListener("click", togglePausa);
   }
 });
-
 
 function mostrarMensajeFlotante(texto, color) {
   const mensaje = document.getElementById('mensaje-flotante');
@@ -97,10 +97,6 @@ function soltar(ev) {
   }
 }
 
-
-
-
-
 function verificarRespuesta() {
   const nivelData = niveles[nivelActual];
   const contenedorPalabra = document.getElementById('contenedorPalabra');
@@ -142,9 +138,6 @@ function verificarRespuesta() {
   });
 }
 
-
-
-
 function cargarNivel(nivelIdx, palabraIdx) {
   const nivel = niveles[nivelIdx];
   const palabraObj = nivel.palabras[palabraIdx];
@@ -176,7 +169,6 @@ if (posicionesPermitidas.length > 0) {
     .sort(() => Math.random() - 0.5)
     .slice(0, maxVacios);
 }
-
 
   // Construir la palabra con espacios y letras
   for (let i = 0; i < palabra.length; i++) {
@@ -216,7 +208,6 @@ function irSiguiente() {
   cargarNivel(nivelActual, palabraActual);
 }
 
-
 function ocultarVentanaSiguiente() {
   document.getElementById('ventanaSiguienteNivel').classList.remove('show');
 }
@@ -230,14 +221,14 @@ function actualizarTextoSiguiente() {
   }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
   // Activar botón de pausa
-const pausaBtn = document.getElementById("pausaBtn");
+  const pausaBtn = document.getElementById("pausaBtn");
   if (pausaBtn) {
     pausaBtn.addEventListener("click", togglePausa);
   }
 });
+
 function togglePausa() {
   const modal = document.getElementById('modalPausa');
   const overlay = document.getElementById('modalOverlay');
@@ -246,10 +237,9 @@ function togglePausa() {
   overlay.classList.toggle('show');
 }
 
-
 function mostrarVentanaEstadisticas() {
-  const tiempoTotal = Math.floor((Date.now() - tiempoInicio) / 1000);
-  const tiempoMin = (tiempoTotal / 60).toFixed(2);
+  tiempoTotal = Math.floor((Date.now() - tiempoInicio) / 1000); // Tiempo en segundos
+
   const puntaje = respuestasCorrectas * 10;
 
   fetch(guardarUrl, {
@@ -270,14 +260,11 @@ function mostrarVentanaEstadisticas() {
       <h2>¡Nivel completado!</h2>
       <p>Palabras correctas: ${respuestasCorrectas}</p>
       <p>Palabras incorrectas: ${respuestasIncorrectas}</p>
-      <p>Tiempo total: ${tiempoMin} minutos</p>
       <p>Puntaje total: ${puntaje}</p>
       <button onclick="volverAlMenu()">Volver al menú</button>
     </div>`;
   document.body.appendChild(modal);
 }
-
-
 
 function getCookie(name) {
   let cookieValue = null;
