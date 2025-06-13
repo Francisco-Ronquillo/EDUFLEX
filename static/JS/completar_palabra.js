@@ -3,8 +3,8 @@ let nivelActual = 0;
 let palabraActual = 0;
 let contenedorOriginal = null;
 let tiempoInicio = Date.now();
-
-
+let respuestasCorrectas= 0;
+let respuestasIncorrectas = 0;
 
 function obtenerNivelDesdeURL() {
   const params = new URLSearchParams(window.location.search);
@@ -120,18 +120,20 @@ function verificarRespuesta() {
     return;
   }
 
-  if (palabraFormada.toUpperCase() === nivelData.palabras[palabraActual].palabra.toUpperCase()) {
-  mostrarMensajeFlotante("¡Correcto! Muy bien 😊", "rgba(0, 128, 0, 0.85)");
+  const esCorrecta = palabraFormada.toUpperCase() === nivelData.palabras[palabraActual].palabra.toUpperCase();
 
-  // 👇 Asegúrate de que esto esté antes de mostrar la ventana
+  if (esCorrecta) {
+    respuestasCorrectas++;
+    mostrarMensajeFlotante("¡Correcto! Muy bien 😊", "rgba(0, 128, 0, 0.85)");
+  } else {
+    respuestasIncorrectas++;
+    mostrarMensajeFlotante("Buena suerte para la siguiente 😅", "rgba(255, 140, 0, 0.85)");
+  }
+
   actualizarTextoSiguiente();
-
   setTimeout(() => {
     document.getElementById('ventanaSiguienteNivel').classList.add('show');
-  }, 2000);
-} else {
-    mostrarMensajeFlotante("Ups... Intenta de nuevo 😅", "rgba(255, 0, 0, 0.85)");
-  }
+  }, 1500);
 
   const letras = document.querySelectorAll(".letra");
   letras.forEach(letra => {
@@ -140,24 +142,7 @@ function verificarRespuesta() {
   });
 }
 
-function intentarDeNuevo() {
-  const letrasContainer = document.querySelector(".letras-disponibles");
 
-  // Limpiar todos los espacios vacíos y devolver sus letras
-  document.querySelectorAll('.espacio-vacio').forEach(espacio => {
-    while (espacio.firstChild) {
-      letrasContainer.appendChild(espacio.firstChild);
-    }
-    espacio.innerHTML = "";  // ✅ Asegura que el espacio esté limpio
-  });
-
-  // Restaurar arrastrabilidad a todas las letras
-  const letras = document.querySelectorAll(".letra");
-  letras.forEach(letra => {
-    letra.setAttribute("draggable", "true");
-    letra.setAttribute("ondragstart", "arrastrar(event)");
-  });
-}
 
 
 function cargarNivel(nivelIdx, palabraIdx) {
@@ -264,15 +249,14 @@ function togglePausa() {
 
 function mostrarVentanaEstadisticas() {
   const tiempoTotal = Math.floor((Date.now() - tiempoInicio) / 1000);
-
-  // 🔽 Suponiendo 10 puntos por palabra correcta (puedes cambiar)
-  const puntaje = (palabraActual + 1) * 10;
+  const tiempoMin = (tiempoTotal / 60).toFixed(2);
+  const puntaje = respuestasCorrectas * 10;
 
   fetch(guardarUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "X-CSRFToken": getCookie("csrftoken")  // 👇 Asegúrate de tener esta función
+      "X-CSRFToken": getCookie("csrftoken")
     },
     body: `nivel=${nivelActual + 1}&puntaje=${puntaje}&tiempo=${tiempoTotal}`
   }).then(res => res.json()).then(data => {
@@ -284,12 +268,15 @@ function mostrarVentanaEstadisticas() {
   modal.innerHTML = `
     <div class="contenedor-estadisticas">
       <h2>¡Nivel completado!</h2>
-      <p>Tiempo total: ${tiempoTotal} segundos</p>
-      <p> Puntaje total: ${tiempoTotal} segundos</p>
+      <p>Palabras correctas: ${respuestasCorrectas}</p>
+      <p>Palabras incorrectas: ${respuestasIncorrectas}</p>
+      <p>Tiempo total: ${tiempoMin} minutos</p>
+      <p>Puntaje total: ${puntaje}</p>
       <button onclick="volverAlMenu()">Volver al menú</button>
     </div>`;
   document.body.appendChild(modal);
 }
+
 
 
 function getCookie(name) {
