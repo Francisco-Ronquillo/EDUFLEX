@@ -17,6 +17,7 @@ class Profesor(models.Model):
         return f"{self.nombres} {self.apellidos}"
 
 class Curso(models.Model):
+    profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE ,null=True)
     nombre_curso=models.CharField(max_length=100)
     seccion=models.CharField(max_length=1,choices=Jornadas_CHOICES)
     descripcion=models.CharField(max_length=100)
@@ -26,3 +27,6 @@ class Curso(models.Model):
     fecha_final=models.DateField(null=True, blank=True)
     def __str__(self):
         return f"{self.nombre_curso} - {self.get_seccion_display()}"
+
+    def mostrar_seccion(self):
+        return dict(Jornadas_CHOICES).get(self.seccion, "Sin definir")

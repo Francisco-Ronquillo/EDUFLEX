@@ -91,3 +91,13 @@ class DesvincularNinoView(View):
             messages.success(request, "Niño desvinculado correctamente.")
 
         return redirect('padre:reportKid')
+class reportTotal(TemplateView):
+    template_name = 'report_total.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        nino = Niño.objects.get(pk=pk)
+        context['nino'] = nino
+        context['reportes'] = Reporte.objects.filter(niño=nino).order_by('-fecha')
+        return context

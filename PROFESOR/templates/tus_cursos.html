@@ -14,34 +14,24 @@
       <a class="btn-home" href="{% url 'profesor:dashboardTeacher' %}">Home</a>
     </div>
 
-    <a class="btn-logout" href="#">Cerrar sesión</a>
+    <a class="btn-logout" href="{% url 'accounts:logout' %}">Cerrar sesión</a>
   </header>
 
   <main>
     <h2>Cursos</h2>
 
     <div class="curso-container">
+      {% for curso in cursos %}
       <div class="curso-card ciencias">
-        <h3>🧪 Ciencias</h3>
-        <p><strong>2° B</strong><br>
-          Descubre el mundo que te rodea a través de experimentos, observación y exploración.
-        </p>
+            <strong></strong>
+             <span>{{ curso.nombre_curso }}</span>
+
+            <span>{{ curso.mostrar_seccion }}</span>
+            <span>{{ curso.periodo }}</span>
       </div>
-
-      <div class="curso-card matematicas">
-        <h3>📐 Matemáticas</h3>
-        <p><strong>2° C</strong><br>
-          Desarrolla habilidades lógicas y numéricas con actividades interactivas.
-        </p>
-      </div>
-
-
+      {% endfor %}
     </div>
-    <div class="curso-card crear">
-        <h3>📚 Crear curso</h3>
-        <p>Diseña tus propias clases, contenidos interactivos y organiza las tareas para tus estudiantes</p>
-        <a class="btn-crear" href="{% url 'profesor:crearCurso' %}">Crear curso</a>
-      </div>
+
   </main>
 
 </body>
