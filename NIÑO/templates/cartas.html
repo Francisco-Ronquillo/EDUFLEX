@@ -1,10 +1,36 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta charset="UTF-8" />
+  <title>Juego de Cartas</title>
+  <link rel="stylesheet" href="{% static 'CSS/cartas.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    document.cookie = "csrftoken={{ csrf_token }}";
+  </script>
 </head>
 <body>
-$END$
+  <!-- Botón de Pausa -->
+  <button id="pausaBtn" class="button"> | | </button>
+
+  <!-- Overlay y modal -->
+  <div id="modalOverlay" class="modal-overlay"></div>
+  <div class="container" id="modalPausa">
+    <div class="input-field">
+      <input type="button" value="Continuar" class="button-input" onclick="togglePausa()">
+      <input type="button" value="Salir" class="button-input" onclick="window.location.href='/niveles_cartas/'">
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div id="stats">0 intentos</div>
+
+  <!-- Contenedor del juego -->
+  <div id="wrapper">
+    <div id="game"></div>
+  </div>
+
+  <script src="{% static 'JS/cartas.js' %}" defer></script>
 </body>
 </html>

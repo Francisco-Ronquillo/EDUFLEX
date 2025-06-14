@@ -11,7 +11,7 @@
 
   <div class="game-card-wrapper">
        {% if juego == "Traza y gana" %}
-      <a href="{% url 'niño:niveles_disgrafia' %}" class="game-card traza-y-gana-card"> {# CAMBIO AQUÍ: de {% url 'seleccionar_nivel' %} a href="#" #}
+      <a href="{% url 'niño:niveles_disgrafia' %}" class="game-card traza-y-gana-card">
         <span class="game-icon">
           <img src="{% static 'img/lapiz.png' %}" alt="lapiz" class="pencil-image-icon">
         </span>
@@ -25,14 +25,16 @@
         <span class="game-name">Cuenta conmigo</span>
       </button>
     {% elif juego == "Desafío de concentración" %}
-      <button class="game-card desafio-concentracion-card">
-        <span class="game-icon">
-          <div class="traffic-light-body">
-            <img src="{% static 'img/semaforof.png' %}" alt="semaforo" class="semaforo-image-icon">
-          </div>
-        </span>
+           <a href="{% url 'niño:niveles_cartas' %}" class="game-card desafio-concentracion-card">
+                 <span class="game-icon">
+                <div class="traffic-light-body">
+                    <img src="{% static 'img/semaforof.png' %}" alt="semaforo" class="semaforo-image-icon">
+                </div>
+                </span>
         <span class="game-name">Desafío de concentración</span>
-      </button>
+
+                 </a>
+
     {% else %}
       <p>No se encontró un juego recomendado para esta discapacidad.</p>
     {% endif %}

@@ -40,3 +40,13 @@ class ProgresoNiño(models.Model):
 
     def __str__(self):
         return f"Progreso de {self.niño.nombre_completo}"
+
+
+class ProgresoCartas(models.Model):
+    niño = models.OneToOneField(Niño, on_delete=models.CASCADE)
+    nivel_desbloqueado = models.IntegerField(default=1)
+    puntaje_total = models.IntegerField(default=0)
+    tiempo_total = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Progreso Cartas de {self.niño.nombre_completo}"
