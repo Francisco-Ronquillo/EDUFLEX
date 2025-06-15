@@ -1,6 +1,6 @@
 // === CONFIGURACIÓN ===
-const availableCards = ['A', 'K', 'Q', 'J', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-const cartasPorNivel = [12, 15, 18, 21, 24]; // Cartas por nivel
+const availableCards = ['❤️', '😎', '😁', '😫', '💩', '😱', '🤡', '🥸', '🐶', '🐷', '👻'];
+const cartasPorNivel = [8, 10, 12, 18, 24]; // Cartas por nivel
 const tiemposPorNivel = [5000, 4000, 3000, 2000, 2000]; // tiempo en milisegundos según el nivel
 
 let cards = [], selectedCards = [], valuesUsed = [];
@@ -13,7 +13,7 @@ const nivelActual = obtenerNivelDesdeURL();
 const totalCards = cartasPorNivel[nivelActual] || 12;
 
 // Determinamos el número de columnas en función del nivel
-const columnasPorNivel = [4, 5, 6, 7, 8]; // Número de columnas por nivel
+const columnasPorNivel = [4, 5, 4, 6, 8]; // Número de columnas por nivel
 const columnas = columnasPorNivel[nivelActual]; // Establece el número de columnas según el nivel
 
 // Actualiza el estilo CSS dinámicamente para las columnas

@@ -40,7 +40,7 @@ class JuegosRecomendadosView(View):
             juego_a_mostrar = None
 
             if especialidad_niño == 'D':
-                juego_a_mostrar = "Traza y gana"
+                juego_a_mostrar = "Ordena las palabras"
             elif especialidad_niño == 'DC':
                 juego_a_mostrar = "Cuenta conmigo"
             elif especialidad_niño == 'T':
@@ -124,7 +124,7 @@ class GuardarProgresoView(View):
             niño = Niño.objects.get(pk=nino_id)
             progreso, _ = ProgresoNiño.objects.get_or_create(niño=niño)
 
-            if nivel + 1 > progreso.nivel_desbloqueado:
+            if nivel + 1 > progreso.nivel_desbloqueado and puntaje>=70:
                 progreso.nivel_desbloqueado = nivel + 1
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
@@ -174,7 +174,7 @@ class GuardarProgresoCartasView(View):
         niño = Niño.objects.get(pk=nino_id)
         progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
 
-        if nivel + 1 > progreso.nivel_desbloqueado:
+        if nivel + 1 > progreso.nivel_desbloqueado and puntaje>=70:
             progreso.nivel_desbloqueado = nivel + 1
 
         progreso.puntaje_total += puntaje
