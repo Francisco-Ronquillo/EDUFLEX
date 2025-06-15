@@ -68,15 +68,34 @@ class juego_completar_palabraView(TemplateView):
     template_name = 'completar_palabra.html'
 
     def dispatch(self, request, *args, **kwargs):
-
         nino_id = request.session.get('nino_id')
         if not nino_id:
             return redirect('accounts:login')
 
         session_key = f"deteccion_iniciada_{nino_id}"
+        tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
 
-        if not request.session.get(session_key):
+        iniciado = request.session.get(session_key, False)
+        tiempo_inicio_str = request.session.get(tiempo_key)
+
+
+        if iniciado and tiempo_inicio_str:
+            try:
+                tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
+                if datetime.now() - tiempo_inicio > timedelta(minutes=2):
+                    # Timeout: reiniciar
+                    iniciado = False
+                    request.session[session_key] = False
+                    request.session.pop(tiempo_key, None)
+            except Exception:
+                # Fallo al leer el tiempo → reiniciar por seguridad
+                iniciado = False
+                request.session[session_key] = False
+                request.session.pop(tiempo_key, None)
+
+        if not iniciado:
             request.session[session_key] = True
+            request.session[tiempo_key] = datetime.now().isoformat()
             request.session.modified = True
 
             def run_detection():
@@ -126,7 +145,7 @@ class GuardarProgresoView(View):
                     distracciones=resultado_final.get("distracciones", 0),
                     tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
                     tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
-                    duracion_evaluacion=timedelta(seconds=resultado_final.get("duracion_total", 0))
+                    duracion_evaluacion=timedelta(seconds=tiempo)
                 )
                 session_key = f"deteccion_iniciada_{nino_id}"
                 request.session[session_key] = False
@@ -161,11 +180,72 @@ class GuardarProgresoCartasView(View):
         progreso.puntaje_total += puntaje
         progreso.tiempo_total += tiempo
         progreso.save()
+        puntaje_real = puntaje - (puntaje * Decimal('0.90'))
+        stop_event.set()
+        if not deteccion_finalizada.wait(timeout=60):
+            return JsonResponse({}, status=204)
+
+        global resultado_final
+        if resultado_final and "somnolencias" in resultado_final:
+            Reporte.objects.create(
+                niño=niño,
+                titulo=f"Evaluación del {datetime.now().strftime('%d/%m/%Y')}",
+                puntaje=puntaje_real,
+                somnolencias=resultado_final.get("somnolencias", 0),
+                distracciones=resultado_final.get("distracciones", 0),
+                tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
+                tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
+                duracion_evaluacion=timedelta(seconds=tiempo)
+            )
+            session_key = f"deteccion_iniciada_{nino_id}"
+            request.session[session_key] = False
+            request.session.modified = True
+
+            resultado_final.clear()
+            deteccion_finalizada.clear()
 
         return JsonResponse({'estado': 'ok'})
 
 class juego_cartasView(TemplateView):
     template_name = 'cartas.html'
+    def dispatch(self, request, *args, **kwargs):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return redirect('accounts:login')
+
+        session_key = f"deteccion_iniciada_{nino_id}"
+        tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
+
+        iniciado = request.session.get(session_key, False)
+        tiempo_inicio_str = request.session.get(tiempo_key)
+
+
+        if iniciado and tiempo_inicio_str:
+            try:
+                tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
+                if datetime.now() - tiempo_inicio > timedelta(minutes=2):
+                    # Timeout: reiniciar
+                    iniciado = False
+                    request.session[session_key] = False
+                    request.session.pop(tiempo_key, None)
+            except Exception:
+                iniciado = False
+                request.session[session_key] = False
+                request.session.pop(tiempo_key, None)
+
+        if not iniciado:
+            request.session[session_key] = True
+            request.session[tiempo_key] = datetime.now().isoformat()
+            request.session.modified = True
+
+            def run_detection():
+                gen_frames_background()
+
+            t = Thread(target=run_detection)
+            t.daemon = True
+            t.start()
+
+        return super().dispatch(request, *args, **kwargs)
 
 class NivelesCartasView(View):
     def get(self, request):

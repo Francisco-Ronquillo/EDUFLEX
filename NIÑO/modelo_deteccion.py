@@ -1,9 +1,8 @@
 import cv2
 import mediapipe as mp
 from scipy.spatial import distance as dist
-import time
 from threading import Event
-
+import time
 
 EYE_AR_THRESH = 0.20
 EYE_AR_CONSEC_FRAMES = 48
@@ -29,7 +28,6 @@ def eye_aspect_ratio(eye):
     return (A + B) / (2.0 * C)
 
 def gen_frames():
-    inicio_total = time.time()
     COUNTER = 0
     COUNTERDISTRACC = 0
     conteo_somnolencia = 0
@@ -47,7 +45,6 @@ def gen_frames():
             "distracciones": 0,
             "tiempos_somnolencia": [],
             "tiempos_distraccion": [],
-            "duracion_total": 0
         }
 
     while not stop_event.is_set():
@@ -59,7 +56,6 @@ def gen_frames():
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = face_mesh.process(rgb)
         now = time.time()
-
         if results.multi_face_landmarks:
             # Si había distracción, finalízala
             if inicio_distraccion:
@@ -105,14 +101,13 @@ def gen_frames():
     if inicio_distraccion:
         tiempos_distraccion.append(round(now - inicio_distraccion, 2))
 
-    duracion_total = round(now - inicio_total, 2)
+
 
     resultado = {
         "somnolencias": conteo_somnolencia or 0,
         "distracciones": conteo_distraccion or 0,
         "tiempos_somnolencia": tiempos_somnolencia or [],
         "tiempos_distraccion": tiempos_distraccion or [],
-        "duracion_total": duracion_total or 0
     }
     return resultado
 
