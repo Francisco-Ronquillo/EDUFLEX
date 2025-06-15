@@ -22,12 +22,13 @@
 
     <div class="curso-container">
       {% for curso in cursos %}
-      <div class="curso-card ">
+      <a class="curso-card" href="{% url 'profesor:curso' curso.id %}">
             <strong></strong>
             <span>{{ curso.nombre_curso }}</span>
             <span>{{ curso.mostrar_seccion }}</span>
             <span>{{ curso.periodo }}</span>
-      </div>
+
+      </a>
       {% endfor %}
     </div>
 

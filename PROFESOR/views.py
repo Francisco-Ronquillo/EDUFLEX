@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from PADRE.forms.addKid import CodigoNinoForm
 from PROFESOR.models import  Profesor,Curso
+from NIÑO.models import  Reporte,Niño
 from PROFESOR.forms.curso import CursoForm
 
 class DashboardTeacher(TemplateView):
@@ -35,3 +36,29 @@ class CursoTeacher(TemplateView):
         context['cursos'] = curso_profesor
         return context
 
+class PresentarCursoTeacher(TemplateView):
+    template_name = 'curso_estudiante.html'
+    def dispatch(self, request, *args, **kwargs):
+        if 'profesor_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk=self.kwargs.get('curso_id')
+        curso=Curso.objects.get(pk=pk)
+        context['curso'] = curso
+        context['niños'] =curso.niños.all()
+        return context
+
+class reportEstudiante(TemplateView):
+    template_name = 'reporte_niño.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        niño_id = self.kwargs.get('niño_id')
+        curso_id = self.kwargs.get('curso_id')
+        curso=Curso.objects.get(pk=curso_id)
+        nino = Niño.objects.get(pk=niño_id)
+        context['nino'] = nino
+        context['reportes'] = Reporte.objects.filter(niño=nino,fecha__range=(curso.fecha_inicio, curso.fecha_final)).order_by('-fecha')
+        return context

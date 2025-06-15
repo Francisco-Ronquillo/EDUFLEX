@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,12 @@
     <title>Title</title>
 </head>
 <body>
+    {% for niño in niños %}
+          <a class="curso-card" href="{% url 'profesor:estudiante' curso.id niño.id%}">
+                <strong></strong>
+                <span>{{ niño.nombres }}{{niño.apellidos  }}</span>
 
+          </a>
+    {% endfor %}
 </body>
 </html>
