@@ -13,6 +13,8 @@ from datetime import datetime
 from datetime import timedelta
 
 
+
+
 class DashboardKid(TemplateView):
     template_name = 'dashboardKid.html'
 
@@ -106,7 +108,7 @@ class GuardarProgresoView(View):
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
             progreso.save()
-
+            puntaje_real=puntaje-(puntaje* Decimal('0.90'))
 
             stop_event.set()
             if not deteccion_finalizada.wait(timeout=60):
@@ -117,7 +119,7 @@ class GuardarProgresoView(View):
                 Reporte.objects.create(
                     niño=niño,
                     titulo=f"Evaluación del {datetime.now().strftime('%d/%m/%Y')}",
-                    puntaje=puntaje,
+                    puntaje=puntaje_real,
                     somnolencias=resultado_final.get("somnolencias", 0),
                     distracciones=resultado_final.get("distracciones", 0),
                     tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
