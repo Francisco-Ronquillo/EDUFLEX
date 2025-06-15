@@ -11,6 +11,8 @@ from threading import Thread
 from NIÑO.modelo_deteccion import resultado_final,gen_frames_background,stop_event,deteccion_finalizada
 from datetime import datetime
 from datetime import timedelta
+from .models import ProgresoNiño, ProgresoCartas
+
 
 
 
@@ -137,3 +139,45 @@ class GuardarProgresoView(View):
 
         except Exception:
             return JsonResponse({}, status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GuardarProgresoCartasView(View):
+    def post(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return JsonResponse({'error': 'No autenticado'}, status=403)
+
+        nivel = int(request.POST.get('nivel', 0))
+        puntaje = int(request.POST.get('puntaje', 0))
+        tiempo = int(request.POST.get('tiempo', 0))
+
+        niño = Niño.objects.get(pk=nino_id)
+        progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
+
+        if nivel + 1 > progreso.nivel_desbloqueado:
+            progreso.nivel_desbloqueado = nivel + 1
+
+        progreso.puntaje_total += puntaje
+        progreso.tiempo_total += tiempo
+        progreso.save()
+
+        return JsonResponse({'estado': 'ok'})
+
+class juego_cartasView(TemplateView):
+    template_name = 'cartas.html'
+
+class NivelesCartasView(View):
+    def get(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return redirect('accounts:login')
+
+        niño = Niño.objects.get(pk=nino_id)
+        progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
+
+        return render(request, 'niveles_cartas.html', {
+            'nivel_desbloqueado': progreso.nivel_desbloqueado
+        })
+
+

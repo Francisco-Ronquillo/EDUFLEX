@@ -1,0 +1,159 @@
+body {
+   margin: 0;
+   background: black;
+   overflow: hidden;
+}
+
+#wrapper {
+   height: 100vh;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-evenly;
+}
+
+#game {
+   display: grid;
+   gap: 1rem; /* Espacio entre las cartas */
+   grid-template-rows: repeat(3, 180px); /* 3 filas, cada una con 180px de altura */
+   justify-items: center; /* Centra las cartas dentro de la cuadrícula */
+   max-height: 600px; /* Altura máxima que cubre 3 filas */
+   height: auto;
+   overflow-y: auto;
+   padding: 1rem;
+}
+
+
+#stats {
+   color: #ffffff;
+   position: absolute;
+   padding: 1rem;
+   text-align: center;
+   width: calc(100% - 2rem);
+   font-size: 2rem; /* Reducir tamaño de la fuente */
+   top: 1px; /* Mover un poco hacia abajo para evitar que toque las cartas */
+}
+
+
+.card {
+   width: 100px;
+   height: 140px;
+   margin: 1rem;
+   position: relative;
+   transition: transform 0.5s;
+   transform-style: preserve-3d;
+}
+
+.card.active {
+   transform: rotateY(180deg);
+}
+
+.card div {
+   width: 100%;
+   height: 100%;
+   border-radius: 1rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: absolute;
+   backface-visibility: hidden;
+   pointer-events: none;
+}
+
+.card .face {
+   background: #05d1fe;
+   transform: rotateY( 180deg );
+   color: black;
+   font-size: 6rem;
+}
+
+.card .back {
+   border: 3px solid #05d1fe;
+   background: url('../img/back.png') center / contain no-repeat;
+}
+
+/* Estilo del modal de pausa */
+.modal-overlay {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+.modal-overlay.show {
+    display: block;
+}
+
+#modalPausa.container {
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    z-index: 9999;
+}
+
+#modalPausa.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    background-color: #05d1fe;
+    color: black;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+.button-input {
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #05d1fe;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Contenedor de estadísticas */
+.contenedor-estadisticas {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.contenedor-estadisticas h2 {
+    margin-top: 0;
+}
+
+.contenedor-estadisticas button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #05d1fe;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
