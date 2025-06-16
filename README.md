@@ -85,6 +85,10 @@ Instrucciones de instalación y ejecución
         EMAIL_HOST_PASSWORD = contraseña_aplicacion #no confundir con la contraseña del correo son diferentes
         EMAIL_USE_TLS = True
 
+8. Iniciar la ejecucion
+
+         python manage.py runserverr
+   
 Breve descripción de funcionalidades
 ----------------------------------------------------------
 -Detección en tiempo real de somnolencia y distracción durante actividades mediante visión por computadora con MediaPipe.
