@@ -10,3 +10,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+
+NIÑO/migrations/
+PROFESOR/migrations/
+PADRE/migrations
