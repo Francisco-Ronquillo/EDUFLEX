@@ -27,7 +27,7 @@ function formatearSegundos(tiempo_ms) {
     let segundos = Math.floor(tiempo_ms / 1000);  // Calcula los segundos
     return segundos;  // Devuelve solo los segundos (sin minutos ni horas)
 }
-
+//id
 // === INICIO DEL JUEGO ===
 function iniciarJuegoConCartasVisibles() {
     for (let i = 0; i < totalCards; i++) {
