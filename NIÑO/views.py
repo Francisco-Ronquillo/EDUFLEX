@@ -40,7 +40,7 @@ class JuegosRecomendadosView(View):
             juego_a_mostrar = None
 
             if especialidad_niño == 'D':
-                juego_a_mostrar = "Traza y gana"
+                juego_a_mostrar = "Ordena las palabras"
             elif especialidad_niño == 'DC':
                 juego_a_mostrar = "Cuenta conmigo"
             elif especialidad_niño == 'T':
