@@ -10,15 +10,15 @@
   <h1>¡Elige un juego y empieza a divertirte! </h1>
 
   <div class="game-card-wrapper">
-       {% if juego == "Ordena las palabras" %}
+       {% if juego == "Traza y gana" %}
       <a href="{% url 'niño:niveles_disgrafia' %}" class="game-card traza-y-gana-card">
         <span class="game-icon">
           <img src="{% static 'img/lapiz.png' %}" alt="lapiz" class="pencil-image-icon">
         </span>
-        <span class="game-name">ordena las palabras</span>
+        <span class="game-name">Traza y gana</span>
       </a>
     {% elif juego == "Cuenta conmigo" %}
-      <button class="game-card Multiplica-conmigo-card">
+      <button class="game-card cuenta-conmigo-card">
         <span class="game-numbers">
           <img src="{% static 'img/numero.png' %}" alt="numero" class="numero-image-icon">
         </span>

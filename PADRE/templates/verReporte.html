@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte del Niño</title>
+    <link rel="stylesheet" href="{% static 'css/verReporte.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Reporte de Evaluación</h1>
+
+        <section>
+            <h2>Capturas de Somnolencia</h2>
+            <div class="galeria">
+                {% for imagen in reporte.frames_somnolencia %}
+                    <div class="imagen">
+                        <img src="/static/{{ imagen }}" alt="Somnolencia">
+                    </div>
+                {% empty %}
+                    <p>No hay imágenes de somnolencia.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section>
+            <h2>Capturas de Distracción</h2>
+            <div class="galeria">
+                {% for imagen in reporte.frames_distraccion %}
+                    <div class="imagen">
+                       <img src="/static/{{ imagen }}" alt="Distracción">
+                    </div>
+                {% empty %}
+                    <p>No hay imágenes de distracción.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -15,21 +15,22 @@
 </header>
 
 <main>
+  <div class="regresar">
+      <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">←</a>
+  </div>
   <section class="estudiante ">
     <div class="contenido-reportes">
         <h4 >Reportes:</h4>
-        <a class="reportes" href="#">
+        <div class="reportes">
           {% for reporte in reportes %}
-          <div class="card reporte">
+          <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
             <strong></strong>
              <span>{{ reporte.titulo }}</span>
-            <span>Puntaje: 9.00</span>
-            <span>Distracciones:{{reporte.distracciones}}</span>
-            <span>Duración: 0:12:02</span>
-            <span>Fecha: May 31, 2025</span>
-          </div>
+            <span>Duración:{{ reporte.duracion_evaluacion }}</span>
+            <span>Fecha:{{ reporte.fecha }}</span>
+          </a>
           {% endfor %}
-        </a>
+        </div>
     </div>
   </section>
 </main>

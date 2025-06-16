@@ -28,6 +28,8 @@ class Reporte(models.Model):
     somnolencias = models.IntegerField(null=True, blank=True)
     tiempos_somnolencia = models.JSONField(null=True, blank=True)
     tiempos_distraccion = models.JSONField(null=True, blank=True)
+    frames_somnolencia = models.JSONField(null=True, blank=True)
+    frames_distraccion = models.JSONField(null=True, blank=True)
     fecha = models.DateField(auto_now_add=True, null=True, blank=True)
     duracion_evaluacion = models.DurationField(null=True, blank=True, help_text="Duración total de la evaluación")
 

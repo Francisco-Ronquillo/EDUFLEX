@@ -48,11 +48,9 @@
           {% for reporte in item.reportes|slice:":6" %}
           <div class="card reporte">
             <strong></strong>
-             <span>{{ reporte.titulo }}</span>
-            <span>Puntaje: 9.00</span>
-            <span>Distracciones:{{reporte.distracciones}}</span>
-            <span>Duración: 0:12:02</span>
-            <span>Fecha: May 31, 2025</span>
+            <span>{{ reporte.titulo }}</span>
+            <span>Duración:{{ reporte.duracion_evaluacion}}</span>
+            <span>Fecha:{{ reporte.fecha }}</span>
           </div>
           {% endfor %}
         </div>

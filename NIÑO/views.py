@@ -40,7 +40,7 @@ class JuegosRecomendadosView(View):
             juego_a_mostrar = None
 
             if especialidad_niño == 'D':
-                juego_a_mostrar = "Ordena las palabras"
+                juego_a_mostrar = "Traza y gana"
             elif especialidad_niño == 'DC':
                 juego_a_mostrar = "Cuenta conmigo"
             elif especialidad_niño == 'T':
@@ -71,7 +71,8 @@ class juego_completar_palabraView(TemplateView):
         nino_id = request.session.get('nino_id')
         if not nino_id:
             return redirect('accounts:login')
-
+        ultimo_reporte = Reporte.objects.order_by('-id').first()
+        nuevo_id = ultimo_reporte.id + 1 if ultimo_reporte else 1
         session_key = f"deteccion_iniciada_{nino_id}"
         tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
 
@@ -83,7 +84,6 @@ class juego_completar_palabraView(TemplateView):
             try:
                 tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
                 if datetime.now() - tiempo_inicio > timedelta(minutes=2):
-                    # Timeout: reiniciar
                     iniciado = False
                     request.session[session_key] = False
                     request.session.pop(tiempo_key, None)
@@ -99,7 +99,7 @@ class juego_completar_palabraView(TemplateView):
             request.session.modified = True
 
             def run_detection():
-                gen_frames_background()
+                gen_frames_background(nino_id,nuevo_id)
 
             t = Thread(target=run_detection)
             t.daemon = True
@@ -124,7 +124,7 @@ class GuardarProgresoView(View):
             niño = Niño.objects.get(pk=nino_id)
             progreso, _ = ProgresoNiño.objects.get_or_create(niño=niño)
 
-            if nivel + 1 > progreso.nivel_desbloqueado and puntaje>=70:
+            if nivel + 1 > progreso.nivel_desbloqueado:
                 progreso.nivel_desbloqueado = nivel + 1
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
@@ -139,12 +139,14 @@ class GuardarProgresoView(View):
             if resultado_final and "somnolencias" in resultado_final:
                 Reporte.objects.create(
                     niño=niño,
-                    titulo=f"Evaluación del {datetime.now().strftime('%d/%m/%Y')}",
+                    titulo=f"Digrafia, nivel {nivel}",
                     puntaje=puntaje_real,
                     somnolencias=resultado_final.get("somnolencias", 0),
                     distracciones=resultado_final.get("distracciones", 0),
                     tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
                     tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
+                    frames_somnolencia=resultado_final.get("frames_somnolencia", []),
+                    frames_distraccion = resultado_final.get("frames_distraccion", []),
                     duracion_evaluacion=timedelta(seconds=tiempo)
                 )
                 session_key = f"deteccion_iniciada_{nino_id}"
@@ -174,7 +176,7 @@ class GuardarProgresoCartasView(View):
         niño = Niño.objects.get(pk=nino_id)
         progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
 
-        if nivel + 1 > progreso.nivel_desbloqueado and puntaje>=70:
+        if nivel + 1 > progreso.nivel_desbloqueado:
             progreso.nivel_desbloqueado = nivel + 1
 
         progreso.puntaje_total += puntaje
@@ -189,7 +191,7 @@ class GuardarProgresoCartasView(View):
         if resultado_final and "somnolencias" in resultado_final:
             Reporte.objects.create(
                 niño=niño,
-                titulo=f"Evaluación del {datetime.now().strftime('%d/%m/%Y')}",
+                titulo = f"TDA, nivel {nivel}",
                 puntaje=puntaje_real,
                 somnolencias=resultado_final.get("somnolencias", 0),
                 distracciones=resultado_final.get("distracciones", 0),
@@ -212,7 +214,8 @@ class juego_cartasView(TemplateView):
         nino_id = request.session.get('nino_id')
         if not nino_id:
             return redirect('accounts:login')
-
+        ultimo_reporte = Reporte.objects.order_by('-id').first()
+        nuevo_id = ultimo_reporte.id + 1 if ultimo_reporte else 1
         session_key = f"deteccion_iniciada_{nino_id}"
         tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
 
@@ -224,7 +227,7 @@ class juego_cartasView(TemplateView):
             try:
                 tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
                 if datetime.now() - tiempo_inicio > timedelta(minutes=2):
-                    # Timeout: reiniciar
+
                     iniciado = False
                     request.session[session_key] = False
                     request.session.pop(tiempo_key, None)
@@ -239,7 +242,7 @@ class juego_cartasView(TemplateView):
             request.session.modified = True
 
             def run_detection():
-                gen_frames_background()
+                gen_frames_background(nino_id,nuevo_id)
 
             t = Thread(target=run_detection)
             t.daemon = True
