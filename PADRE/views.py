@@ -6,7 +6,7 @@ from django.contrib import messages
 from PADRE.forms.addKid import CodigoNinoForm
 from NIÑO.models import  Niño,Reporte
 from PADRE.models import  Padre
-
+import os
 class DashboardDad(TemplateView):
     template_name = 'dashboardDad.html'
 
@@ -28,12 +28,13 @@ class DashboardDad(TemplateView):
         return context
 
 
-class reportKid(FormView,ListView):
+class reportKid(FormView, ListView):
     template_name = 'reportes_kid.html'
     model = Niño
     context_object_name = "niños"
     success_url = reverse_lazy('padre:reportKid')
     form_class = CodigoNinoForm
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         padre_id = self.request.session.get('padre_id')
@@ -42,12 +43,21 @@ class reportKid(FormView,ListView):
             lista_con_reportes = []
 
             for niño in niños:
+                reportes = niño.reportes.order_by('-fecha')[:5]
+
+                for reporte in reportes:
+                    total_segundos = int(reporte.duracion_evaluacion.total_seconds())
+                    horas = total_segundos // 3600
+                    minutos = (total_segundos % 3600) // 60
+                    segundos = total_segundos % 60
+                    reporte.duracion_evaluacion = f"{horas}:{minutos:02}:{segundos:02}"
+
                 lista_con_reportes.append({
                     'niño': niño,
-                    'reportes': niño.reportes.order_by('-fecha')[:5]
+                    'reportes': reportes
                 })
 
-            context['niños'] = lista_con_reportes
+            context[self.context_object_name] = lista_con_reportes
         else:
             context[self.context_object_name] = []
         return context
@@ -98,6 +108,41 @@ class reportTotal(TemplateView):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         nino = Niño.objects.get(pk=pk)
+        reportes=Reporte.objects.filter(niño=nino).order_by('-fecha')
+        for reporte in reportes:
+            total_segundos = int(reporte.duracion_evaluacion.total_seconds())
+            horas = total_segundos // 3600
+            minutos = (total_segundos % 3600) // 60
+            segundos = total_segundos % 60
+            reporte.duracion_evaluacion = f"{horas}:{minutos:02}:{segundos:02}"
         context['nino'] = nino
-        context['reportes'] = Reporte.objects.filter(niño=nino).order_by('-fecha')
+        context['reportes'] =reportes
+        return context
+class verReporte(TemplateView):
+    template_name = 'verReporte.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')  # id del reporte
+        reporte = Reporte.objects.get(pk=pk)
+        nino_id = reporte.niño.id
+
+        # Ruta a la carpeta del reporte específico
+        base_dir = os.path.join('capturas', str(nino_id), str(pk))
+        static_dir = os.path.join('static', base_dir)
+
+        frames_somnolencia = []
+        frames_distraccion = []
+
+        if os.path.exists(static_dir):
+            for nombre in os.listdir(static_dir):
+                if nombre.startswith('somnolencia'):
+                    frames_somnolencia.append(os.path.join(base_dir, nombre).replace("\\", "/"))
+                elif nombre.startswith('distraccion'):
+                    frames_distraccion.append(os.path.join(base_dir, nombre).replace("\\", "/"))
+
+        context['reporte'] = reporte
+        context['reporte'].frames_somnolencia = frames_somnolencia
+        context['reporte'].frames_distraccion = frames_distraccion
+
         return context
