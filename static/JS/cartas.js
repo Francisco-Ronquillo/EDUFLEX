@@ -1,6 +1,6 @@
 // === CONFIGURACIÓN ===
 const availableCards = ['A', 'K', 'Q', 'J', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-const cartasPorNivel = [12, 15, 18, 21, 24]; // Cartas por nivel
+const cartasPorNivel = [8, 10, 12, 18, 24]; // Cartas por nivel
 const tiemposPorNivel = [5000, 4000, 3000, 2000, 2000]; // tiempo en milisegundos según el nivel
 
 let cards = [], selectedCards = [], valuesUsed = [];
