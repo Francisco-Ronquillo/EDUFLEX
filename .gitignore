@@ -12,6 +12,6 @@ __pycache__/
 *.pyd
 
 
-NIÑO/migrations/
-PROFESOR/migrations/
-PADRE/migrations
+NIÑO/migrations/__pycache__/
+PROFESOR/migrations/__pycache__/
+PADRE/migrations/__pycache__/
