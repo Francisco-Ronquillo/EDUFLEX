@@ -2,6 +2,7 @@ body {
    margin: 0;
    background: black;
    overflow: hidden;
+    background: url('../img/fondojuegocartas.png') center center / cover no-repeat;
 }
 
 #wrapper {

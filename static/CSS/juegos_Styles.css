@@ -12,7 +12,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  background: url('../img/fondo_parajuegod.png') center center / cover no-repeat;
+  background: url('../img/fondonivelesjg.png') center center / cover no-repeat;
   background-color: #aaeb87;
 }
 
@@ -72,7 +72,7 @@ h1 {
   height: 120px;
   padding: 20px;
   margin: 10px;
-  background-color: #ddffdd;
+  background-color: #FF6347; /* Rojo tomate */
   border: 2px solid #4CAF50;
   border-radius: 10px;
   color: black;

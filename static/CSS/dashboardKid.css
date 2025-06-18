@@ -1,8 +1,9 @@
+/* === ESTRUCTURA GENERAL === */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(to bottom, #b3e5fc, #fff);
-  background-image: url('/static/img/dashboard_niño_interface.png');
+  background-image: url('/static/img/fondodashboardniños.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -17,11 +18,23 @@ body {
   box-sizing: border-box;
 }
 
+.main {
+  flex: 1;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+/* === PANEL LATERAL (SIDEBAR) === */
 .sidebar {
   background-color: rgba(55, 108, 203, 1);
   padding: 20px;
   border-radius: 20px;
   width: 150px;
+  margin-top: 70px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,17 +68,19 @@ body {
   color: aquamarine;
   background-color: dodgerblue;
 }
-.btnjugar{
-  text-decoration: none;
-}
+
 .Juegos {
   margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 60px;
+}
+
+.btnjugar {
   text-decoration: none;
 }
 
+/* === BOTÓN LOGO === */
 .logo-btn {
   position: absolute;
   top: 10px;
@@ -86,67 +101,35 @@ body {
   height: 90px;
 }
 
-.main {
-  flex: 1;
-  padding: 0 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.button-card {
-  background-color: #4caf50;
-  color: white;
-  padding: 20px;
-  border-radius: 16px;
-  width: 200px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-.buttons {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.metrics-btn {
-  background-color: #00aaff;
-}
-
-.bottom-right {
-  align-self: flex-end;
-}
-
-.logout-btn {
+/* === BOTÓN CONFIGURACIÓN === */
+.settings-btn {
   position: absolute;
   top: 20px;
   right: 30px;
-  background-color: #ff5722;
+  background-color: #008cba;
   color: white;
+  padding: 20px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
+  border-radius: 50%;
+  font-size: 28px;
   font-weight: bold;
-  text-decoration: none;
   cursor: pointer;
-  z-index: 10;
+  z-index: 11;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
 }
 
-/* Imagen del niño posicionada sobre la estantería */
+.settings-btn:hover {
+  transform: scale(1.1);
+  background-color: #009fe3;
+}
+
+/* === IMAGEN DEL NIÑO === */
 .Niño {
   position: absolute;
   top: 180px;
@@ -157,18 +140,8 @@ body {
   z-index: 2;
 }
 
-/* Títulos superiores */
-.quick-access,
-.progreso {
-  font-size: 25px;
-  color: #333;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.edu,
-.flex {
+/* === TEXTOS DECORATIVOS (TÍTULOS) === */
+.edu, .flex {
   font-size: 40px;
   font-weight: bold;
   text-align: center;
@@ -182,7 +155,129 @@ body {
   color: #4caf50;
 }
 
-/* Responsivo */
+/* === PROGRESO === */
+.progreso-wrapper.align-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: -150px;
+  margin-top: 80px;
+  transform: scale(1.3);
+  transform-origin: left top;
+}
+
+.progreso-contenido {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.titulo-progreso {
+  font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #111;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  margin-bottom: 20px;
+}
+
+.record-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.record-icon {
+  width: 100px;
+  height: auto;
+  border: #000307 solid 1px;
+  border-radius: 30px;
+}
+
+.barra-externa {
+  width: 300px;
+  height: 35px;
+  background-color: #ddd;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 2px solid #888;
+}
+
+.barra-interna {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.5s ease-in-out;
+}
+
+/* === MODAL === */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 350px;
+  min-height: 250px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* === NUEVA CLASE UNIFICADA PARA BOTONES DE CONFIGURACIÓN === */
+.config-btn {
+  display: inline-block;
+  background-color: #1976d2;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 10px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.config-btn:hover {
+  background-color: #1257a0;
+}
+
+/* === RESPONSIVO === */
 @media (max-width: 768px) {
   .dashboard {
     flex-direction: column;
@@ -209,4 +304,108 @@ body {
     display: block;
     width: 180px;
   }
+}
+
+/* === PROGRESO TEXTO === */
+.barra-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label-progreso {
+  font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.texto-progreso {
+  font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+  font-size: 20px;
+  color: #1a237e;
+  margin-top: 12px;
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* === PERRO ANIMADO === */
+.perro {
+  position: absolute;
+  bottom: 0;
+  left: 180px;
+  width: 200px;
+  height: auto;
+  animation: correrIzqDer 12s linear infinite;
+  z-index: 5;
+}
+
+@keyframes correrIzqDer {
+  0% {
+    left: 180px;
+    transform: scaleX(1);
+  }
+  49.999% {
+    left: 850px;
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(-1);
+  }
+  100% {
+    left: 180px;
+    transform: scaleX(-1);
+  }
+}
+
+/* === RECORDS === */
+.record-modal {
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 850px;
+  padding: 30px;
+  text-align: center;
+}
+
+.record-box {
+  background-color: #f9f9f9;
+  border: 2px solid #4caf50;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.record-box h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #2e7d32;
+}
+
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+/* === Modo oscuro === */
+body.modo-oscuro {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+.modo-oscuro .modal-content {
+  background-color: #292929;
+}
+
+/* === Texto grande === */
+body.texto-grande {
+  font-size: 1.2em;
 }

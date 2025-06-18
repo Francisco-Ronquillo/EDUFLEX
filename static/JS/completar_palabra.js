@@ -165,6 +165,7 @@ function verificarRespuesta() {
     respuestasCorrectas++;
     mostrarMensajeFlotante("¡Correcto! Muy bien 😊", "rgba(0, 128, 0, 0.85)");
   } else {
+
     respuestasIncorrectas++;
     mostrarMensajeFlotante("Buena suerte para la siguiente 😅", "rgba(255, 140, 0, 0.85)");
   }
@@ -283,6 +284,19 @@ function ocultarVentanaSiguiente() {
   }
 }
 
+function formatearTiempo(segundosTotales) {
+  const horas = Math.floor(segundosTotales / 3600);
+  const minutos = Math.floor((segundosTotales % 3600) / 60);
+  const segundos = segundosTotales % 60;
+
+  let partes = [];
+  if (horas > 0) partes.push(`${horas}h`);
+  if (minutos > 0 || horas > 0) partes.push(`${minutos}m`);
+  partes.push(`${segundos}s`);
+
+  return partes.join(' ');
+}
+
 // Mostrar estadísticas
 function mostrarVentanaEstadisticas() {
   tiempoTotal = Math.floor((Date.now() - tiempoInicio) / 1000);
@@ -308,6 +322,7 @@ function mostrarVentanaEstadisticas() {
       <h2>¡Nivel completado!</h2>
       <p>Palabras correctas: ${respuestasCorrectas}</p>
       <p>Palabras incorrectas: ${respuestasIncorrectas}</p>
+       <p>Tiempo total: ${formatearTiempo(tiempoTotal)}</p>
       <p>Puntaje total: ${puntaje}</p>
       <button onclick="volverAlMenu()">Volver al menú</button>
     </div>`;
