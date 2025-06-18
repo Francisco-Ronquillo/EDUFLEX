@@ -1,8 +1,16 @@
 from django.contrib.auth.models import User
 from django.db import models
+from storages.backends.s3boto3 import S3Boto3Storage
+
 from PADRE.models import Padre
 SEX_CHOICES=[('M', 'Masculino'), ('F', 'Femenino')]
 ESPECIALIDAD=[('D','Disgrafia'),('T','TDA'),('DC','Discalculia')]
+
+class ProfilePictureStorage(S3Boto3Storage):
+    location = 'profile_pictures'
+    default_acl = 'public-read'
+    file_overwrite = False
+
 class Niño(models.Model):
     codigo = models.CharField(max_length=10, unique=True, null=True, blank=True)
     nombres=models.CharField(max_length=100)
@@ -12,6 +20,7 @@ class Niño(models.Model):
     contraseña = models.CharField(max_length=64)
     fecha_nac=models.DateField()
     email=models.EmailField()
+    foto_perfil=models.ImageField(upload_to="perfiles/", storage=ProfilePictureStorage,blank=True,null=True)
     especialidad=models.CharField(max_length=2,choices=ESPECIALIDAD)
     padre = models.ForeignKey(Padre, on_delete=models.SET_NULL, null=True, blank=True, related_name='hijos')
     @property

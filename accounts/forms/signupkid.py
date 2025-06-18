@@ -11,7 +11,13 @@ class NiñoForm(forms.ModelForm):
         label="Confirmar Contraseña",
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar contraseña', 'id': 'confirmar_contraseña'})
     )
-
+    foto_perfil = forms.ImageField(
+        required=False,
+        label='Foto de perfil',
+        widget=forms.ClearableFileInput(attrs={
+            'class': 'form-control'
+        })
+    )
     class Meta:
         model = Niño
         fields = ['nombres', 'apellidos', 'genero', 'usuario', 'contraseña', 'fecha_nac', 'email', 'especialidad']
@@ -25,7 +31,9 @@ class NiñoForm(forms.ModelForm):
             'fecha_nac': forms.DateInput(attrs={'type': 'date', 'id': 'fecha_nac'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Ingresar correo', 'id': 'email'}),
             'especialidad': forms.Select(attrs={'id': 'especialidad'}),
+
         }
+
 
     def clean(self):
         cleaned_data = super().clean()
@@ -68,3 +76,14 @@ class NiñoForm(forms.ModelForm):
             raise forms.ValidationError("La contraseña debe contener al menos un número.")
 
         return contraseña
+
+    def clean_foto_perfil(self):
+        foto = self.cleaned_data.get('foto_perfil')
+        if foto:
+            if foto.size > 5 * 1024 * 1024:
+                raise forms.ValidationError('La imagen es demasiado grande. Máximo 5MB.')
+
+            allowed_types = ['image/jpeg','image/jpg', 'image/png']
+            if foto.content_type not in allowed_types:
+                raise forms.ValidationError('Formato no soportado. Use JPG, PNG o GIF.')
+        return foto

@@ -12,7 +12,7 @@
     <img src="{% static 'img/logo.png' %}" alt="Logo Eduflex">
   </div>
 
-  <form method="post" class="container">
+  <form method="post" class="container" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="regresar">
@@ -58,6 +58,7 @@
       {{ form.genero }}
     </div>
 
+
     <div class="field">
       {{ form.contraseña.label }}
       {{ form.contraseña }}
@@ -66,7 +67,11 @@
       {{ form.confirmar_contraseña }}
       {{ form.confirmar_contraseña.errors }}
     </div>
-
+    <div class="field">
+      {{ form.foto_perfil.label_tag }}
+      {{ form.foto_perfil }}
+      {{ form.foto_perfil.errors }}
+    </div>
     <div class="full-width">
       <button type="submit" class="btn">Crear</button>
     </div>
