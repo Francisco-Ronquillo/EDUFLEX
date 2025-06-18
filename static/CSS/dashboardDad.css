@@ -112,6 +112,8 @@ header {
   height: 250px;
   font-size: 25px;
   text-align: center;
+  text-decoration: none;
+  color: black;
 }
 
 .imagen-con-circulo {

@@ -46,12 +46,12 @@
         <h4 style="margin-left: 10px;">Reportes:</h4>
         <div class="reportes">
           {% for reporte in item.reportes|slice:":6" %}
-          <div class="card reporte">
+          <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
             <strong></strong>
             <span>{{ reporte.titulo }}</span>
             <span>Duración:{{ reporte.duracion_evaluacion}}</span>
             <span>Fecha:{{ reporte.fecha }}</span>
-          </div>
+          </a>
           {% endfor %}
         </div>
       {% else %}

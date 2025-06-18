@@ -1,17 +1,27 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lista de Estudiantes</title>
+    <link rel="stylesheet" href="{% static 'css/estudiantes.css' %}">
 </head>
 <body>
-    {% for niño in niños %}
-          <a class="curso-card" href="{% url 'profesor:estudiante' curso.id niño.id%}">
-                <strong></strong>
-                <span>{{ niño.nombres }}{{niño.apellidos  }}</span>
+    <div class="container">
+        <h1>👨‍🎓 Estudiantes del Curso</h1>
 
-          </a>
-    {% endfor %}
+        <ul class="lista-estudiantes">
+            {% for niño in niños %}
+                <li class="item-estudiante">
+                    <a href="{% url 'profesor:estudiante' curso.id niño.id %}">
+                        <span class="nombre">{{ niño.nombres }} {{ niño.apellidos }}</span>
+                        <span class="ver-mas">Ver detalle ➜</span>
+                    </a>
+                </li>
+            {% empty %}
+                <li>No hay estudiantes registrados.</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>

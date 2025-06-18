@@ -31,15 +31,13 @@
           {% if reportes_recientes %}
             <div class="card-container">
               {% for reporte in reportes_recientes %}
-              <div class="card">
+              <a class="card" href="{% url 'padre:verReporte' reporte.id %}">
                 <div><strong>{{ reporte.titulo }}</strong></div>
-                  <div><strong>Niño:</strong></div>
-                  <div>  {{ reporte.niño.nombres }} {{ reporte.niño.apellidos }}</div>
-                <div>Puntaje: {{ reporte.puntaje }}</div>
-                <div>Distracciones: {{ reporte.distracciones }}</div>
-                <div>Duración: {{ reporte.duracion }}</div>
+                <div><strong>Niño:</strong></div>
+                <div>  {{ reporte.niño.nombres }} {{ reporte.niño.apellidos }}</div>
+                <div>Duración: {{ reporte.duracion_evaluacion }}</div>
                 <div>Fecha: {{ reporte.fecha|date:"M d, Y" }}</div>
-              </div>
+              </a>
               {% endfor %}
             </div>
           {% else %}

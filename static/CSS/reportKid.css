@@ -119,6 +119,8 @@ main h2 {
     align-items: center;
     font-size: 14px;
     line-height: 1.4;
+    text-decoration: none;
+    color:black;
 }
 
 .card.reporte strong {

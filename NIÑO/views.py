@@ -263,6 +263,8 @@ class GuardarProgresoCartasView(View):
                 distracciones=resultado_final.get("distracciones", 0),
                 tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
                 tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
+                frames_somnolencia=resultado_final.get("frames_somnolencia", []),
+                frames_distraccion=resultado_final.get("frames_distraccion", []),
                 duracion_evaluacion=timedelta(seconds=tiempo)
             )
             session_key = f"deteccion_iniciada_{nino_id}"

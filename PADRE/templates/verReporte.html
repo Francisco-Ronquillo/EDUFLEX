@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,14 +8,34 @@
 </head>
 <body>
     <div class="container">
-        <h1>Reporte de Evaluación</h1>
+        <h1>📊 Reporte de Evaluación del Niño</h1>
+
+        <div class="resumen">
+            <div class="card">
+                <h3>Puntaje</h3>
+                <p>{{ reporte.puntaje }}</p>
+            </div>
+            <div class="card">
+                <h3>Distracciones</h3>
+                <p>{{ reporte.distracciones }}</p>
+            </div>
+            <div class="card">
+                <h3>Somnolencias</h3>
+                <p>{{ reporte.somnolencias }}</p>
+            </div>
+            <div class="card">
+                <h3>Duración</h3>
+                <p>{{ reporte.duracion_evaluacion }}</p>
+            </div>
+        </div>
 
         <section>
-            <h2>Capturas de Somnolencia</h2>
+            <h2>🟡 Capturas de Somnolencia</h2>
             <div class="galeria">
-                {% for imagen in reporte.frames_somnolencia %}
+                {% for imagen, duracion in pares_somnolencia %}
                     <div class="imagen">
-                        <img src="/static/{{ imagen }}" alt="Somnolencia">
+                        <img src="/media/{{ imagen }}" alt="Somnolencia">
+                        <p class="tiempo">🕒 {{ duracion }} segundos</p>
                     </div>
                 {% empty %}
                     <p>No hay imágenes de somnolencia.</p>
@@ -25,11 +44,12 @@
         </section>
 
         <section>
-            <h2>Capturas de Distracción</h2>
+            <h2>🟠 Capturas de Distracción</h2>
             <div class="galeria">
-                {% for imagen in reporte.frames_distraccion %}
+                {% for imagen, duracion in pares_distraccion %}
                     <div class="imagen">
-                       <img src="/static/{{ imagen }}" alt="Distracción">
+                        <img src="/media/{{ imagen }}" alt="Distracción">
+                        <p class="tiempo">🕒 {{ duracion }} segundos</p>
                     </div>
                 {% empty %}
                     <p>No hay imágenes de distracción.</p>

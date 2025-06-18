@@ -1,5 +1,5 @@
 // === CONFIGURACIÓN ===
-const availableCards = ['🐷', '🐶', '👻', '🤡', '😱', '💩', '😫', '❤️', '🥸', '😁', '🙈', '🐧'];
+const availableCards = ['🐷', '🐶', '👻', '🤡', '😱', '💩', '😫', '❤️', '😡', '😁', '🙈', '🐧'];
 const cartasPorNivel = [8, 10, 12, 18, 24]; // Cartas por nivel
 const tiemposPorNivel = [5000, 4000, 3000, 2000, 2000]; // tiempo en milisegundos según el nivel
 

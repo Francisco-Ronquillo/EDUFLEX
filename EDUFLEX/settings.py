@@ -134,7 +134,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+MEDIA_URL = '/media/'
 STATIC_URL = 'static/'
+MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Default primary key field type

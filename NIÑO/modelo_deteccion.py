@@ -42,10 +42,11 @@ def get_iris_position(iris_points, eye_points):
     else:
         return "centro"
 
-def gen_frames(nino_id,nuevo_id):
-    STATIC_CAPTURE_DIR = os.path.join('media', 'capturas', str(nino_id),str(nuevo_id))
+def gen_frames(nino_id, nuevo_id):
+    STATIC_CAPTURE_DIR = os.path.join('media', 'capturas', str(nino_id), str(nuevo_id))
     os.makedirs(STATIC_CAPTURE_DIR, exist_ok=True)
 
+    # Contadores y banderas
     COUNTER = 0
     COUNTERDISTRACC = 0
     conteo_somnolencia = 0
@@ -56,6 +57,8 @@ def gen_frames(nino_id,nuevo_id):
     rutas_frames_distraccion = []
     inicio_somnolencia = None
     inicio_distraccion = None
+    somnolencia_en_progreso = False
+    distraccion_en_progreso = False
 
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
@@ -90,63 +93,59 @@ def gen_frames(nino_id,nuevo_id):
             right_ear = eye_aspect_ratio(right_eye)
             ear = (left_ear + right_ear) / 2.0
 
-            # Dirección de la mirada
             mirada_izq = get_iris_position(left_iris, left_eye)
             mirada_der = get_iris_position(right_iris, right_eye)
-
-            # Consideramos distracción si ambos ojos miran a los lados
             mirando_frente = mirada_izq == "centro" and mirada_der == "centro"
+
+            # ---------- DISTRACTION ----------
             if not mirando_frente:
-                COUNTERDISTRACC += 1
-                if COUNTERDISTRACC >= DISTRACC_CONSEC_FRAMES:
-                    conteo_distraccion += 1
-                    inicio_distraccion = now
+                if not distraccion_en_progreso:
+                    COUNTERDISTRACC += 1
+                    if COUNTERDISTRACC >= DISTRACC_CONSEC_FRAMES:
+                        conteo_distraccion += 1
+                        distraccion_en_progreso = True
+                        inicio_distraccion = now
 
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    nombre = f"distraccion_{conteo_distraccion}_{nino_id}_{timestamp}.jpg"
-                    abs_path = os.path.join(STATIC_CAPTURE_DIR, nombre)
-                    rel_path = f"capturas/{nino_id}/{nuevo_id}/{nombre}"
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        nombre = f"distraccion_{conteo_distraccion}_{nino_id}_{timestamp}.jpg"
+                        abs_path = os.path.join(STATIC_CAPTURE_DIR, nombre)
+                        rel_path = f"capturas/{nino_id}/{nuevo_id}/{nombre}"
 
-                    cv2.imwrite(abs_path, frame)
-                    rutas_frames_distraccion.append(rel_path)
-                    COUNTERDISTRACC = 0
+                        cv2.imwrite(abs_path, frame)
+                        rutas_frames_distraccion.append(rel_path)
+                        COUNTERDISTRACC = 0
             else:
+                if distraccion_en_progreso and inicio_distraccion:
+                    duracion = round(now - inicio_distraccion, 2)
+                    tiempos_distraccion.append(duracion)
+                    inicio_distraccion = None
+                distraccion_en_progreso = False
                 COUNTERDISTRACC = 0
 
+            # ---------- SOMNOLENCIA ----------
             if ear < EYE_AR_THRESH:
-                COUNTER += 1
-                if COUNTER >= EYE_AR_CONSEC_FRAMES:
-                    conteo_somnolencia += 1
-                    inicio_somnolencia = now
+                if not somnolencia_en_progreso:
+                    COUNTER += 1
+                    if COUNTER >= EYE_AR_CONSEC_FRAMES:
+                        conteo_somnolencia += 1
+                        somnolencia_en_progreso = True
+                        inicio_somnolencia = now
 
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    nombre = f"somnolencia_{conteo_somnolencia}_{nino_id}_{timestamp}.jpg"
-                    abs_path = os.path.join(STATIC_CAPTURE_DIR, nombre)
-                    rel_path = f"capturas/{nino_id}/{nuevo_id}/{nombre}"
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        nombre = f"somnolencia_{conteo_somnolencia}_{nino_id}_{timestamp}.jpg"
+                        abs_path = os.path.join(STATIC_CAPTURE_DIR, nombre)
+                        rel_path = f"capturas/{nino_id}/{nuevo_id}/{nombre}"
 
-                    cv2.imwrite(abs_path, frame)
-                    rutas_frames_somnolencia.append(rel_path)
-                    COUNTER = 0
+                        cv2.imwrite(abs_path, frame)
+                        rutas_frames_somnolencia.append(rel_path)
+                        COUNTER = 0
             else:
-                if inicio_somnolencia:
+                if somnolencia_en_progreso and inicio_somnolencia:
                     duracion = round(now - inicio_somnolencia, 2)
                     tiempos_somnolencia.append(duracion)
                     inicio_somnolencia = None
+                somnolencia_en_progreso = False
                 COUNTER = 0
-        else:
-            COUNTERDISTRACC += 1
-            if COUNTERDISTRACC >= DISTRACC_CONSEC_FRAMES:
-                conteo_distraccion += 1
-                inicio_distraccion = now
-
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                nombre = f"distraccion_{conteo_distraccion}_{nino_id}_{timestamp}.jpg"
-                abs_path = os.path.join(STATIC_CAPTURE_DIR, nombre)
-                rel_path = f"capturas/{nino_id}/{nuevo_id}/{nombre}"
-
-                cv2.imwrite(abs_path, frame)
-                rutas_frames_distraccion.append(rel_path)
-                COUNTERDISTRACC = 0
 
     cap.release()
 
@@ -163,6 +162,7 @@ def gen_frames(nino_id,nuevo_id):
         "frames_somnolencia": rutas_frames_somnolencia,
         "frames_distraccion": rutas_frames_distraccion,
     }
+
 
 def gen_frames_background(nino_id,nuevo_id):
     global resultado_final

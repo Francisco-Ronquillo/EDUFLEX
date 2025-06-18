@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.lista-estudiantes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item-estudiante {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 10px;
+    transition: background-color 0.2s;
+}
+
+.item-estudiante:last-child {
+    border-bottom: none;
+}
+
+.item-estudiante a {
+    text-decoration: none;
+    color: #34495e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-estudiante:hover {
+    background-color: #f0f8ff;
+}
+
+.nombre {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.ver-mas {
+    font-size: 0.9rem;
+    color: #3498db;
+}

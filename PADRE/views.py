@@ -7,6 +7,7 @@ from PADRE.forms.addKid import CodigoNinoForm
 from NIÑO.models import  Niño,Reporte
 from PADRE.models import  Padre
 import os
+from django.conf import settings
 class DashboardDad(TemplateView):
     template_name = 'dashboardDad.html'
 
@@ -123,26 +124,28 @@ class verReporte(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')  # id del reporte
+        pk = self.kwargs.get('pk')
         reporte = Reporte.objects.get(pk=pk)
         nino_id = reporte.niño.id
 
-        # Ruta a la carpeta del reporte específico
         base_dir = os.path.join('capturas', str(nino_id), str(pk))
-        static_dir = os.path.join('static', base_dir)
+        media_dir = os.path.join(settings.MEDIA_ROOT, base_dir)
 
         frames_somnolencia = []
         frames_distraccion = []
 
-        if os.path.exists(static_dir):
-            for nombre in os.listdir(static_dir):
+        if os.path.exists(media_dir):
+            for nombre in os.listdir(media_dir):
                 if nombre.startswith('somnolencia'):
-                    frames_somnolencia.append(os.path.join(base_dir, nombre).replace("\\", "/"))
+                    frames_somnolencia.append(f"{base_dir}/{nombre}")
                 elif nombre.startswith('distraccion'):
-                    frames_distraccion.append(os.path.join(base_dir, nombre).replace("\\", "/"))
+                    frames_distraccion.append(f"{base_dir}/{nombre}")
+
+        # Emparejar imágenes con sus tiempos (mismo orden)
+        pares_somnolencia = zip(frames_somnolencia, reporte.tiempos_somnolencia or [])
+        pares_distraccion = zip(frames_distraccion, reporte.tiempos_distraccion or [])
 
         context['reporte'] = reporte
-        context['reporte'].frames_somnolencia = frames_somnolencia
-        context['reporte'].frames_distraccion = frames_distraccion
-
+        context['pares_somnolencia'] = pares_somnolencia
+        context['pares_distraccion'] = pares_distraccion
         return context
