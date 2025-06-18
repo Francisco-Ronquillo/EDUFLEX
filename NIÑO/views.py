@@ -14,9 +14,6 @@ from datetime import timedelta
 from .models import ProgresoNiño, ProgresoCartas
 
 
-
-
-
 class DashboardKid(TemplateView):
     template_name = 'dashboardKid.html'
 
@@ -24,6 +21,75 @@ class DashboardKid(TemplateView):
         if 'nino_id' not in request.session:
             return redirect('accounts:login')
         return super().dispatch(request, *args, **kwargs)
+
+    @staticmethod
+    def formatear_tiempo(td: timedelta) -> str:
+        total_segundos = int(td.total_seconds())
+        horas = total_segundos // 3600
+        minutos = (total_segundos % 3600) // 60
+        segundos = total_segundos % 60
+
+        partes = []
+        if horas > 0:
+            partes.append(f"{horas}h")
+        if minutos > 0 or horas > 0:
+            partes.append(f"{minutos}m")
+        partes.append(f"{segundos}s")
+
+        return " ".join(partes)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        nino_id = self.request.session.get('nino_id')
+        niño = Niño.objects.get(pk=nino_id)
+
+        total_niveles = 5
+
+        # Obtener progreso según especialidad
+        if niño.especialidad == 'T':
+            progreso = ProgresoCartas.objects.filter(niño=niño).first()
+        else:
+            progreso = ProgresoNiño.objects.filter(niño=niño).first()
+
+        nivel_desbloqueado = progreso.nivel_desbloqueado if progreso else 1
+
+        # Obtener todos los reportes válidos con puntaje >= 70
+        reportes_validos = Reporte.objects.filter(niño=niño, puntaje__gte=70)
+
+        niveles_completados = set()
+        records_dict = {}
+
+        for rep in reportes_validos:
+            try:
+                nivel = int(rep.titulo.split()[-1])
+            except:
+                continue
+
+            niveles_completados.add(nivel)
+
+            if nivel not in records_dict or rep.puntaje > records_dict[nivel]['puntaje']:
+                records_dict[nivel] = {
+                    'nivel': nivel,
+                    'puntaje': int(rep.puntaje),
+                    'tiempo': self.formatear_tiempo(rep.duracion_evaluacion)
+
+                }
+
+        niveles_completados_count = len(niveles_completados)
+        progreso_porcentaje = int((niveles_completados_count / total_niveles) * 100)
+
+        # Convertir a lista ordenada por nivel
+        records = sorted(records_dict.values(), key=lambda x: x['nivel'])
+
+        context.update({
+            'progreso_completado': niveles_completados_count,
+            'total_niveles': total_niveles,
+            'progreso_porcentaje': progreso_porcentaje,
+            'records': records,
+            'niveles_completados': niveles_completados_count  # Puedes usarlo si lo necesitas en plantilla
+        })
+
+        return context
 
 
 class JuegosRecomendadosView(View):
@@ -129,7 +195,7 @@ class GuardarProgresoView(View):
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
             progreso.save()
-            puntaje_real=puntaje-(puntaje* Decimal('0.90'))
+            puntaje_real=Decimal(puntaje)
 
             stop_event.set()
             if not deteccion_finalizada.wait(timeout=60):
@@ -182,7 +248,7 @@ class GuardarProgresoCartasView(View):
         progreso.puntaje_total += puntaje
         progreso.tiempo_total += tiempo
         progreso.save()
-        puntaje_real = puntaje - (puntaje * Decimal('0.90'))
+        puntaje_real = Decimal(puntaje)
         stop_event.set()
         if not deteccion_finalizada.wait(timeout=60):
             return JsonResponse({}, status=204)
@@ -262,5 +328,3 @@ class NivelesCartasView(View):
         return render(request, 'niveles_cartas.html', {
             'nivel_desbloqueado': progreso.nivel_desbloqueado
         })
-
-

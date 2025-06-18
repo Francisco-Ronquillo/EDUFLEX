@@ -5,13 +5,71 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard Niño</title>
- <link rel="stylesheet" href="{% static 'css/dashboardKid.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboardKid.css' %}">
 </head>
 <body>
-  <!-- Botón del logo fuera del div azul -->
+
+  <!-- Botón del logo -->
   <button class="logo-btn" onclick="alert('Logo clicked!')">
     <img src="{% static 'img/logo.png' %}" alt="Logo">
   </button>
+
+  <!-- Botón de configuración -->
+  <button class="settings-btn" onclick="openModal()">⚙️</button>
+
+  <!-- Modal de configuración -->
+  <div id="configModal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeModal(event)">✖</button>
+      <h2>Configuración</h2>
+
+      <!-- Sonido -->
+      <div class="config-item">
+        <label>Sonido:</label>
+        <button onclick="toggleSonido()" id="btnSonido" class="config-btn">Activado</button>
+      </div>
+
+      <!-- Modo claro/oscuro -->
+      <div class="config-item">
+        <label>Modo:</label>
+        <button onclick="toggleModo()" id="btnModo" class="config-btn">Claro</button>
+      </div>
+
+      <!-- Tamaño de texto -->
+      <div class="config-item">
+        <label>Texto:</label>
+        <button onclick="toggleTexto()" id="btnTexto" class="config-btn">Normal</button>
+      </div>
+
+      <!-- Ayuda -->
+      <div class="config-item">
+        <label>Ayuda:</label>
+        <button onclick="mostrarAyuda()" class="config-btn">Ver ayuda</button>
+      </div>
+
+      <!-- Cerrar sesión -->
+      <a href="{% url 'accounts:logout' %}" class="config-btn">Cerrar sesión</a>
+    </div>
+  </div>
+
+  <!-- Modal de RECORD -->
+  <div id="recordModal" class="modal-overlay" onclick="closeRecordModal(event)">
+    <div class="modal-content record-modal">
+      <button class="modal-close-btn" onclick="closeRecordModal(event)">✖</button>
+      <h2>🏆 Mejores Records</h2>
+      <div class="record-grid">
+        {% for record in records %}
+          <div class="record-box">
+            <h3>Nivel {{ record.nivel }}</h3>
+            <p><strong>🎯 Puntaje:</strong> {{ record.puntaje }}</p>
+            <p><strong>⏱️ Tiempo:</strong> {{ record.tiempo }}</p>
+          </div>
+        {% empty %}
+          <p>No hay récords aún con puntaje mayor a 70.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 
   <div class="dashboard">
     <!-- Panel Azul -->
@@ -19,10 +77,10 @@
       <h3>Panel</h3>
       <div class="Juegos">
         <a href="{% url 'niño:juegos_recomendados' %}" class="btnjugar">
-            <button>
+          <button>
             <img src="{% static 'img/Juegos.png' %}" alt="Juegos">
             Juegos
-            </button>
+          </button>
         </a>
         <button onclick="alert('Métricas')">
           <img src="{% static 'img/Metrica.png' %}" alt="Métricas">
@@ -30,20 +88,37 @@
         </button>
       </div>
     </div>
-      <div class="edu"> <h2>Edu</h2>  </div>
-      <div class="flex"> <h2>flex</h2>  </div>
 
-      <img src="{% static 'img/Niño.png' %}" alt="Niño" class="Niño">
+    <div class="edu"><h2>Edu</h2></div>
+    <div class="flex"><h2>flex</h2></div>
+
+    <img src="{% static 'img/Niño.png' %}" alt="Niño" class="Niño">
+
     <!-- Centro -->
     <div class="main">
-
-
-      <div></div>
-      <div class="bottom-right">
-        <a href="{% url 'accounts:logout' %}" class="logout-btn">Cerrar sesión</a>
+      <div class="progreso-wrapper align-bottom">
+        <h2 class="titulo-progreso">Acceso Rápido</h2>
+        <div class="progreso-contenido">
+          <button class="record-btn" onclick="openRecordModal()">
+            <img src="{% static 'img/record.png' %}" alt="Record" class="record-icon">
+          </button>
+          <div class="barra-container">
+            <p class="label-progreso">Progreso</p>
+            <div class="barra-externa">
+              <div class="barra-interna" style="width: {{ progreso_porcentaje }}%;"></div>
+            </div>
+            <p class="texto-progreso">{{ niveles_completados }} de {{ total_niveles }} niveles completados</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <img src="{% static 'img/perrocorriendo.gif' %}" alt="Perro corriendo" class="perro">
+
+  <script src="{% static 'JS/dashboardKids.js' %}"></script>
+
+
 </body>
 {% endblock %}
 </html>

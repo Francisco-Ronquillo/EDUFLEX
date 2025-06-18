@@ -1,5 +1,5 @@
 // === CONFIGURACIÓN ===
-const availableCards = ['A', 'K', 'Q', 'J', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+const availableCards = ['🐷', '🐶', '👻', '🤡', '😱', '💩', '😫', '❤️', '🥸', '😁', '🙈', '🐧'];
 const cartasPorNivel = [8, 10, 12, 18, 24]; // Cartas por nivel
 const tiemposPorNivel = [5000, 4000, 3000, 2000, 2000]; // tiempo en milisegundos según el nivel
 
@@ -13,7 +13,7 @@ const nivelActual = obtenerNivelDesdeURL();
 const totalCards = cartasPorNivel[nivelActual] || 12;
 
 // Determinamos el número de columnas en función del nivel
-const columnasPorNivel = [4, 5, 6, 7, 8]; // Número de columnas por nivel
+const columnasPorNivel = [4, 5, 4, 6, 8]; // Número de columnas por nivel
 const columnas = columnasPorNivel[nivelActual]; // Establece el número de columnas según el nivel
 
 // Actualiza el estilo CSS dinámicamente para las columnas
@@ -23,10 +23,20 @@ document.querySelector('#game').style.gridTemplateColumns = `repeat(${columnas},
 const cardTemplate = '<div class="card"><div class="back"></div><div class="face"></div></div>';
 
 // === CRONÓMETRO ===
-function formatearSegundos(tiempo_ms) {
-    let segundos = Math.floor(tiempo_ms / 1000);  // Calcula los segundos
-    return segundos;  // Devuelve solo los segundos (sin minutos ni horas)
+function formatearTiempo(tiempo_ms) {
+    const totalSegundos = Math.floor(tiempo_ms / 1000);
+    const horas = Math.floor(totalSegundos / 3600);
+    const minutos = Math.floor((totalSegundos % 3600) / 60);
+    const segundos = totalSegundos % 60;
+
+    let tiempoFormateado = "";
+    if (horas > 0) tiempoFormateado += `${horas}h `;
+    if (minutos > 0 || horas > 0) tiempoFormateado += `${minutos}m `;
+    tiempoFormateado += `${segundos}s`;
+
+    return tiempoFormateado;
 }
+
 //id
 // === INICIO DEL JUEGO ===
 function iniciarJuegoConCartasVisibles() {
@@ -96,7 +106,7 @@ function activate(e) {
 function finalizarNivel() {
     cronometrar = false;  // Detener el cronómetro cuando se finalice el nivel
 
-    const tiempoTotal = acumulado; // Usamos el tiempo acumulado en milisegundos
+    const tiempoTotal = Math.round((Date.now() - tiempoInicio + tiempoPausado) / 1000);
     const intentosIdeales = totalCards / 2;
     let puntaje = 100;
 
@@ -120,7 +130,7 @@ function finalizarNivel() {
 }
 
 function mostrarVentanaEstadisticas(tiempo, puntaje) {
-    const segundos = formatearSegundos(tiempo);  // Solo mostramos los segundos
+const tiempoFormateado = formatearTiempo(tiempo * 1000);  // Convertimos de seg a ms
 
     const modal = document.createElement("div");
     modal.className = "ventana-estadisticas";
@@ -130,7 +140,7 @@ function mostrarVentanaEstadisticas(tiempo, puntaje) {
         <div class="contenedor-estadisticas" style="background: white; padding: 30px; border-radius: 20px; text-align: center;">
             <h2>¡Nivel completado!</h2>
             <p>Intentos realizados: ${currentAttempts}</p>
-            <p>Tiempo total: ${segundos} sg</p>  <!-- Mostrar solo los segundos -->
+            <p>Tiempo total: ${tiempoFormateado}</p> 
             <p>Puntaje obtenido: ${puntaje}</p>
             <button class="button-input" onclick="window.location.href='/niveles_cartas/'">Volver al menú</button>
         </div>`;
