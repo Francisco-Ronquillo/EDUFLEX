@@ -20,7 +20,7 @@ class NiñoForm(forms.ModelForm):
     )
     class Meta:
         model = Niño
-        fields = ['nombres', 'apellidos', 'genero', 'usuario', 'contraseña', 'fecha_nac', 'email', 'especialidad']
+        fields = ['nombres', 'apellidos', 'genero', 'usuario', 'contraseña', 'fecha_nac', 'email', 'especialidad','foto_perfil']
 
         widgets = {
             'nombres': forms.TextInput(attrs={'placeholder': 'Ingresar nombres', 'id': 'nombres'}),
