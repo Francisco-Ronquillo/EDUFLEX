@@ -6,7 +6,8 @@ from django.contrib import messages
 from PADRE.forms.addKid import CodigoNinoForm
 from NIÑO.models import  Niño,Reporte
 from PADRE.models import  Padre
-import os
+from datetime import timedelta
+import os,statistics
 from django.conf import settings
 class DashboardDad(TemplateView):
     template_name = 'dashboardDad.html'
@@ -141,15 +142,25 @@ class verReporte(TemplateView):
                 elif nombre.startswith('distraccion'):
                     frames_distraccion.append(f"{base_dir}/{nombre}")
 
-        # Emparejar imágenes con sus tiempos (mismo orden)
         pares_somnolencia = zip(frames_somnolencia, reporte.tiempos_somnolencia or [])
         pares_distraccion = zip(frames_distraccion, reporte.tiempos_distraccion or [])
-
+        promedio_somnolencia = round(statistics.mean(reporte.tiempos_somnolencia),2) if reporte.tiempos_somnolencia else 0
+        promedio_distraccion = round(statistics.mean(reporte.tiempos_distraccion),2) if reporte.tiempos_distraccion else 0
+        total_somnolencia = sum(reporte.tiempos_somnolencia or [])
+        total_distraccion = sum(reporte.tiempos_distraccion or [])
+        tiempo_concentracion = (
+                reporte.duracion_evaluacion
+                - timedelta(seconds=total_somnolencia)
+                - timedelta(seconds=total_distraccion)
+        )
         context['reporte'] = reporte
         context['pares_somnolencia'] = list(pares_somnolencia)
         context['pares_distraccion'] = list(pares_distraccion)
-
-
+        context['promedio_somnolencia'] = promedio_somnolencia
+        context['promedio_distraccion'] = promedio_distraccion
+        context['total_somnolencia'] = total_somnolencia
+        context['total_distraccion'] = total_distraccion
+        context['tiempo_concentracion'] = tiempo_concentracion
         context['grafico_data'] = {
             'distracciones': reporte.distracciones or 0,
             'somnolencias': reporte.somnolencias or 0,

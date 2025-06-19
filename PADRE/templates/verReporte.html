@@ -62,9 +62,28 @@
             <div class="grafico-title">📊 Gráfica del Reporte</div>
             <div id="grafico6" style="margin-top: 20px;"></div>
             <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
+            <div class="grafico-title">
+                <span>Promedio de somonolencia: </span>
+                <span>{{promedio_somnolencia}}s</span>
+            </div>
+            <div class="grafico-title">
+                <span>Total de tiempo de somnolencias: </span>
+                <span>{{total_somnolencia}}s</span>
+            </div>
             <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
             <div class="grafico-title">📈 Gráfico de Distracciones</div>
+            <div class="grafico-title">
+                <span>Promedio de somonolencia: </span>
+                <span>{{promedio_distraccion}}s</span>
+
+            </div>
+            <div class="grafico-title">
+                <span>Total de tiempo de distracciones: </span>
+                <span>{{total_distraccion}}s</span>
+            </div>
             <div id="grafico_distraccion" style="margin-top: 30px;"></div>
+
+            <div id="mi-div-grafico"></div>
 
         </div>
     </div>
@@ -73,6 +92,11 @@
     <script>
         const dataReporte = {{ grafico_data|safe }};
         const tiemposSomnolencia = {{ grafico_data.tiempos_somnolencia|safe }};
+        const datosGrafico = {
+            total_tiempo_distraccion: {{ total_distraccion }},
+            total_somnolencia: {{ total_somnolencia }},
+            total_tiempo_evaluacion: {{ tiempo_concentracion.total_seconds}},
+        };
         let graficaMostrada = false;
 
         document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -91,6 +115,7 @@
                     renderGraficoPastelReporte(dataReporte, "#grafico6");
                     renderGraficoLineaSomnolencia(tiemposSomnolencia, "#grafico_tiempos_somnolencia");
                     renderGraficoLineaDistraccion(dataReporte, "#grafico_distraccion");
+                    renderGraficoPastelTiempo(datosGrafico, "#mi-div-grafico");
                     graficaMostrada = true;
                 }
             });

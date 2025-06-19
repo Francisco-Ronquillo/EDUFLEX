@@ -450,4 +450,47 @@ function renderGraficoLineaDistraccion(data, selector) {
         .text("Duración de Distracciones (segundos)");
 }
 
+function renderGraficoPastelTiempo(data, selector) {
+    const valores = [
+        { etiqueta: "Tiempo de Distracción", valor: data.total_tiempo_distraccion },
+        { etiqueta: "Tiempo de Somnolencia", valor: data.total_somnolencia },
+        { etiqueta: "Tiempo de Evaluación", valor: data.total_tiempo_evaluacion }
+    ];
+
+    const width = 300, height = 300, radius = Math.min(width, height) / 2;
+
+    const color = d3.scaleOrdinal()
+        .domain(valores.map(d => d.etiqueta))
+        .range(["#e41a1c", "#377eb8", "#4daf4a"]);
+
+    const pie = d3.pie()
+        .value(d => d.valor);
+
+    const arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius - 10);
+
+    const svg = d3.select(selector)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2},${height / 2})`);
+
+    const arcs = svg.selectAll("arc")
+        .data(pie(valores))
+        .enter()
+        .append("g");
+
+    arcs.append("path")
+        .attr("d", arc)
+        .attr("fill", d => color(d.data.etiqueta));
+
+    arcs.append("text")
+        .attr("transform", d => `translate(${arc.centroid(d)})`)
+        .attr("text-anchor", "middle")
+        .style("font-size", "10px")
+        .text(d => `${d.data.etiqueta}: ${d.data.valor}`);
+}
+
 
