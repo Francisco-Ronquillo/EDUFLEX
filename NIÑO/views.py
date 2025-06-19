@@ -401,3 +401,26 @@ class PreferenciasUsuarioView(View):
             return JsonResponse({'estado': 'ok'})
         except Niño.DoesNotExist:
             return JsonResponse({'error': 'Niño no encontrado'}, status=404)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class EditarPerfilView(View):
+    def post(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return JsonResponse({'error': 'No autenticado'}, status=403)
+
+        try:
+            niño = Niño.objects.get(pk=nino_id)
+
+            nuevo_usuario = request.POST.get("usuario", "").strip()
+            if nuevo_usuario:
+                niño.usuario = nuevo_usuario
+
+            if 'foto' in request.FILES:
+                niño.foto_perfil = request.FILES['foto']
+
+            niño.save()
+            return JsonResponse({'estado': 'ok'})
+
+        except Niño.DoesNotExist:
+            return JsonResponse({'error': 'Niño no encontrado'}, status=404)

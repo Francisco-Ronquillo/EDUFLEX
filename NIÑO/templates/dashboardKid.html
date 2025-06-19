@@ -21,27 +21,56 @@
     <div class="modal-content">
       <button class="modal-close-btn" onclick="closeModal(event)">✖</button>
       <h2>Configuración</h2>
-
-      <!-- Sonido -->
       <div class="config-item">
         <label>Sonido:</label>
         <button onclick="toggleSonido()" id="btnSonido" class="config-btn">Activado</button>
       </div>
-
-      <!-- Tamaño de texto -->
       <div class="config-item">
         <label>Texto:</label>
         <button onclick="toggleTexto()" id="btnTexto" class="config-btn">Normal</button>
       </div>
-
-      <!-- Ayuda -->
       <div class="config-item">
         <label>Ayuda:</label>
         <button onclick="mostrarAyuda()" class="config-btn">Ver ayuda</button>
       </div>
-
-      <!-- Cerrar sesión -->
       <a href="{% url 'accounts:logout' %}" class="config-btn">Cerrar sesión</a>
+    </div>
+  </div>
+
+  <!-- Modal PERFIL actualizado -->
+  <div id="profileModal" class="modal-overlay" onclick="closeProfileModal(event)">
+    <div class="modal-content perfil-modal-content">
+      <button class="modal-close-btn" onclick="closeProfileModal(event)">✖</button>
+      <h2 class="perfil-titulo">Mi Perfil</h2>
+
+      <div class="perfil-editar">
+        <form id="perfilForm" enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+
+          <div class="perfil-row">
+            <div class="img-preview">
+              {% if niño.foto_perfil %}
+                <img src="{{ niño.foto_perfil.url }}" alt="Foto actual" class="perfil-img-preview">
+              {% else %}
+                <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto" class="perfil-img-preview">
+              {% endif %}
+            </div>
+            <div class="btn-cambiar">
+              <label for="fotoInput" class="config-btn">Cambiar Foto</label>
+              <input type="file" id="fotoInput" name="foto" accept="image/*" style="display:none">
+            </div>
+          </div>
+
+          <div class="perfil-row">
+            <label class="perfil-label">Nombre de usuario</label>
+            <input type="text" name="usuario" value="{{ niño.usuario }}" class="perfil-input">
+          </div>
+
+          <div class="perfil-row guardar-row">
+            <button type="submit" class="config-btn">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -74,9 +103,9 @@
             Juegos
           </button>
         </a>
-        <button onclick="alert('Métricas')">
-          <img src="{% static 'img/Metrica.png' %}" alt="Métricas">
-          Métricas
+        <button onclick="openProfileModal()">
+          <img src="{% static 'img/Metrica.png' %}" alt="Perfil">
+          Perfil
         </button>
       </div>
     </div>
@@ -84,17 +113,15 @@
     <div class="edu"><h2>Edu</h2></div>
     <div class="flex"><h2>flex</h2></div>
 
-       <div class="perfil-nino">
-          {% if niño.foto_perfil %}
-            <img src="{{ niño.foto_perfil.url }}" alt="{{ niño.nombre_completo }}" class="niño-foto">
-          {% else %}
-            <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto">
-          {% endif %}
-          <div class="nombre-nino">{{ niño.usuario }}</div>
-       </div>
+    <div class="perfil-nino">
+      {% if niño.foto_perfil %}
+        <img src="{{ niño.foto_perfil.url }}" alt="{{ niño.nombre_completo }}" class="niño-foto">
+      {% else %}
+        <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto">
+      {% endif %}
+      <div class="nombre-nino">{{ niño.usuario }}</div>
+    </div>
 
-
-    <!-- Centro -->
     <div class="main">
       <div class="progreso-wrapper align-bottom">
         <h2 class="titulo-progreso">Acceso Rápido</h2>
@@ -116,13 +143,11 @@
 
   <img src="{% static 'img/perrocorriendo.gif' %}" alt="Perro corriendo" class="perro">
 
-  <!-- Música de fondo solo del dashboard -->
   <audio id="musicaDashboard" autoplay loop>
     <source src="{% static 'media/Allegro in B flat Major (K.3) - Mozart (Free Sheets).mp3' %}" type="audio/mpeg">
     Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Script principal -->
   <script src="{% static 'JS/dashboardKids.js' %}"></script>
 
 </body>

@@ -103,3 +103,37 @@ function aplicarPreferencias() {
 document.addEventListener("DOMContentLoaded", () => {
   cargarPreferenciasDesdeServidor();
 });
+
+function openProfileModal() {
+  document.getElementById('profileModal').style.display = 'flex';
+}
+
+function closeProfileModal(event) {
+  if (event.target.id === 'profileModal' || event.target.classList.contains('modal-close-btn')) {
+    document.getElementById('profileModal').style.display = 'none';
+  }
+}
+document.getElementById("perfilForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const form = event.target;
+  const formData = new FormData(form);
+
+  fetch("/editar-perfil/", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.estado === "ok") {
+      alert("Perfil actualizado correctamente");
+      location.reload();
+    } else {
+      alert("Hubo un error al actualizar.");
+    }
+  })
+  .catch(err => {
+    console.error("Error:", err);
+    alert("Error al actualizar perfil");
+  });
+});
