@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <title>Selecciona un Nivel</title>
   <link rel="stylesheet" href="{% static 'CSS/juegos_Styles.css' %}">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
@@ -31,18 +32,11 @@
 
 <a href="{% url 'niño:juegos_recomendados' %}" class="back-link">&#8592;</a>
 
-<script>
-  function mostrarMensajeFlotante(texto, color) {
-    const mensaje = document.getElementById('mensaje-flotante');
-    if (!mensaje) return;
-    mensaje.textContent = texto;
-    mensaje.style.backgroundColor = color || 'rgba(0,0,0,0.8)';
-    mensaje.style.display = 'block';
-    setTimeout(() => {
-      mensaje.style.display = 'none';
-    }, 2000);
-  }
-</script>
+<audio id="musicaJuegos" loop autoplay>
+    <source src="{% static 'media/musicajuegosfondo (mp3cut.net).mp3' %}" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+  <script src="{% static 'JS/niveles_disgrafia.js' %}"></script>
 
 </body>
 </html>

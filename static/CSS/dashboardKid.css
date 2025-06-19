@@ -130,22 +130,18 @@ body {
 }
 
 /* === IMAGEN DEL NIÑO === */
-.Niño {
-  position: absolute;
-  top: 180px;
-  right: 130px;
-  width: 220px;
-  height: auto;
-  border-radius: 40px;
-  z-index: 2;
-}
+
 
 /* === TEXTOS DECORATIVOS (TÍTULOS) === */
 .edu, .flex {
-  font-size: 40px;
+  font-size: 2.5em;
   font-weight: bold;
   text-align: center;
+  margin-top: 10px; /* Puedes probar -10px si lo quieres más arriba */
+  position: relative;
+  top: -40px; /* Mueve hacia arriba */
 }
+
 
 .edu {
   color: rebeccapurple;
@@ -174,7 +170,7 @@ body {
 
 .titulo-progreso {
   font-family: 'Comic Sans MS', 'Poppins', sans-serif;
-  font-size: 32px;
+  font-size: 1.2em;
   font-weight: bold;
   color: #111;
   padding: 10px 20px;
@@ -396,16 +392,58 @@ body {
   justify-content: center;
 }
 
-/* === Modo oscuro === */
-body.modo-oscuro {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
-}
-.modo-oscuro .modal-content {
-  background-color: #292929;
+body.texto-grande {
+  font-size: 1.3em;
 }
 
-/* === Texto grande === */
-body.texto-grande {
-  font-size: 1.2em;
+body.texto-grande h1,
+body.texto-grande h2,
+body.texto-grande h3,
+body.texto-grande p,
+body.texto-grande button,
+body.texto-grande label,
+body.texto-grande a,
+body.texto-grande span,
+body.texto-grande input,
+body.texto-grande .config-btn,
+body.texto-grande .titulo-progreso {
+  font-size: 1.2em !important;
+}
+
+
+
+.perfil-nino {
+  position: absolute;
+  top: 180px;
+  right: 130px;
+  width: 220px;
+  height: auto;
+  border-radius: 40px;
+  z-index: 2;
+}
+
+.niño-foto {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  width: 220px;
+  height: auto;
+  border-radius: 40px;
+  z-index: 2;
+}
+
+
+.nombre-nino {
+  right: 70px;
+  position: absolute;
+  margin-top: -60px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1a237e;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  white-space: nowrap;
+  overflow: hidden;
 }

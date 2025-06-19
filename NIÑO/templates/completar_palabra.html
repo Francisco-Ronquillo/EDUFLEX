@@ -5,8 +5,9 @@
   <meta charset="UTF-8" />
   <title>Completa la Palabra</title>
   <link rel="stylesheet" href="{% static 'CSS/completar_palabra.css' %}">
-  <script src="{% static 'JS/completar_palabra.js' %}" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <script>
   document.cookie = "csrftoken={{ csrf_token }}";
 </script>
@@ -15,7 +16,7 @@
   <!-- Botón de Pausa -->
   <button id="pausaBtn" class="button"> | | </button>
 
-  <!-- Overlay y modal -->
+  <!-- Overlay y modal de pausa -->
   <div id="modalOverlay" class="modal-overlay"></div>
   <div class="container" id="modalPausa">
     <div class="input-field">
@@ -24,34 +25,46 @@
     </div>
   </div>
 
-  <h1>¡Completa la Palabra!</h1>
-  <img id="imagenGuia" src="" alt="Guía visual" class="imagen-guia">
-  <div class="palabra" id="contenedorPalabra"></div>
-<div id="contenedorLetras" class="letras-disponibles" ondrop="soltar(event)" ondragover="permitirSoltar(event)"></div>
-<button id="btnVerificar" onclick="verificarRespuesta()">Verificar</button>
+  <!-- Contenido principal -->
+  <main class="contenido-juego">
+    <h1>¡Completa la Palabra!</h1>
+
+    <!-- 🔽 Agrupamos todo en un cuadro -->
+    <div class="cuadro-juego">
+      <img id="imagenGuia" src="" alt="Guía visual" class="imagen-guia">
+      <div class="palabra" id="contenedorPalabra"></div>
+      <div id="contenedorLetras" class="letras-disponibles" ondrop="soltar(event)" ondragover="permitirSoltar(event)"></div>
+      <button id="btnVerificar" onclick="verificarRespuesta()">Verificar</button>
+    </div>
+  </main>
+
   <!-- Ventana para Siguiente Nivel -->
   <div id="ventanaSiguienteNivel" class="ventana-nivel-oculta">
     <div class="contenedor-ventana">
       <button id="btnSiguienteNivel" class="btn-nivel" onclick="irSiguiente()">
-       <span id="texto-btn-nivel">Siguiente palabra</span>
+        <span id="texto-btn-nivel">Siguiente palabra</span>
         <span class="flecha">➔</span>
       </button>
     </div>
   </div>
 
+  <!-- Mensaje flotante -->
   <div id="mensaje-flotante"></div>
 
-  <script>
-    function volverAlMenu() {
-      window.location.href = "{% url 'niño:niveles_disgrafia' %}";
-    }
-  </script>
-<script>
-  const jsonUrl = "{% static 'json/niveles.json' %}?v={{ now|date:'U' }}";
-</script>
+  <!-- Música de fondo -->
+  <audio id="musicaJuegos" loop autoplay>
+    <source src="{% static 'media/castle (mp3cut.net).mp3' %}" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
 
-<script>
-  const guardarUrl = "{% url 'niño:guardar_progreso' %}";
-</script>
+  <!-- Variables para JS -->
+  <script>
+    const jsonUrl = "{% static 'json/niveles.json' %}?v={{ now|date:'U' }}";
+    const urlNivelesDisgrafia = "{% url 'niño:niveles_disgrafia' %}";
+    const guardarUrl = "{% url 'niño:guardar_progreso' %}";
+  </script>
+
+  <!-- Script del juego -->
+  <script src="{% static 'JS/completar_palabra.js' %}" defer></script>
 </body>
 </html>

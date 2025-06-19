@@ -5,8 +5,9 @@ let contenedorOriginal = null;
 let tiempoInicio = Date.now();
 let respuestasCorrectas = 0;
 let respuestasIncorrectas = 0;
-let tiempoTotal = 0;  // Variable para almacenar el tiempo total en segundos
+let tiempoTotal = 0;
 
+// Obtener el nivel desde la URL
 function obtenerNivelDesdeURL() {
   const params = new URLSearchParams(window.location.search);
   const nivel = parseInt(params.get('nivel'));
@@ -15,8 +16,7 @@ function obtenerNivelDesdeURL() {
 
 nivelActual = obtenerNivelDesdeURL();
 
-// Cargar el archivo JSON
-
+// Cargar archivo JSON
 fetch(jsonUrl)
   .then(response => response.json())
   .then(data => {
@@ -32,48 +32,69 @@ document.addEventListener('DOMContentLoaded', () => {
   if (pausaBtn) {
     pausaBtn.addEventListener("click", togglePausa);
   }
+
+  // ✅ Cargar preferencias desde el servidor
+  fetch("/preferencias/")
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.texto_grande) {
+        document.body.classList.add("texto-grande");
+      }
+
+      const musica = document.getElementById("musicaJuegos");
+      if (musica) {
+        if (data && data.sonido_activado) {
+          musica.play().catch(err => {
+            console.warn("Reproducción bloqueada:", err);
+          });
+        } else {
+          musica.pause();
+        }
+      }
+    })
+    .catch(error => {
+      console.warn("No se pudieron aplicar las preferencias del servidor:", error);
+    });
 });
 
+// Selección de palabras aleatorias
 function seleccionarPalabrasAleatorias(nivel) {
   const palabrasOriginales = nivel.palabras;
   const palabrasAleatorias = [...palabrasOriginales]
-    .sort(() => 0.5 - Math.random()) // Mezcla aleatoria
-    .slice(0, 10); // Toma las primeras 10
-
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 10);
   return { ...nivel, palabras: palabrasAleatorias };
 }
 
+// Pausar juego
 function togglePausa() {
   const modal = document.getElementById('modalPausa');
   const overlay = document.getElementById('modalOverlay');
-
   if (modal && overlay) {
     modal.classList.toggle('show');
     overlay.classList.toggle('show');
   }
 }
 
-
-// Función para mostrar el mensaje flotante
+// Mostrar mensaje flotante
 function mostrarMensajeFlotante(texto, color) {
   const mensaje = document.getElementById('mensaje-flotante');
   mensaje.textContent = texto;
   mensaje.style.backgroundColor = color;
   mensaje.style.display = 'block';
-
   setTimeout(() => {
     mensaje.style.display = 'none';
   }, 2000);
 }
 
-// Funciones de arrastrar y soltar
+// Drag & Drop
 function permitirSoltar(ev) {
   ev.preventDefault();
 }
 
 function arrastrar(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
-  contenedorOriginal = ev.target.parentElement; // 🔁 recordamos de dónde salió
+  contenedorOriginal = ev.target.parentElement;
 }
 
 function soltar(ev) {
@@ -82,15 +103,12 @@ function soltar(ev) {
   const letra = document.getElementById(data);
   let destino = ev.target;
 
-  // Si no hay letra, salir de la función
   if (!letra) return;
 
-  // Si soltó sobre una letra (dentro de cualquier contenedor), subimos al contenedor
   if (destino.classList.contains("letra")) {
     destino = destino.parentElement;
   }
 
-  // Si soltó sobre un espacio vacío
   if (destino.classList.contains("espacio-vacio")) {
     if (destino.children.length > 0) {
       const letraAnterior = destino.firstElementChild;
@@ -103,36 +121,31 @@ function soltar(ev) {
     return;
   }
 
-  // Si soltó sobre el contenedor completo
   if (destino.classList.contains("letras-disponibles")) {
     destino.appendChild(letra);
     return;
   }
 
-  // Si soltó sobre una letra DENTRO del contenedor .letras-disponibles
   if (destino.classList.contains("letra") && destino.parentElement.classList.contains("letras-disponibles")) {
     destino.parentElement.appendChild(letra);
     return;
   }
 
-  // Si soltó en otro lugar no válido (por seguridad), volver al contenedor original
   if (contenedorOriginal) {
     contenedorOriginal.appendChild(letra);
   }
 }
 
+// Verificar respuesta
 function verificarRespuesta() {
   const btnVerificar = document.getElementById('btnVerificar');
-  if (btnVerificar) {
-    btnVerificar.disabled = true; // Desactivar el botón de verificación para evitar múltiples clics
-  }
+  if (btnVerificar) btnVerificar.disabled = true;
 
   const nivelData = niveles[nivelActual];
   const contenedorPalabra = document.getElementById('contenedorPalabra');
-
   if (!nivelData || !contenedorPalabra || !nivelData.palabras[palabraActual]) {
-    console.error("Datos de nivel o palabra actual no encontrados para verificación.");
-    if (btnVerificar) btnVerificar.disabled = false; // Reactivar el botón si hay un error
+    console.error("Datos de nivel o palabra no encontrados.");
+    if (btnVerificar) btnVerificar.disabled = false;
     return;
   }
 
@@ -155,17 +168,17 @@ function verificarRespuesta() {
 
   if (espaciosVacios) {
     mostrarMensajeFlotante("Debes completar la palabra antes de verificar.", "orange");
-    if (btnVerificar) btnVerificar.disabled = false; // Reactivar el botón si falta completar
+    if (btnVerificar) btnVerificar.disabled = false;
     return;
   }
 
-  const esCorrecta = palabraFormada.toUpperCase() === nivelData.palabras[palabraActual].palabra.toUpperCase();
+  const palabraCorrecta = nivelData.palabras[palabraActual].palabra;
+  const esCorrecta = palabraFormada.toUpperCase() === palabraCorrecta.toUpperCase();
 
   if (esCorrecta) {
     respuestasCorrectas++;
     mostrarMensajeFlotante("¡Correcto! Muy bien 😊", "rgba(0, 128, 0, 0.85)");
   } else {
-
     respuestasIncorrectas++;
     mostrarMensajeFlotante("Buena suerte para la siguiente 😅", "rgba(255, 140, 0, 0.85)");
   }
@@ -173,13 +186,10 @@ function verificarRespuesta() {
   actualizarTextoSiguiente();
   setTimeout(() => {
     const ventanaSiguiente = document.getElementById('ventanaSiguienteNivel');
-    if (ventanaSiguiente) {
-      ventanaSiguiente.classList.add('show');
-    }
+    if (ventanaSiguiente) ventanaSiguiente.classList.add('show');
   }, 1500);
 
-  const letras = document.querySelectorAll(".letra");
-  letras.forEach(letra => {
+  document.querySelectorAll(".letra").forEach(letra => {
     letra.setAttribute("draggable", "false");
     letra.removeAttribute("ondragstart");
   });
@@ -189,45 +199,34 @@ function verificarRespuesta() {
 function cargarNivel(nivelIdx, palabraIdx) {
   const nivel = niveles[nivelIdx];
   if (!nivel || !nivel.palabras || nivel.palabras.length <= palabraIdx) {
-    console.error(`Error: Nivel ${nivelIdx} o palabra ${palabraIdx} no existen en el JSON.`);
+    console.error("Nivel o palabra no existe.");
     return;
   }
 
   const palabraObj = nivel.palabras[palabraIdx];
   const palabra = palabraObj.palabra;
 
-  // Mostrar imagen de referencia
   const imagen = document.getElementById('imagenGuia');
-  if (imagen) {
-    imagen.src = `/static/${palabraObj.imagen}`;
-  }
+  if (imagen) imagen.src = `/static/${palabraObj.imagen}`;
 
   const contenedorPalabra = document.getElementById('contenedorPalabra');
-  if (contenedorPalabra) {
-    contenedorPalabra.innerHTML = '';
-  }
+  if (contenedorPalabra) contenedorPalabra.innerHTML = '';
 
-  // Lógica para seleccionar posiciones vacías
   let posicionesVacias = [];
   const minVacios = palabra.length > 1 ? 1 : 0;
-  const numVaciosParaNivel = Math.min(nivelIdx + 1, palabra.length - minVacios);
+  const numVacios = Math.min(nivelIdx + 1, palabra.length - minVacios);
 
   if (palabra.length > 0) {
-    const todasLasPosiciones = Array.from({ length: palabra.length }, (_, i) => i);
-    posicionesVacias = todasLasPosiciones
+    posicionesVacias = Array.from({ length: palabra.length }, (_, i) => i)
       .sort(() => Math.random() - 0.5)
-      .slice(0, numVaciosParaNivel);
+      .slice(0, numVacios);
   }
 
-  if (contenedorPalabra) {
-    for (let i = 0; i < palabra.length; i++) {
-      const letra = palabra[i];
-      if (posicionesVacias.includes(i)) {
-        contenedorPalabra.innerHTML += `<span class="letra-celda espacio-vacio" ondrop="soltar(event)" ondragover="permitirSoltar(event)"></span>`;
-      } else {
-        contenedorPalabra.innerHTML += `<span class="letra-celda">${letra}</span>`;
-      }
-    }
+  for (let i = 0; i < palabra.length; i++) {
+    const letra = palabra[i];
+    contenedorPalabra.innerHTML += posicionesVacias.includes(i)
+      ? `<span class="letra-celda espacio-vacio" ondrop="soltar(event)" ondragover="permitirSoltar(event)"></span>`
+      : `<span class="letra-celda">${letra}</span>`;
   }
 
   const contenedorLetras = document.getElementById('contenedorLetras');
@@ -241,35 +240,20 @@ function cargarNivel(nivelIdx, palabraIdx) {
 
 function actualizarTextoSiguiente() {
   const textoBtn = document.getElementById('texto-btn-nivel');
-  if (textoBtn && niveles[nivelActual] && niveles[nivelActual].palabras) {
-    if (palabraActual >= niveles[nivelActual].palabras.length - 1) {
-      textoBtn.textContent = 'Finalizar';
-    } else {
-      textoBtn.textContent = 'Siguiente palabra';
-    }
-  }
+  if (!textoBtn) return;
+
+  const esUltima = palabraActual >= niveles[nivelActual].palabras.length - 1;
+  textoBtn.textContent = esUltima ? "Finalizar" : "Siguiente palabra";
 }
 
-// Ir al siguiente nivel
 function irSiguiente() {
-  // Reactivar el botón "Verificar" antes de avanzar a la siguiente palabra
   const btnVerificar = document.getElementById('btnVerificar');
-  if (btnVerificar) {
-    btnVerificar.disabled = false;
-  }
+  if (btnVerificar) btnVerificar.disabled = false;
 
   ocultarVentanaSiguiente();
-  const nivel = niveles[nivelActual];
-
-  if (!nivel || !nivel.palabras) {
-    console.error("Nivel actual o sus palabras no encontrados al intentar ir al siguiente.");
-    return;
-  }
 
   palabraActual++;
-
-  if (palabraActual >= nivel.palabras.length) {
-    // Final del nivel: mostrar estadísticas
+  if (palabraActual >= niveles[nivelActual].palabras.length) {
     mostrarVentanaEstadisticas();
     return;
   }
@@ -279,9 +263,7 @@ function irSiguiente() {
 
 function ocultarVentanaSiguiente() {
   const ventanaSiguiente = document.getElementById('ventanaSiguienteNivel');
-  if (ventanaSiguiente) {
-    ventanaSiguiente.classList.remove('show');
-  }
+  if (ventanaSiguiente) ventanaSiguiente.classList.remove('show');
 }
 
 function formatearTiempo(segundosTotales) {
@@ -289,15 +271,13 @@ function formatearTiempo(segundosTotales) {
   const minutos = Math.floor((segundosTotales % 3600) / 60);
   const segundos = segundosTotales % 60;
 
-  let partes = [];
-  if (horas > 0) partes.push(`${horas}h`);
-  if (minutos > 0 || horas > 0) partes.push(`${minutos}m`);
+  const partes = [];
+  if (horas) partes.push(`${horas}h`);
+  if (minutos || horas) partes.push(`${minutos}m`);
   partes.push(`${segundos}s`);
-
   return partes.join(' ');
 }
 
-// Mostrar estadísticas
 function mostrarVentanaEstadisticas() {
   tiempoTotal = Math.floor((Date.now() - tiempoInicio) / 1000);
   const puntaje = respuestasCorrectas * 10;
@@ -309,11 +289,12 @@ function mostrarVentanaEstadisticas() {
       "X-CSRFToken": getCookie("csrftoken")
     },
     body: `nivel=${nivelActual + 1}&puntaje=${puntaje}&tiempo=${tiempoTotal}`
-  }).then(res => res.json()).then(data => {
-    console.log("Progreso guardado:", data);
-  }).catch(error => {
-    console.error("Error al guardar el progreso:", error);
-  });
+  }).then(res => res.json())
+    .then(data => {
+      console.log("Progreso guardado:", data);
+    }).catch(err => {
+      console.error("Error al guardar el progreso:", err);
+    });
 
   const modal = document.createElement("div");
   modal.className = "ventana-estadisticas";
@@ -322,21 +303,25 @@ function mostrarVentanaEstadisticas() {
       <h2>¡Nivel completado!</h2>
       <p>Palabras correctas: ${respuestasCorrectas}</p>
       <p>Palabras incorrectas: ${respuestasIncorrectas}</p>
-       <p>Tiempo total: ${formatearTiempo(tiempoTotal)}</p>
+      <p>Tiempo total: ${formatearTiempo(tiempoTotal)}</p>
       <p>Puntaje total: ${puntaje}</p>
       <button onclick="volverAlMenu()">Volver al menú</button>
     </div>`;
   document.body.appendChild(modal);
 }
 
+function volverAlMenu() {
+  window.location.href = urlNivelesDisgrafia;
+}
+
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
         break;
       }
     }

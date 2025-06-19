@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <title>Juegos Educativos</title>
   <link rel="stylesheet" href="{% static 'CSS/juegos_Styles.css' %}">
+    <script src="{% static 'JS/juegos.js' %}" defer></script>
+
 </head>
 <body>
   <h1>¡Elige un juego y empieza a divertirte! </h1>
@@ -42,5 +44,11 @@
   </div>
   <br />
   <a href="{% url 'niño:dashboardKid' %}" class="back-link">&#8592;</a>
+     <!-- 🎵 Música del template de juegos -->
+  <audio id="musicaJuegos" loop autoplay>
+    <source src="{% static 'media/musica_fondoparaentretiempos.mp3' %}" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
 </body>
 </html>

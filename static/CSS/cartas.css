@@ -158,3 +158,25 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
+
+
+/* === Modo texto grande === */
+.texto-grande #stats {
+  font-size: 3rem !important;
+}
+
+.texto-grande #modalPausa .button-input {
+  font-size: 1.5rem !important;
+  padding: 14px 28px !important;
+}
+
+.oculto {
+    display: none !important;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* espacio entre los botones */
+}

@@ -12,6 +12,7 @@ from NIÑO.modelo_deteccion import resultado_final,gen_frames_background,stop_ev
 from datetime import datetime
 from datetime import timedelta
 from .models import ProgresoNiño, ProgresoCartas
+from .models import PreferenciasUsuario
 
 
 class DashboardKid(TemplateView):
@@ -42,6 +43,7 @@ class DashboardKid(TemplateView):
         context = super().get_context_data(**kwargs)
         nino_id = self.request.session.get('nino_id')
         niño = Niño.objects.get(pk=nino_id)
+        context['niño'] = niño
 
         total_niveles = 5
 
@@ -67,26 +69,48 @@ class DashboardKid(TemplateView):
 
             niveles_completados.add(nivel)
 
-            if nivel not in records_dict or rep.puntaje > records_dict[nivel]['puntaje']:
+            if nivel not in records_dict:
                 records_dict[nivel] = {
                     'nivel': nivel,
                     'puntaje': int(rep.puntaje),
-                    'tiempo': self.formatear_tiempo(rep.duracion_evaluacion)
-
+                    'tiempo': self.formatear_tiempo(rep.duracion_evaluacion),
+                    'duracion': rep.duracion_evaluacion
                 }
+            else:
+                record_actual = records_dict[nivel]
+                puntaje_actual = record_actual['puntaje']
+                duracion_actual = record_actual['duracion']
+
+                nuevo_puntaje = int(rep.puntaje)
+                nueva_duracion = rep.duracion_evaluacion
+
+                if (
+                        nuevo_puntaje > puntaje_actual
+                        or (nuevo_puntaje == puntaje_actual and nueva_duracion < duracion_actual)
+                ):
+                    records_dict[nivel] = {
+                        'nivel': nivel,
+                        'puntaje': nuevo_puntaje,
+                        'tiempo': self.formatear_tiempo(nueva_duracion),
+                        'duracion': nueva_duracion
+                    }
 
         niveles_completados_count = len(niveles_completados)
         progreso_porcentaje = int((niveles_completados_count / total_niveles) * 100)
 
-        # Convertir a lista ordenada por nivel
-        records = sorted(records_dict.values(), key=lambda x: x['nivel'])
+        # Convertir a lista ordenada
+        records = sorted([
+            {k: v for k, v in record.items() if k != 'duracion'}
+            for record in records_dict.values()
+        ], key=lambda x: x['nivel'])
 
         context.update({
+            'niño': niño,  # ✅ Este es el cambio clave
             'progreso_completado': niveles_completados_count,
             'total_niveles': total_niveles,
             'progreso_porcentaje': progreso_porcentaje,
             'records': records,
-            'niveles_completados': niveles_completados_count  # Puedes usarlo si lo necesitas en plantilla
+            'niveles_completados': niveles_completados_count
         })
 
         return context
@@ -190,8 +214,10 @@ class GuardarProgresoView(View):
             niño = Niño.objects.get(pk=nino_id)
             progreso, _ = ProgresoNiño.objects.get_or_create(niño=niño)
 
-            if nivel + 1 > progreso.nivel_desbloqueado:
-                progreso.nivel_desbloqueado = nivel + 1
+            if puntaje >= 70:
+                if nivel + 1 > progreso.nivel_desbloqueado:
+                    progreso.nivel_desbloqueado = nivel + 1
+
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
             progreso.save()
@@ -242,8 +268,9 @@ class GuardarProgresoCartasView(View):
         niño = Niño.objects.get(pk=nino_id)
         progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
 
-        if nivel + 1 > progreso.nivel_desbloqueado:
-            progreso.nivel_desbloqueado = nivel + 1
+        if puntaje >=70:
+            if nivel + 1 > progreso.nivel_desbloqueado:
+                progreso.nivel_desbloqueado = nivel + 1
 
         progreso.puntaje_total += puntaje
         progreso.tiempo_total += tiempo
@@ -330,3 +357,47 @@ class NivelesCartasView(View):
         return render(request, 'niveles_cartas.html', {
             'nivel_desbloqueado': progreso.nivel_desbloqueado
         })
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PreferenciasUsuarioView(View):
+
+    def get(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return JsonResponse({'error': 'No autenticado'}, status=403)
+
+        try:
+            niño = Niño.objects.get(pk=nino_id)
+            preferencias, _ = PreferenciasUsuario.objects.get_or_create(niño=niño)
+
+            return JsonResponse({
+                'sonido_activado': preferencias.sonido_activado,
+                'texto_grande': preferencias.texto_grande
+            })
+        except Niño.DoesNotExist:
+            return JsonResponse({'error': 'Niño no encontrado'}, status=404)
+
+    def post(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return JsonResponse({'error': 'No autenticado'}, status=403)
+
+        try:
+            niño = Niño.objects.get(pk=nino_id)
+            preferencias, _ = PreferenciasUsuario.objects.get_or_create(niño=niño)
+
+            # Leer los datos del cuerpo de la petición
+            sonido = request.POST.get('sonido_activado')
+            texto = request.POST.get('texto_grande')
+
+            if sonido is not None:
+                preferencias.sonido_activado = sonido == "true"
+            if texto is not None:
+                preferencias.texto_grande = texto == "true"
+
+            preferencias.save()
+
+            return JsonResponse({'estado': 'ok'})
+        except Niño.DoesNotExist:
+            return JsonResponse({'error': 'Niño no encontrado'}, status=404)

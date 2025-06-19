@@ -1,5 +1,4 @@
 {% load static %}
-{% block content %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,12 +26,6 @@
       <div class="config-item">
         <label>Sonido:</label>
         <button onclick="toggleSonido()" id="btnSonido" class="config-btn">Activado</button>
-      </div>
-
-      <!-- Modo claro/oscuro -->
-      <div class="config-item">
-        <label>Modo:</label>
-        <button onclick="toggleModo()" id="btnModo" class="config-btn">Claro</button>
       </div>
 
       <!-- Tamaño de texto -->
@@ -72,7 +65,6 @@
   </div>
 
   <div class="dashboard">
-    <!-- Panel Azul -->
     <div class="sidebar">
       <h3>Panel</h3>
       <div class="Juegos">
@@ -92,7 +84,15 @@
     <div class="edu"><h2>Edu</h2></div>
     <div class="flex"><h2>flex</h2></div>
 
-    <img src="{% static 'img/Niño.png' %}" alt="Niño" class="Niño">
+       <div class="perfil-nino">
+          {% if niño.foto_perfil %}
+            <img src="{{ niño.foto_perfil.url }}" alt="{{ niño.nombre_completo }}" class="niño-foto">
+          {% else %}
+            <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto">
+          {% endif %}
+          <div class="nombre-nino">{{ niño.usuario }}</div>
+       </div>
+
 
     <!-- Centro -->
     <div class="main">
@@ -116,9 +116,14 @@
 
   <img src="{% static 'img/perrocorriendo.gif' %}" alt="Perro corriendo" class="perro">
 
+  <!-- Música de fondo solo del dashboard -->
+  <audio id="musicaDashboard" autoplay loop>
+    <source src="{% static 'media/Allegro in B flat Major (K.3) - Mozart (Free Sheets).mp3' %}" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <!-- Script principal -->
   <script src="{% static 'JS/dashboardKids.js' %}"></script>
 
-
 </body>
-{% endblock %}
 </html>

@@ -4,9 +4,9 @@
     "palabras": [
       { "palabra": "CASA", "imagen": "img/casa.png", "letras": ["S", "A", "O", "C", "A", "E"] },
       { "palabra": "GATO", "imagen": "img/gato.png", "letras": ["O", "T", "A", "M", "G", "E"] },
-      { "palabra": "PERRO", "imagen": "img/perro.png", "letras": ["R", "O", "X", "P", "E", "R", "A"] },
-      { "palabra": "SILLA", "imagen": "img/silla.png", "letras": ["L", "A", "I", "T", "S", "L", "E"] },
-      { "palabra": "MESA", "imagen": "img/mesa.png", "letras": ["E", "A", "R", "M", "S", "O"] },
+      { "palabra": "PERRO", "imagen": "img/perro.png", "letras": ["R", "O", "P", "E", "R"] },
+      { "palabra": "SILLA", "imagen": "img/silla.png", "letras": ["L", "A", "I", "S", "L"] },
+      { "palabra": "MESA", "imagen": "img/mesa.png", "letras": ["E", "A", "M", "S", "O"] },
       { "palabra": "LUNA", "imagen": "img/luna.png", "letras": ["N", "U", "A", "J", "L", "E"] },
       { "palabra": "SOL", "imagen": "img/sol.png", "letras": ["L", "O", "P", "S", "A", "E"] },
       { "palabra": "PEZ", "imagen": "img/pez.png", "letras": ["Z", "E", "T", "P", "A", "O"] },

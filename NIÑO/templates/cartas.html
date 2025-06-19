@@ -24,13 +24,17 @@
   </div>
 
   <!-- Estadísticas -->
-  <div id="stats">0 intentos</div>
+  <div id="stats" class="oculto"></div>
+
 
   <!-- Contenedor del juego -->
   <div id="wrapper">
     <div id="game"></div>
   </div>
-
+<audio id="musicaJuegos" loop autoplay>
+    <source src="{% static 'media/Niccolo Paganini -  La campanella (mp3cut.net).mp3' %}" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
   <script src="{% static 'JS/cartas.js' %}" defer></script>
 </body>
 </html>

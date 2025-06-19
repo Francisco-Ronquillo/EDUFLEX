@@ -61,3 +61,13 @@ class ProgresoCartas(models.Model):
 
     def __str__(self):
         return f"Progreso Cartas de {self.niño.nombre_completo}"
+
+
+class PreferenciasUsuario(models.Model):
+    niño = models.OneToOneField(Niño, on_delete=models.CASCADE, related_name='preferencias')
+    sonido_activado = models.BooleanField(default=True)
+    texto_grande = models.BooleanField(default=False)
+    actualizado = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Preferencias de {self.niño.nombre_completo}"

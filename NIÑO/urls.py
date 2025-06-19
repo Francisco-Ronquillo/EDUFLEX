@@ -12,4 +12,5 @@ urlpatterns = [
     path('guardar_progreso_cartas/', GuardarProgresoCartasView.as_view(), name='guardar_progreso_cartas'),
     path('juego_cartas/', juego_cartasView.as_view(), name='juego_cartas'),
     path('niveles_cartas/', NivelesCartasView.as_view(), name='niveles_cartas'),
+    path('preferencias/', PreferenciasUsuarioView.as_view(), name='preferencias'),
 ]
