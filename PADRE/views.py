@@ -146,6 +146,15 @@ class verReporte(TemplateView):
         pares_distraccion = zip(frames_distraccion, reporte.tiempos_distraccion or [])
 
         context['reporte'] = reporte
-        context['pares_somnolencia'] = pares_somnolencia
-        context['pares_distraccion'] = pares_distraccion
+        context['pares_somnolencia'] = list(pares_somnolencia)
+        context['pares_distraccion'] = list(pares_distraccion)
+
+
+        context['grafico_data'] = {
+            'distracciones': reporte.distracciones or 0,
+            'somnolencias': reporte.somnolencias or 0,
+            'tiempos_somnolencia': reporte.tiempos_somnolencia or [],
+            'tiempos_distraccion': reporte.tiempos_distraccion or [],
+        }
+
         return context

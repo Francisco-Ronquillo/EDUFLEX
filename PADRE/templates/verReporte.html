@@ -5,57 +5,96 @@
     <meta charset="UTF-8">
     <title>Reporte del Niño</title>
     <link rel="stylesheet" href="{% static 'css/verReporte.css' %}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="{% static 'js/graficas_reportes.js' %}"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>📊 Reporte de Evaluación del Niño</h1>
 
-        <div class="resumen">
-            <div class="card">
-                <h3>Puntaje</h3>
-                <p>{{ reporte.puntaje }}</p>
+
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="datos">📋 Datos</button>
+            <button class="tab-btn" data-tab="graficas">📊 Gráficas</button>
+        </div>
+        <h1 style="text-align: center;">📋 Reporte de Evaluación del Niño</h1>
+
+        <!-- TAB: DATOS -->
+        <div id="tab-datos" class="tab-content active">
+            <div class="resumen">
+                <div class="card"><h3>Puntaje</h3><p>{{ reporte.puntaje }}</p></div>
+                <div class="card"><h3>Distracciones</h3><p>{{ reporte.distracciones }}</p></div>
+                <div class="card"><h3>Somnolencias</h3><p>{{ reporte.somnolencias }}</p></div>
+                <div class="card"><h3>Duración</h3><p>{{ reporte.duracion_evaluacion }}</p></div>
             </div>
-            <div class="card">
-                <h3>Distracciones</h3>
-                <p>{{ reporte.distracciones }}</p>
-            </div>
-            <div class="card">
-                <h3>Somnolencias</h3>
-                <p>{{ reporte.somnolencias }}</p>
-            </div>
-            <div class="card">
-                <h3>Duración</h3>
-                <p>{{ reporte.duracion_evaluacion }}</p>
-            </div>
+
+            <section>
+                <h2>🟡 Capturas de Somnolencia</h2>
+                <div class="galeria">
+                    {% for imagen, duracion in pares_somnolencia %}
+                        <div class="imagen">
+                            <img src="/media/{{ imagen }}" alt="Somnolencia">
+                            <p class="tiempo">🕒 {{ duracion }} segundos</p>
+                        </div>
+                    {% empty %}
+                        <p>No hay imágenes de somnolencia.</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section>
+                <h2>🟠 Capturas de Distracción</h2>
+                <div class="galeria">
+                    {% for imagen, duracion in pares_distraccion %}
+                        <div class="imagen">
+                            <img src="/media/{{ imagen }}" alt="Distracción">
+                            <p class="tiempo">🕒 {{ duracion }} segundos</p>
+                        </div>
+                    {% empty %}
+                        <p>No hay imágenes de distracción.</p>
+                    {% endfor %}
+                </div>
+            </section>
         </div>
 
-        <section>
-            <h2>🟡 Capturas de Somnolencia</h2>
-            <div class="galeria">
-                {% for imagen, duracion in pares_somnolencia %}
-                    <div class="imagen">
-                        <img src="/media/{{ imagen }}" alt="Somnolencia">
-                        <p class="tiempo">🕒 {{ duracion }} segundos</p>
-                    </div>
-                {% empty %}
-                    <p>No hay imágenes de somnolencia.</p>
-                {% endfor %}
-            </div>
-        </section>
+        <!-- TAB: GRÁFICAS -->
+        <div id="tab-graficas" class="tab-content">
+            <div class="grafico-title">📊 Gráfica del Reporte</div>
+            <div id="grafico6" style="margin-top: 20px;"></div>
+            <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
+            <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
+            <div class="grafico-title">📈 Gráfico de Distracciones</div>
+            <div id="grafico_distraccion" style="margin-top: 30px;"></div>
 
-        <section>
-            <h2>🟠 Capturas de Distracción</h2>
-            <div class="galeria">
-                {% for imagen, duracion in pares_distraccion %}
-                    <div class="imagen">
-                        <img src="/media/{{ imagen }}" alt="Distracción">
-                        <p class="tiempo">🕒 {{ duracion }} segundos</p>
-                    </div>
-                {% empty %}
-                    <p>No hay imágenes de distracción.</p>
-                {% endfor %}
-            </div>
-        </section>
+        </div>
     </div>
+
+    <!-- JS para alternar pestañas y dibujar gráfica -->
+    <script>
+        const dataReporte = {{ grafico_data|safe }};
+        const tiemposSomnolencia = {{ grafico_data.tiempos_somnolencia|safe }};
+        let graficaMostrada = false;
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.getAttribute('data-tab');
+
+
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById('tab-' + tab).classList.add('active');
+
+
+                if (tab === 'graficas' && !graficaMostrada) {
+                    renderGraficoPastelReporte(dataReporte, "#grafico6");
+                    renderGraficoLineaSomnolencia(tiemposSomnolencia, "#grafico_tiempos_somnolencia");
+                    renderGraficoLineaDistraccion(dataReporte, "#grafico_distraccion");
+                    graficaMostrada = true;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

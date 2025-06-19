@@ -161,15 +161,14 @@ class juego_completar_palabraView(TemplateView):
         nino_id = request.session.get('nino_id')
         if not nino_id:
             return redirect('accounts:login')
-        ultimo_reporte = Reporte.objects.order_by('-id').first()
-        nuevo_id = ultimo_reporte.id + 1 if ultimo_reporte else 1
+
         session_key = f"deteccion_iniciada_{nino_id}"
         tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
 
         iniciado = request.session.get(session_key, False)
         tiempo_inicio_str = request.session.get(tiempo_key)
 
-
+        # Si ya está iniciado y excedió 2 minutos → reiniciar
         if iniciado and tiempo_inicio_str:
             try:
                 tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
@@ -178,7 +177,6 @@ class juego_completar_palabraView(TemplateView):
                     request.session[session_key] = False
                     request.session.pop(tiempo_key, None)
             except Exception:
-                # Fallo al leer el tiempo → reiniciar por seguridad
                 iniciado = False
                 request.session[session_key] = False
                 request.session.pop(tiempo_key, None)
@@ -186,16 +184,21 @@ class juego_completar_palabraView(TemplateView):
         if not iniciado:
             request.session[session_key] = True
             request.session[tiempo_key] = datetime.now().isoformat()
-            request.session.modified = True
+
+            # 🔵 CREAR REPORTE VACÍO
+            niño = Niño.objects.get(pk=nino_id)
+            nuevo_reporte = Reporte.objects.create(niño=niño)
+            request.session['reporte_id'] = nuevo_reporte.id  # 🟢 Guardamos en sesión
 
             def run_detection():
-                gen_frames_background(nino_id,nuevo_id)
+                gen_frames_background(nino_id, nuevo_reporte.id)  # usamos ID real
 
             t = Thread(target=run_detection)
             t.daemon = True
             t.start()
 
         return super().dispatch(request, *args, **kwargs)
+
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -206,14 +209,15 @@ class GuardarProgresoView(View):
             return JsonResponse({}, status=204)
 
         try:
-
             nivel = int(request.POST.get('nivel', 0))
             puntaje = Decimal(request.POST.get('puntaje', '0'))
             tiempo = int(request.POST.get('tiempo', 0))
+            puntaje_real = Decimal(puntaje)
 
             niño = Niño.objects.get(pk=nino_id)
             progreso, _ = ProgresoNiño.objects.get_or_create(niño=niño)
 
+            # Actualizar progreso
             if puntaje >= 70:
                 if nivel + 1 > progreso.nivel_desbloqueado:
                     progreso.nivel_desbloqueado = nivel + 1
@@ -221,7 +225,11 @@ class GuardarProgresoView(View):
             progreso.puntaje_total += puntaje
             progreso.tiempo_total += tiempo
             progreso.save()
-            puntaje_real=Decimal(puntaje)
+
+            # 🔵 Recuperar reporte ya creado
+            reporte_id = request.session.get('reporte_id')
+            if not reporte_id:
+                return JsonResponse({}, status=400)
 
             stop_event.set()
             if not deteccion_finalizada.wait(timeout=60):
@@ -229,29 +237,31 @@ class GuardarProgresoView(View):
 
             global resultado_final
             if resultado_final and "somnolencias" in resultado_final:
-                Reporte.objects.create(
-                    niño=niño,
-                    titulo=f"Digrafia, nivel {nivel}",
-                    puntaje=puntaje_real,
-                    somnolencias=resultado_final.get("somnolencias", 0),
-                    distracciones=resultado_final.get("distracciones", 0),
-                    tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
-                    tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
-                    frames_somnolencia=resultado_final.get("frames_somnolencia", []),
-                    frames_distraccion = resultado_final.get("frames_distraccion", []),
-                    duracion_evaluacion=timedelta(seconds=tiempo)
-                )
-                session_key = f"deteccion_iniciada_{nino_id}"
-                request.session[session_key] = False
+                reporte = Reporte.objects.get(pk=reporte_id)
+                reporte.titulo = f"Digrafia, nivel {nivel}"
+                reporte.puntaje = puntaje_real
+                reporte.somnolencias = resultado_final.get("somnolencias", 0)
+                reporte.distracciones = resultado_final.get("distracciones", 0)
+                reporte.tiempos_somnolencia = resultado_final.get("tiempos_somnolencia", [])
+                reporte.tiempos_distraccion = resultado_final.get("tiempos_distraccion", [])
+                reporte.frames_somnolencia = resultado_final.get("frames_somnolencia", [])
+                reporte.frames_distraccion = resultado_final.get("frames_distraccion", [])
+                reporte.duracion_evaluacion = timedelta(seconds=tiempo)
+                reporte.save()
+
+                # Limpiar sesión
+                request.session[f"deteccion_iniciada_{nino_id}"] = False
+                request.session.pop('reporte_id', None)
                 request.session.modified = True
 
                 resultado_final.clear()
                 deteccion_finalizada.clear()
 
-            return JsonResponse({}, status=204)  # Todo bien, sin contenido
+            return JsonResponse({}, status=204)
 
-        except Exception:
-            return JsonResponse({}, status=500)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -261,68 +271,77 @@ class GuardarProgresoCartasView(View):
         if not nino_id:
             return JsonResponse({'error': 'No autenticado'}, status=403)
 
-        nivel = int(request.POST.get('nivel', 0))
-        puntaje = int(request.POST.get('puntaje', 0))
-        tiempo = int(request.POST.get('tiempo', 0))
+        try:
+            nivel = int(request.POST.get('nivel', 0))
+            puntaje = int(request.POST.get('puntaje', 0))
+            tiempo = int(request.POST.get('tiempo', 0))
+            puntaje_real = Decimal(puntaje)
 
-        niño = Niño.objects.get(pk=nino_id)
-        progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
+            niño = Niño.objects.get(pk=nino_id)
+            progreso, _ = ProgresoCartas.objects.get_or_create(niño=niño)
 
-        if puntaje >=70:
-            if nivel + 1 > progreso.nivel_desbloqueado:
-                progreso.nivel_desbloqueado = nivel + 1
+            if puntaje >= 70:
+                if nivel + 1 > progreso.nivel_desbloqueado:
+                    progreso.nivel_desbloqueado = nivel + 1
 
-        progreso.puntaje_total += puntaje
-        progreso.tiempo_total += tiempo
-        progreso.save()
-        puntaje_real = Decimal(puntaje)
-        stop_event.set()
-        if not deteccion_finalizada.wait(timeout=60):
-            return JsonResponse({}, status=204)
+            progreso.puntaje_total += puntaje
+            progreso.tiempo_total += tiempo
+            progreso.save()
 
-        global resultado_final
-        if resultado_final and "somnolencias" in resultado_final:
-            Reporte.objects.create(
-                niño=niño,
-                titulo = f"TDA, nivel {nivel}",
-                puntaje=puntaje_real,
-                somnolencias=resultado_final.get("somnolencias", 0),
-                distracciones=resultado_final.get("distracciones", 0),
-                tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
-                tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
-                frames_somnolencia=resultado_final.get("frames_somnolencia", []),
-                frames_distraccion=resultado_final.get("frames_distraccion", []),
-                duracion_evaluacion=timedelta(seconds=tiempo)
-            )
-            session_key = f"deteccion_iniciada_{nino_id}"
-            request.session[session_key] = False
-            request.session.modified = True
+            # ✅ Obtener el ID del reporte previamente creado
+            reporte_id = request.session.get('reporte_id')
+            if not reporte_id:
+                return JsonResponse({'error': 'ID de reporte no encontrado'}, status=400)
 
-            resultado_final.clear()
-            deteccion_finalizada.clear()
+            stop_event.set()
+            if not deteccion_finalizada.wait(timeout=60):
+                return JsonResponse({}, status=204)
 
-        return JsonResponse({'estado': 'ok'})
+            global resultado_final
+            if resultado_final and "somnolencias" in resultado_final:
+                reporte = Reporte.objects.get(pk=reporte_id)
+                reporte.titulo = f"TDA, nivel {nivel}"
+                reporte.puntaje = puntaje_real
+                reporte.somnolencias = resultado_final.get("somnolencias", 0)
+                reporte.distracciones = resultado_final.get("distracciones", 0)
+                reporte.tiempos_somnolencia = resultado_final.get("tiempos_somnolencia", [])
+                reporte.tiempos_distraccion = resultado_final.get("tiempos_distraccion", [])
+                reporte.frames_somnolencia = resultado_final.get("frames_somnolencia", [])
+                reporte.frames_distraccion = resultado_final.get("frames_distraccion", [])
+                reporte.duracion_evaluacion = timedelta(seconds=tiempo)
+                reporte.save()
+
+                request.session[f"deteccion_iniciada_{nino_id}"] = False
+                request.session.pop('reporte_id', None)
+                request.session.modified = True
+
+                resultado_final.clear()
+                deteccion_finalizada.clear()
+
+            return JsonResponse({'estado': 'ok'})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
 
 class juego_cartasView(TemplateView):
     template_name = 'cartas.html'
+
     def dispatch(self, request, *args, **kwargs):
         nino_id = request.session.get('nino_id')
         if not nino_id:
             return redirect('accounts:login')
-        ultimo_reporte = Reporte.objects.order_by('-id').first()
-        nuevo_id = ultimo_reporte.id + 1 if ultimo_reporte else 1
+
         session_key = f"deteccion_iniciada_{nino_id}"
         tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
 
         iniciado = request.session.get(session_key, False)
         tiempo_inicio_str = request.session.get(tiempo_key)
 
-
         if iniciado and tiempo_inicio_str:
             try:
                 tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
                 if datetime.now() - tiempo_inicio > timedelta(minutes=2):
-
                     iniciado = False
                     request.session[session_key] = False
                     request.session.pop(tiempo_key, None)
@@ -336,14 +355,20 @@ class juego_cartasView(TemplateView):
             request.session[tiempo_key] = datetime.now().isoformat()
             request.session.modified = True
 
+
+            niño = Niño.objects.get(pk=nino_id)
+            nuevo_reporte = Reporte.objects.create(niño=niño)
+            request.session['reporte_id'] = nuevo_reporte.id
+
             def run_detection():
-                gen_frames_background(nino_id,nuevo_id)
+                gen_frames_background(nino_id, nuevo_reporte.id)
 
             t = Thread(target=run_detection)
             t.daemon = True
             t.start()
 
         return super().dispatch(request, *args, **kwargs)
+
 
 class NivelesCartasView(View):
     def get(self, request):
