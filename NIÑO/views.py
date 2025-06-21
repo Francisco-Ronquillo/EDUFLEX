@@ -11,8 +11,11 @@ from threading import Thread
 from NIÑO.modelo_deteccion import resultado_final,gen_frames_background,stop_event,deteccion_finalizada
 from datetime import datetime
 from datetime import timedelta
-from .models import ProgresoNiño, ProgresoCartas
+from .models import ProgresoNiño, ProgresoCartas,ProgresoDiscalculia
 from .models import PreferenciasUsuario
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
 
 
 class DashboardKid(TemplateView):
@@ -432,20 +435,172 @@ class EditarPerfilView(View):
     def post(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
-            return JsonResponse({'error': 'No autenticado'}, status=403)
+            return JsonResponse({'estado': 'error', 'mensaje': 'No autenticado'}, status=403)
 
         try:
             niño = Niño.objects.get(pk=nino_id)
 
+            # === DATOS DEL FORMULARIO ===
             nuevo_usuario = request.POST.get("usuario", "").strip()
+            nuevo_email = request.POST.get("email", "").strip()
+            nuevos_nombres = request.POST.get("nombres", "").strip()
+            nuevos_apellidos = request.POST.get("apellidos", "").strip()
+
+            # === VALIDAR NOMBRE DE USUARIO DUPLICADO ===
             if nuevo_usuario:
+                if Niño.objects.filter(usuario=nuevo_usuario).exclude(pk=niño.pk).exists():
+                    return JsonResponse({
+                        'estado': 'error',
+                        'mensaje': 'Ese nombre de usuario ya está en uso. Intenta con otro.'
+                    }, status=400)
                 niño.usuario = nuevo_usuario
 
+            # === VALIDAR EMAIL (FORMATO Y DUPLICADO) ===
+            if nuevo_email:
+                try:
+                    validate_email(nuevo_email)
+                except ValidationError:
+                    return JsonResponse({
+                        'estado': 'error',
+                        'mensaje': 'El formato del correo electrónico no es válido.'
+                    }, status=400)
+
+                if Niño.objects.filter(email=nuevo_email).exclude(pk=niño.pk).exists():
+                    return JsonResponse({
+                        'estado': 'error',
+                        'mensaje': 'Ese correo electrónico ya está en uso. Intenta con otro.'
+                    }, status=400)
+                niño.email = nuevo_email
+
+            # === VALIDAR NOMBRES Y APELLIDOS DUPLICADOS ===
+            if nuevos_nombres and nuevos_apellidos:
+                if Niño.objects.filter(
+                    nombres__iexact=nuevos_nombres,
+                    apellidos__iexact=nuevos_apellidos
+                ).exclude(pk=niño.pk).exists():
+                    return JsonResponse({
+                        'estado': 'error',
+                        'mensaje': 'Ya existe un usuario con esos mismos nombres y apellidos.'
+                    }, status=400)
+
+                niño.nombres = nuevos_nombres
+                niño.apellidos = nuevos_apellidos
+
+            # === VALIDAR FOTO DE PERFIL ===
             if 'foto' in request.FILES:
                 niño.foto_perfil = request.FILES['foto']
 
             niño.save()
-            return JsonResponse({'estado': 'ok'})
+            return JsonResponse({'estado': 'ok', 'mensaje': 'Perfil actualizado correctamente.'})
 
         except Niño.DoesNotExist:
-            return JsonResponse({'error': 'Niño no encontrado'}, status=404)
+            return JsonResponse({'estado': 'error', 'mensaje': 'Niño no encontrado'}, status=404)
+
+
+class GuardarProgresoMultiplicacionView(View):
+    def post(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return JsonResponse({'error': 'No autenticado'}, status=403)
+
+        nivel = int(request.POST.get('nivel', 0))
+        puntaje = int(request.POST.get('puntaje', 0))
+        tiempo = int(request.POST.get('tiempo', 0))
+
+        niño = Niño.objects.get(pk=nino_id)
+        progreso, _ = ProgresoDiscalculia.objects.get_or_create(niño=niño)
+
+        if puntaje >= 70:
+            if nivel + 1 > progreso.nivel_desbloqueado:
+                progreso.nivel_desbloqueado = nivel + 1
+
+        progreso.puntaje_total += puntaje
+        progreso.tiempo_total += tiempo
+        progreso.save()
+
+        # Opcional: generar reporte
+        puntaje_real = Decimal(puntaje)
+        stop_event.set()
+        if not deteccion_finalizada.wait(timeout=60):
+            return JsonResponse({}, status=204)
+
+        global resultado_final
+        if resultado_final and "somnolencias" in resultado_final:
+            Reporte.objects.create(
+                niño=niño,
+                titulo=f"Discalculia, nivel {nivel}",
+                puntaje=puntaje_real,
+                somnolencias=resultado_final.get("somnolencias", 0),
+                distracciones=resultado_final.get("distracciones", 0),
+                tiempos_somnolencia=resultado_final.get("tiempos_somnolencia", []),
+                tiempos_distraccion=resultado_final.get("tiempos_distraccion", []),
+                frames_somnolencia=resultado_final.get("frames_somnolencia", []),
+                frames_distraccion=resultado_final.get("frames_distraccion", []),
+                duracion_evaluacion=timedelta(seconds=tiempo)
+            )
+
+            session_key = f"deteccion_iniciada_{nino_id}"
+            request.session[session_key] = False
+            request.session.modified = True
+
+            resultado_final.clear()
+            deteccion_finalizada.clear()
+
+        return JsonResponse({'estado': 'ok'})
+
+
+class JuegoMultiplicacionView(TemplateView):
+    template_name = 'juego_multiplicaciones.html'  # o el nombre real
+
+    def dispatch(self, request, *args, **kwargs):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return redirect('accounts:login')
+
+        # Iniciar detección como en juego_cartas
+        ultimo_reporte = Reporte.objects.order_by('-id').first()
+        nuevo_id = ultimo_reporte.id + 1 if ultimo_reporte else 1
+        session_key = f"deteccion_iniciada_{nino_id}"
+        tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
+
+        iniciado = request.session.get(session_key, False)
+        tiempo_inicio_str = request.session.get(tiempo_key)
+
+        if iniciado and tiempo_inicio_str:
+            try:
+                tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
+                if datetime.now() - tiempo_inicio > timedelta(minutes=2):
+                    iniciado = False
+                    request.session[session_key] = False
+                    request.session.pop(tiempo_key, None)
+            except Exception:
+                iniciado = False
+                request.session[session_key] = False
+                request.session.pop(tiempo_key, None)
+
+        if not iniciado:
+            request.session[session_key] = True
+            request.session[tiempo_key] = datetime.now().isoformat()
+            request.session.modified = True
+
+            def run_detection():
+                gen_frames_background(nino_id, nuevo_id)
+
+            t = Thread(target=run_detection)
+            t.daemon = True
+            t.start()
+
+        return super().dispatch(request, *args, **kwargs)
+
+class NivelesDiscalculiaView(View):
+    def get(self, request):
+        nino_id = request.session.get('nino_id')
+        if not nino_id:
+            return redirect('accounts:login')
+
+        niño = Niño.objects.get(pk=nino_id)
+        progreso, _ = ProgresoDiscalculia.objects.get_or_create(niño=niño)
+
+        return render(request, 'niveles_discalculia.html', {
+            'nivel_desbloqueado': progreso.nivel_desbloqueado
+        })

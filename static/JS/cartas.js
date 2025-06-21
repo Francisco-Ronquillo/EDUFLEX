@@ -8,6 +8,9 @@ let currentMove = 0, currentAttempts = 0, matchedPairs = 0;
 let tiempoInicio, tiempoPausado = 0;
 let acumulado = 0;  // Variable para almacenar el tiempo acumulado
 let cronometrar = false;  // Variable para controlar si el cronómetro está activo
+let pausaInicio = 0;
+let juegoPausado = false;
+let musicaBackup = false;
 
 const nivelActual = obtenerNivelDesdeURL();
 const totalCards = cartasPorNivel[nivelActual] || 12;
@@ -106,7 +109,7 @@ function activate(e) {
 function finalizarNivel() {
     cronometrar = false;  // Detener el cronómetro cuando se finalice el nivel
 
-    const tiempoTotal = Math.round((Date.now() - tiempoInicio + tiempoPausado) / 1000);
+    const tiempoTotal = Math.round((Date.now() - tiempoInicio - tiempoPausado) / 1000);
     const intentosIdeales = totalCards / 2;
     let puntaje = 100;
 
@@ -193,14 +196,63 @@ document.addEventListener("DOMContentLoaded", () => {
 function togglePausa() {
     const modal = document.getElementById('modalPausa');
     const overlay = document.getElementById('modalOverlay');
+    const musica = document.getElementById("musicaJuegos");
+
     modal.classList.toggle('show');
     overlay.classList.toggle('show');
+
+    juegoPausado = modal.classList.contains('show');
+
+    if (juegoPausado) {
+        pausaInicio = Date.now();
+        cronometrar = false;
+
+        if (musica && !musica.paused) {
+            musicaBackup = true;
+            musica.pause();
+        }
+    } else {
+        const tiempoTranscurrido = Date.now() - pausaInicio;
+        tiempoPausado += tiempoTranscurrido;
+        cronometrar = true;
+
+        if (musica && musicaBackup) {
+            musica.play().catch(() => {});
+        }
+    }
 }
 
 // === CRONÓMETRO ACTUALIZADO ===
 // Hacer que el cronómetro se actualice constantemente
 setInterval(() => {
     if (cronometrar) {
-        acumulado = Date.now() - tiempoInicio + tiempoPausado;
+        acumulado = Date.now() - tiempoInicio - tiempoPausado;
     }
 }, 100);
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Leer preferencias del servidor
+  fetch("/preferencias/")
+    .then(res => res.json())
+    .then(data => {
+      // Aplicar preferencia de texto grande
+      if (data && data.texto_grande) {
+        document.body.classList.add("texto-grande");
+      }
+
+      // Aplicar preferencia de sonido
+      const musica = document.getElementById("musicaJuegos");
+      if (musica) {
+        if (data && data.sonido_activado) {
+          musica.play().catch(err => {
+            console.warn("Reproducción bloqueada por el navegador:", err);
+          });
+        } else {
+          musica.pause();
+        }
+      }
+    })
+    .catch(error => {
+      console.warn("No se pudieron aplicar las preferencias del servidor:", error);
+    });
+});

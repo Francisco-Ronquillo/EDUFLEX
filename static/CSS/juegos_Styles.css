@@ -77,7 +77,7 @@ h1 {
   border-radius: 10px;
   color: black;
   font-size: 2em;
-  font-weight: bold;
+  font-weight: 900;
   text-decoration: none;
   cursor: pointer;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -86,6 +86,10 @@ h1 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+  letter-spacing: 1px; /* Espaciado entre letras */
+  font-family: 'Poppins', sans-serif; /* Fuente moderna */
+  text-transform: uppercase;
 }
 
 .nivel-boton-estatico:hover {
@@ -196,4 +200,36 @@ body.texto-grande .game-name {
 
 body.texto-grande .nivel-boton-estatico {
   font-size: 2.4em !important;
+}
+/* Colores personalizados para cada botón de nivel */
+.grid-niveles-estatico a:nth-child(1) {
+  background-color: #FF7043; /* Naranja */
+}
+.grid-niveles-estatico a:nth-child(2) {
+  background-color: #42A5F5; /* Azul */
+}
+.grid-niveles-estatico a:nth-child(3) {
+  background-color: #66BB6A; /* Verde */
+}
+.grid-niveles-estatico a:nth-child(4) {
+  background-color: #AB47BC; /* Morado */
+}
+.grid-niveles-estatico a:nth-child(5) {
+  background-color: #FFD54F; /* Amarillo */
+}
+
+.grid-niveles-estatico a:nth-child(1):hover {
+  background-color: #e64a19;
+}
+.grid-niveles-estatico a:nth-child(2):hover {
+  background-color: #1e88e5;
+}
+.grid-niveles-estatico a:nth-child(3):hover {
+  background-color: #388e3c;
+}
+.grid-niveles-estatico a:nth-child(4):hover {
+  background-color: #8e24aa;
+}
+.grid-niveles-estatico a:nth-child(5):hover {
+  background-color: #fbc02d;
 }

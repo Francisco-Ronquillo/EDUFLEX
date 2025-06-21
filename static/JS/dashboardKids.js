@@ -18,6 +18,32 @@ function closeRecordModal(event) {
   }
 }
 
+// Abrir modal de VISTA de perfil
+function openProfileViewModal() {
+  document.getElementById('profileViewModal').style.display = 'flex';
+}
+
+function closeProfileViewModal(event) {
+  if (event.target.id === 'profileViewModal' || event.target.classList.contains('modal-close-btn')) {
+    document.getElementById('profileViewModal').style.display = 'none';
+  }
+}
+
+// Abrir modal de EDICIÓN de perfil
+function openEditProfileModal() {
+  document.getElementById('editProfileModal').style.display = 'flex';
+}
+
+function closeEditProfileModal(event) {
+  if (event.target.id === 'editProfileModal' || event.target.classList.contains('modal-close-btn')) {
+    document.getElementById('editProfileModal').style.display = 'none';
+  }
+}
+
+// ===================
+// 🔊 Sonido y texto
+// ===================
+
 let sonidoActivo = true;
 let textoGrande = false;
 
@@ -49,7 +75,6 @@ function mostrarAyuda() {
   alert("🧠 Bienvenido a Eduflex.\n\nDesde aquí puedes acceder a tus juegos y métricas.\nSi tienes dudas, contacta a tu tutor o administrador.");
 }
 
-// ✅ Guardar en el servidor
 function actualizarPreferenciasEnServidor() {
   const formData = new FormData();
   formData.append("sonido_activado", sonidoActivo);
@@ -63,7 +88,6 @@ function actualizarPreferenciasEnServidor() {
   });
 }
 
-// ✅ Cargar desde el servidor
 function cargarPreferenciasDesdeServidor() {
   fetch("/preferencias/")
     .then(res => res.json())
@@ -83,7 +107,6 @@ function cargarPreferenciasDesdeServidor() {
     });
 }
 
-// ✅ Aplicar preferencias
 function aplicarPreferencias() {
   document.body.classList.toggle("texto-grande", textoGrande);
   document.getElementById("btnTexto").textContent = textoGrande ? "Grande" : "Normal";
@@ -104,16 +127,12 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarPreferenciasDesdeServidor();
 });
 
-function openProfileModal() {
-  document.getElementById('profileModal').style.display = 'flex';
-}
 
-function closeProfileModal(event) {
-  if (event.target.id === 'profileModal' || event.target.classList.contains('modal-close-btn')) {
-    document.getElementById('profileModal').style.display = 'none';
-  }
-}
-document.getElementById("perfilForm").addEventListener("submit", function(event) {
+// ==========================
+// 📤 Enviar formulario edición perfil
+// ==========================
+
+document.getElementById("editarPerfilForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
   const form = event.target;
@@ -126,14 +145,14 @@ document.getElementById("perfilForm").addEventListener("submit", function(event)
   .then(res => res.json())
   .then(data => {
     if (data.estado === "ok") {
-      alert("Perfil actualizado correctamente");
+      alert(data.mensaje || "Perfil actualizado correctamente.");
       location.reload();
     } else {
-      alert("Hubo un error al actualizar.");
+      alert(data.mensaje || "Hubo un error al actualizar el perfil.");
     }
   })
   .catch(err => {
     console.error("Error:", err);
-    alert("Error al actualizar perfil");
+    alert("Error al actualizar perfil.");
   });
 });

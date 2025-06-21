@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Selecciona un Nivel</title>
+  <link rel="stylesheet" href="{% static 'CSS/juegos_Styles.css' %}">
+    <script src="{% static 'JS/niveles_discalculia.js' %}" defer></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+<!-- Mensaje flotante -->
+<div id="mensaje-flotante"></div>
+
+
+<h1 style="text-align: center;">¡QUE EMPIECE EL JUEGO!</h1>
+
+<div class="grid-niveles-estatico">
+  {% for i in "01234"|make_list %}
+    {% with forloop.counter0 as numero_nivel %}
+      {% if numero_nivel < nivel_desbloqueado %}
+        <a href="{% url 'niño:juego_multiplicacion' %}?nivel={{ numero_nivel }}" class="nivel-boton-estatico">Nivel {{ numero_nivel|add:1 }}</a>
+      {% else %}
+        <a href="#" class="nivel-boton-estatico bloqueado" onclick="mostrarMensajeFlotante('Debes completar el nivel anterior', 'orange')">Nivel {{ numero_nivel|add:1 }}</a>
+      {% endif %}
+    {% endwith %}
+  {% endfor %}
+</div>
+
+
+<a href="{% url 'niño:juegos_recomendados' %}" class="back-link">&#8592;</a>
+<audio id="musicaJuegos" loop autoplay>
+    <source src="{% static 'media/musicajuegosfondo (mp3cut.net).mp3' %}" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+
+</body>
+</html>

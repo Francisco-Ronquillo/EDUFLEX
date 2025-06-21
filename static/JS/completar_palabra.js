@@ -6,6 +6,12 @@ let tiempoInicio = Date.now();
 let respuestasCorrectas = 0;
 let respuestasIncorrectas = 0;
 let tiempoTotal = 0;
+let juegoPausado = false;
+let respuestaPendiente = false;
+let pausaInicio = 0;
+let tiempoPausado = 0;
+let musicaBackup = false;
+
 
 // Obtener el nivel desde la URL
 function obtenerNivelDesdeURL() {
@@ -70,11 +76,37 @@ function seleccionarPalabrasAleatorias(nivel) {
 function togglePausa() {
   const modal = document.getElementById('modalPausa');
   const overlay = document.getElementById('modalOverlay');
-  if (modal && overlay) {
-    modal.classList.toggle('show');
-    overlay.classList.toggle('show');
+  const musica = document.getElementById("musicaJuegos");
+
+  if (!modal || !overlay) return;
+
+  modal.classList.toggle('show');
+  overlay.classList.toggle('show');
+
+  juegoPausado = modal.classList.contains('show');
+
+  if (juegoPausado) {
+    pausaInicio = Date.now();
+    if (musica && !musica.paused) {
+      musicaBackup = true;
+      musica.pause();
+    }
+  } else {
+    const tiempoTranscurrido = Date.now() - pausaInicio;
+    tiempoPausado += tiempoTranscurrido;
+
+    if (musica && musicaBackup) {
+      musica.play().catch(() => {});
+    }
+
+    if (respuestaPendiente) {
+      const ventanaSiguiente = document.getElementById('ventanaSiguienteNivel');
+      if (ventanaSiguiente) ventanaSiguiente.classList.add('show');
+      respuestaPendiente = false;
+    }
   }
 }
+
 
 // Mostrar mensaje flotante
 function mostrarMensajeFlotante(texto, color) {
@@ -185,9 +217,14 @@ function verificarRespuesta() {
 
   actualizarTextoSiguiente();
   setTimeout(() => {
+  if (!juegoPausado) {
     const ventanaSiguiente = document.getElementById('ventanaSiguienteNivel');
     if (ventanaSiguiente) ventanaSiguiente.classList.add('show');
-  }, 1500);
+  } else {
+    respuestaPendiente = true;
+  }
+}, 1500);
+
 
   document.querySelectorAll(".letra").forEach(letra => {
     letra.setAttribute("draggable", "false");
@@ -279,7 +316,7 @@ function formatearTiempo(segundosTotales) {
 }
 
 function mostrarVentanaEstadisticas() {
-  tiempoTotal = Math.floor((Date.now() - tiempoInicio) / 1000);
+tiempoTotal = Math.floor((Date.now() - tiempoInicio - tiempoPausado) / 1000);
   const puntaje = respuestasCorrectas * 10;
 
   fetch(guardarUrl, {

@@ -9,14 +9,14 @@
 <body>
 
   <!-- Botón del logo -->
-  <button class="logo-btn" onclick="alert('Logo clicked!')">
+  <a class="logo-btn">
     <img src="{% static 'img/logo.png' %}" alt="Logo">
-  </button>
+  </a>
 
   <!-- Botón de configuración -->
   <button class="settings-btn" onclick="openModal()">⚙️</button>
 
-  <!-- Modal de configuración -->
+  <!-- Modal Configuración -->
   <div id="configModal" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
       <button class="modal-close-btn" onclick="closeModal(event)">✖</button>
@@ -37,40 +37,97 @@
     </div>
   </div>
 
-  <!-- Modal PERFIL actualizado -->
-  <div id="profileModal" class="modal-overlay" onclick="closeProfileModal(event)">
+  <!-- Modal: Ver Perfil -->
+  <div id="profileViewModal" class="modal-overlay" onclick="closeProfileViewModal(event)">
     <div class="modal-content perfil-modal-content">
-      <button class="modal-close-btn" onclick="closeProfileModal(event)">✖</button>
+      <button class="modal-close-btn" onclick="closeProfileViewModal(event)">✖</button>
       <h2 class="perfil-titulo">Mi Perfil</h2>
 
-      <div class="perfil-editar">
-        <form id="perfilForm" enctype="multipart/form-data" method="POST">
-          {% csrf_token %}
-
-          <div class="perfil-row">
-            <div class="img-preview">
-              {% if niño.foto_perfil %}
-                <img src="{{ niño.foto_perfil.url }}" alt="Foto actual" class="perfil-img-preview">
-              {% else %}
-                <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto" class="perfil-img-preview">
-              {% endif %}
-            </div>
-            <div class="btn-cambiar">
-              <label for="fotoInput" class="config-btn">Cambiar Foto</label>
-              <input type="file" id="fotoInput" name="foto" accept="image/*" style="display:none">
-            </div>
-          </div>
-
-          <div class="perfil-row">
-            <label class="perfil-label">Nombre de usuario</label>
-            <input type="text" name="usuario" value="{{ niño.usuario }}" class="perfil-input">
-          </div>
-
-          <div class="perfil-row guardar-row">
-            <button type="submit" class="config-btn">Guardar cambios</button>
-          </div>
-        </form>
+      <div class="perfil-row">
+        <div class="img-preview">
+          {% if niño.foto_perfil %}
+            <img src="{{ niño.foto_perfil.url }}" alt="Foto actual" class="perfil-img-preview">
+          {% else %}
+            <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto" class="perfil-img-preview">
+          {% endif %}
+        </div>
       </div>
+
+      <div class="perfil-row">
+        <label class="perfil-label">Nombre:</label>
+        <div class="perfil-input">{{ niño.nombres }}</div>
+      </div>
+      <div class="perfil-row">
+        <label class="perfil-label">Apellido:</label>
+        <div class="perfil-input">{{ niño.apellidos }}</div>
+      </div>
+      <div class="perfil-row">
+        <label class="perfil-label">Correo:</label>
+        <div class="perfil-input">{{ niño.email }}</div>
+      </div>
+      <div class="perfil-row">
+        <label class="perfil-label">Usuario:</label>
+        <div class="perfil-input">{{ niño.usuario }}</div>
+      </div>
+      <div class="perfil-row">
+        <label class="perfil-label">Código:</label>
+        <div class="perfil-input">{{ niño.codigo }}</div>
+      </div>
+      <div class="perfil-row">
+        <label class="perfil-label"> Nacimiento:</label>
+        <div class="perfil-input">{{ niño.fecha_nac }}</div>
+      </div>
+
+      <div class="perfil-row guardar-row">
+        <button class="config-btn" onclick="openEditProfileModal()">Editar perfil</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Editar Perfil -->
+  <div id="editProfileModal" class="modal-overlay" onclick="closeEditProfileModal(event)">
+    <div class="modal-content perfil-modal-content">
+      <button class="modal-close-btn" onclick="closeEditProfileModal(event)">✖</button>
+      <h2 class="perfil-titulo">Editar Perfil</h2>
+
+      <form id="editarPerfilForm" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+
+        <div class="perfil-row">
+          <div class="img-preview">
+            {% if niño.foto_perfil %}
+              <img src="{{ niño.foto_perfil.url }}" alt="Foto actual" class="perfil-img-preview">
+            {% else %}
+              <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto" class="perfil-img-preview">
+            {% endif %}
+          </div>
+          <div class="btn-cambiar">
+            <label for="fotoEditInput" class="config-btn">Cambiar Foto</label>
+            <input type="file" id="fotoEditInput" name="foto" accept="image/*" style="display:none">
+          </div>
+        </div>
+
+        <div class="perfil-row">
+          <label class="perfil-label">Nombres:</label>
+          <input type="text" name="nombres" value="{{ niño.nombres }}" class="perfil-input" required>
+        </div>
+        <div class="perfil-row">
+          <label class="perfil-label">Apellidos:</label>
+          <input type="text" name="apellidos" value="{{ niño.apellidos }}" class="perfil-input" required>
+        </div>
+        <div class="perfil-row">
+          <label class="perfil-label">email:</label>
+          <input type="email" name="email" value="{{ niño.email }}" class="perfil-input" required>
+        </div>
+        <div class="perfil-row">
+          <label class="perfil-label">Usuario:</label>
+          <input type="text" name="usuario" value="{{ niño.usuario }}" class="perfil-input" required>
+        </div>
+
+        <div class="perfil-row guardar-row">
+          <button type="submit" class="config-btn">Guardar cambios</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -93,6 +150,7 @@
     </div>
   </div>
 
+  <!-- Dashboard -->
   <div class="dashboard">
     <div class="sidebar">
       <h3>Panel</h3>
@@ -103,7 +161,7 @@
             Juegos
           </button>
         </a>
-        <button onclick="openProfileModal()">
+        <button onclick="openProfileViewModal()">
           <img src="{% static 'img/Metrica.png' %}" alt="Perfil">
           Perfil
         </button>
@@ -117,7 +175,7 @@
       {% if niño.foto_perfil %}
         <img src="{{ niño.foto_perfil.url }}" alt="{{ niño.nombre_completo }}" class="niño-foto">
       {% else %}
-        <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto">
+        <img src="{% static 'img/Niño.png' %}" alt="Imagen por defecto" class="niño-foto">
       {% endif %}
       <div class="nombre-nino">{{ niño.usuario }}</div>
     </div>

@@ -19,13 +19,13 @@
         </span>
         <span class="game-name">Ordena las palabras</span>
       </a>
-    {% elif juego == "Cuenta conmigo" %}
-      <button class="game-card cuenta-conmigo-card">
+     {% elif juego == "Cuenta conmigo" %}
+      <a href="{% url 'niño:niveles_discalculia' %}" class="game-card cuenta-conmigo-card">
         <span class="game-numbers">
           <img src="{% static 'img/numero.png' %}" alt="numero" class="numero-image-icon">
         </span>
-        <span class="game-name">Cuenta conmigo</span>
-      </button>
+        <span class="game-name">Vamos a multiplicar</span>
+      </a>
     {% elif juego == "Desafío de concentración" %}
            <a href="{% url 'niño:niveles_cartas' %}" class="game-card desafio-concentracion-card">
                  <span class="game-icon">

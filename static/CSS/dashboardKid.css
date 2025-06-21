@@ -462,39 +462,53 @@ body.texto-grande .titulo-progreso {
 }
 
 .perfil-img-preview {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #1976d2;
 }
 
 .perfil-input {
-  font-size: 16px;
-  padding: 8px;
+   font-size: 16px;
+  padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #90caf9; /* Borde azul claro */
+  background-color: #f5faff; /* Fondo suave */
+  color: #333;
   width: 200px;
   text-align: center;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+/* Animación cuando el input está enfocado */
+.perfil-input:focus {
+  outline: none;
+  border-color: #1976d2; /* Azul más fuerte al enfocar */
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
 }
 
 .perfil-modal-content {
   width: 500px;
+  overflow: visible;   /* 🔽 Agrega scroll si el contenido excede */
+  padding: 20px 30px; /* 🔽 Reduce el padding si se ve muy espacioso */
 }
+
 .perfil-titulo {
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 20px;
   color: #1a237e;
 }
-
 .perfil-row {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 25px;
   flex-wrap: wrap;
+  margin-bottom: 12px; /* ✅ Espaciado entre campos */
 }
+
+
 .btn-cambiar {
   display: flex;
   flex-direction: column;

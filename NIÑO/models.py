@@ -63,6 +63,16 @@ class ProgresoCartas(models.Model):
         return f"Progreso Cartas de {self.niño.nombre_completo}"
 
 
+class ProgresoDiscalculia(models.Model):
+    niño = models.OneToOneField(Niño, on_delete=models.CASCADE)
+    nivel_desbloqueado = models.IntegerField(default=1)
+    puntaje_total = models.IntegerField(default=0)
+    tiempo_total = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Progreso Discalculia de {self.niño.nombre_completo}"
+
+
 class PreferenciasUsuario(models.Model):
     niño = models.OneToOneField(Niño, on_delete=models.CASCADE, related_name='preferencias')
     sonido_activado = models.BooleanField(default=True)

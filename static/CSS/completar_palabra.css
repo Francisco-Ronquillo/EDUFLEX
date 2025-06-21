@@ -27,12 +27,12 @@ h1 {
 /* Palabra a completar con más espacio entre letras y sombra */
 .palabra {
   font-size: 28px;
-  margin-bottom: 36px;
+  margin-bottom: 16px;
   text-shadow: 2px 2px 5px rgb(54, 167, 4);
   font-weight: 700;
-   gap: 14px;
-  padding: 10px;
-  min-height: 50px;
+   gap: 10px;
+  padding: 5px;
+  min-height: auto;
 }
 
 .espacio-vacio {
@@ -54,13 +54,13 @@ h1 {
   font-size: 40px;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
   padding: 15px;
   background-color: rgba(11, 165, 158, 0.1); /* fondo leve, ayuda a delimitar */
   border: 2px solid #0ba59e;
   border-radius: 10px;
-  min-height: 80px;
-  margin-bottom: 30px;
+  min-height: auto;
+  margin-bottom: 10px;
   z-index: 10;
 }
 
@@ -161,20 +161,20 @@ h1 {
 
 /* Imagen con bordes redondeados y sombra */
 .imagen-guia {
-  max-width: 180px;       /* Ajusta este valor según tu preferencia */
+  max-width: 150px;       /* Ajusta este valor según tu preferencia */
   height: auto;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   display: block;
 }
 
 
 /* Botones de "Verificar" e "Intentar de nuevo" */
 button {
-  margin-top: 12px;        /* más cerca del cuadro */
+  margin-top: 4px;        /* más cerca del cuadro */
   font-size: 14px;
-  padding: 8px 16px;
+  padding: 6px 14px;
   background-color: #f74e44; /* Color de fondo */
   color: #ffffff;              /* Color de texto */
   border: none;
@@ -297,8 +297,8 @@ button:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 5px auto; /* esto centra el cuadro horizontalmente */
+  gap: 8px;
+  margin: 10px auto; /* esto centra el cuadro horizontalmente */
 }
 
 

@@ -1,0 +1,331 @@
+/* === Fondo y cuerpo === */
+body {
+    background: url('../img/ocean.jpg') center center / cover no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 50px;
+    overflow: hidden;
+}
+
+/* === Contenedor principal === */
+#contenedor-juego {
+    background: rgba(255, 255, 255, 0.2); /* Muy transparente */ /* BORRADO tipo glass */
+    -webkit-backdrop-filter: blur(12px); /* soporte Safari */
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    display: inline-block;
+    position: relative;
+    margin-top: 90px;
+    max-width: 500px;
+    width: 90%;
+}
+h1 {
+    color: #ffee58;
+    font-size: 32px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+
+
+#contador-pregunta {
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    margin-top: 10px;
+}
+
+/* === Pregunta y opciones === */
+#pregunta {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 24px 0;
+    color: white;
+    text-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.7);
+}
+
+
+.opcion {
+    background: #ffb74d;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+    width: 75px;
+    height: 75px;
+    text-align: center;
+    border-radius: 10px;
+    display: inline-block;
+    transition: transform 0.2s ease-in-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* ← SOMBRA DE TEXTO */
+}
+
+
+.opcion:hover {
+    background: #fb8c00;
+    transform: scale(1.1);
+}
+
+/* === Resultado === */
+#mensaje-resultado {
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: bold;
+    display: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.correcto {
+    color: white;
+    background-color: #28a745;
+}
+
+.incorrecto {
+    color: white;
+    background-color: #dc3545;
+}
+
+/* === Modal de estadísticas (Diseño moderno unificado) === */
+.ventana-estadisticas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.contenedor-estadisticas {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.contenedor-estadisticas h2 {
+    color: #28a745;
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.contenedor-estadisticas p {
+    font-size: 20px;
+    margin: 8px 0;
+}
+
+.contenedor-estadisticas button {
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 12px 25px;
+    background-color: #0ba59e;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.contenedor-estadisticas button:hover {
+    background-color: #087e75;
+}
+
+/* === Botón de pausa === */
+#pausaBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 10px 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
+    background-color: #ffc107;
+    color: #000;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+#pausaBtn:hover {
+    background-color: #e0a800;
+}
+
+/* === Modal de pausa === */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-overlay.show {
+    display: block;
+}
+
+.container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    z-index: 1002;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.container.show {
+    display: block;
+}
+
+.input-field .button-input {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #05d1fe;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 150px; /* ✅ Fuerza un ancho común mínimo */
+  text-align: center;
+
+}
+
+.input-field .button-input:hover {
+    background-color: #0056b3;
+}
+
+/* === Decoración: burbujas === */
+#burbujas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.burbuja {
+    position: absolute;
+    bottom: -50px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: burbujasAnim 4s infinite ease-in-out;
+    z-index: 1;
+}
+
+@keyframes burbujasAnim {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* === Animaciones de imágenes === */
+#tiburon {
+    position: fixed;
+    bottom: 320px;
+    left: 200px;
+    max-width: 120px;
+    transition: transform 0.5s ease-in-out;
+    z-index: 10;
+}
+
+#buzo {
+    position: fixed;
+    bottom: 200px;
+    right: 120px;
+    max-width: 250px;
+    max-height: 400px;
+    object-fit: contain;
+    animation: flotandoBuzo 3s infinite ease-in-out;
+    z-index: 10;
+}
+
+#mensaje-flotante {
+    position: fixed;
+    top: 10px; /* antes estaba en 20px */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 128, 0, 0.85); /* verde por defecto */
+    color: white;
+    padding: 15px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 22px;
+    font-weight: 700;
+    z-index: 3000; /* más alto para estar por encima del contenedor */
+    display: none;
+    user-select: none;
+    white-space: nowrap;
+    animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+
+@keyframes flotandoBuzo {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.opcion.correcta {
+    background-color: #28a745 !important; /* verde */
+    color: white;
+}
+
+.opcion.incorrecta {
+    background-color: #dc3545 !important; /* rojo fuerte */
+    color: white;
+}
+
+.opcion.desactivado {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.texto-grande h1 {
+    font-size: 42px !important;
+}
+
+.texto-grande #contador-pregunta {
+    font-size: 26px !important;
+}
+
+.texto-grande #pregunta {
+    font-size: 36px !important;
+}
+
+.texto-grande .container .input-field .button-input {
+    font-size: 24px !important;
+    padding: 18px 28px !important;
+}
+
+.container .input-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espacio entre botones */
+}

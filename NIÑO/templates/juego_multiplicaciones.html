@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vamos a multiplicar</title>
+    <link rel="stylesheet" href="{% static 'CSS/discalculiaStyles.css' %}">
+</head>
+<body>
+    <div id="mensaje-flotante"></div>
+    <!-- Botón de Pausa -->
+    <button id="pausaBtn" class="button">⏸</button>
+
+    <!-- Overlay y Modal de Pausa -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+    <div class="container" id="modalPausa">
+        <div class="input-field">
+            <input type="button" value="Continuar" class="button-input" onclick="togglePausa()">
+            <input type="button" value="Salir" class="button-input" onclick="window.location.href='/niveles_discalculia/'">
+        </div>
+    </div>
+
+    <!-- Overlay y Modal Final (REUTILIZANDO diseño de pausa) -->
+    <div id="modalFinalOverlay" class="modal-overlay"></div>
+    <div class="container" id="modalFinal" style="display: none;"></div>
+
+    <!-- Fondo visual -->
+    <div id="burbujas-container"></div>
+
+    <!-- Contenedor principal del juego -->
+    <div id="contenedor-juego">
+        <h1>Vamos a Multiplicar</h1>
+        <div id="contador-pregunta">Pregunta 1 de 15</div>
+        <p id="pregunta"></p>
+
+        <div id="opciones"></div>
+        <p id="mensaje-resultado"></p>
+    </div>
+
+    <!-- Imágenes decorativas -->
+    <img id="tiburon" src="{% static 'img/tiburon3.png' %}" alt="Tiburón">
+    <img id="buzo" src="{% static 'img/buzo1.png' %}" alt="Buzo">
+
+
+    <script>
+        const buzo2URL = "{% static 'img/buzo2.png' %}";
+        const buzo1URL = "{% static 'img/buzo1.png' %}";
+    </script>
+
+    <!-- Música de fondo -->
+    <audio id="musicaJuegos" loop autoplay>
+        <source src="{% static 'media/nocturne in f.mp3' %}" type="audio/mpeg">
+        Tu navegador no soporta audio HTML5.
+    </audio>
+
+    <!-- Script principal del juego -->
+    <script src="{% static 'JS/juego_discalculia.js' %}"></script>
+</body>
+</html>
