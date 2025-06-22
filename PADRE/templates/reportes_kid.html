@@ -2,78 +2,84 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Dashboard Padre - Eduflex</title>
-  <link rel="stylesheet" href="{% static 'css/reportKid.css' %}">
+  <link rel="stylesheet" href="{% static 'css/reportKid.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
 <header>
-  <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
-  <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">Home</a>
-  <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+  <img src="{% static 'img/logo.png' %}" alt="Logo Eduflex" class="logo" />
+  <nav class="nav-links">
+    <a href="{% url 'padre:estadisticas_generales' %}" class="btn-nav">📄estadisticas generales</a>
+    <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">🏠 Home</a>
+    <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+  </nav>
 </header>
 
 <main>
-    {% if messages %}
-      <div class="toast-container">
-        {% for message in messages %}
-          <div class="toast {{ message.tags }}">
-            <span class="toast-close" onclick="this.parentElement.style.display='none';">&times;</span>
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+  {% if messages %}
+    <div class="toast-container">
+      {% for message in messages %}
+        <div class="toast {{ message.tags }}">
+          <span class="toast-close" onclick="this.parentElement.style.display='none';">&times;</span>
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <h2>Listado de estudiantes y materias</h2>
 
-  <div style="text-align: center; margin-bottom: 20px;">
+  <div class="add-btn-container">
     <button class="btn-agregar" onclick="abrirModal()">+ Añadir Niño</button>
   </div>
 
   {% for item in niños %}
-  <section class="estudiante {% if item.reportes|length == 0 %}sin-reportes{% endif %}">
-    <div class="header-estudiante">
-      <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
-     <a href="{% url 'padre:report_total' item.niño.id %}" class="btn-ver" >Ver todos</a>
-     <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">
-      Quitar Niño
-    </button>
-    </div>
-
-    <div class="contenido-reportes">
-      {% if item.reportes %}
-        <h4 style="margin-left: 10px;">Reportes:</h4>
-        <div class="reportes">
-          {% for reporte in item.reportes|slice:":6" %}
-          <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
-            <strong></strong>
-            <span>{{ reporte.titulo }}</span>
-            <span>Duración:{{ reporte.duracion_evaluacion}}</span>
-            <span>Fecha:{{ reporte.fecha }}</span>
-          </a>
-          {% endfor %}
+    <section class="estudiante {% if item.reportes|length == 0 %}sin-reportes{% endif %}">
+      <div class="header-estudiante">
+        <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
+        <div class="btn-group">
+          <a href="{% url 'padre:report_total' item.niño.id %}" class="btn-ver">Ver todos</a>
+          <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">Quitar Niño</button>
         </div>
-      {% else %}
-        <p style="margin-left: 10px;">No hay reportes para este niño.</p>
-      {% endif %}
-    </div>
-  </section>
+      </div>
+
+      <div class="contenido-reportes">
+        {% if item.reportes %}
+          <h4>Reportes:</h4>
+          <div class="reportes">
+            {% for reporte in item.reportes|slice:":6" %}
+              <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
+                <span class="titulo-reporte">{{ reporte.titulo }}</span>
+                <span>⏳ Duración: {{ reporte.duracion_evaluacion }}</span>
+                <span>📅 Fecha: {{ reporte.fecha|date:"d M Y" }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-reportes">No hay reportes para este niño.</p>
+        {% endif %}
+      </div>
+    </section>
   {% endfor %}
 </main>
 
-<!-- Modal -->
+<!-- Modal Añadir Niño -->
 <div id="modal" class="modal">
   <div class="modal-contenido">
     <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <h3>Agregar Niño por Código</h3>
     <form method="POST" action="{% url 'padre:reportKid' %}">
       {% csrf_token %}
-      <input type="text" name="codigo" placeholder="Ingrese el código del niño" required>
+      <input type="text" name="codigo" placeholder="Ingrese el código del niño" required />
       <button type="submit" class="btn-agregar">Agregar</button>
     </form>
   </div>
 </div>
+
+<!-- Modal Desvincular Niño -->
 <div id="modal-desvincular" class="modal">
   <div class="modal-contenido">
     <span class="cerrar" onclick="cerrarModalDesvincular()">&times;</span>
@@ -81,47 +87,33 @@
     <form id="formDesvincular" method="POST">
       {% csrf_token %}
       <button type="submit" class="btn-eliminar">Sí, desvincular</button>
-      <button type="button" onclick="cerrarModalDesvincular()" class="btn-cancelar">Cancelar</button>
+      <button type="button" class="btn-cancelar" onclick="cerrarModalDesvincular()">Cancelar</button>
     </form>
   </div>
 </div>
-<!-- Scripts -->
+
 <script>
   function abrirModal() {
     document.getElementById('modal').style.display = 'block';
   }
-
   function cerrarModal() {
     document.getElementById('modal').style.display = 'none';
-  }
-
-  window.onclick = function(event) {
-    const modal = document.getElementById('modal');
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
   }
   function abrirModalDesvincular(ninoId) {
     const modal = document.getElementById('modal-desvincular');
     const form = document.getElementById('formDesvincular');
-    form.action = `/desvincular-nino/${ninoId}/`;  // Asegúrate que esta es tu ruta
+    form.action = `/desvincular-nino/${ninoId}/`;
     modal.style.display = 'block';
   }
-
   function cerrarModalDesvincular() {
     document.getElementById('modal-desvincular').style.display = 'none';
   }
-
   window.onclick = function(event) {
-    const modal = document.getElementById('modal-desvincular');
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
+    if(event.target == document.getElementById('modal')) cerrarModal();
+    if(event.target == document.getElementById('modal-desvincular')) cerrarModalDesvincular();
+  };
   setTimeout(() => {
-    document.querySelectorAll('.toast').forEach(toast => {
-      toast.style.display = 'none';
-    });
+    document.querySelectorAll('.toast').forEach(toast => toast.style.display = 'none');
   }, 5000);
 </script>
 

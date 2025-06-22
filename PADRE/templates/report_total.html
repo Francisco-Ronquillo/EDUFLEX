@@ -10,25 +10,51 @@
 
 <header>
   <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
-  <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">Home</a>
-  <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+  <div>
+    <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">🏠 Home</a>
+    <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+  </div>
 </header>
 
 <main>
   <div class="regresar">
-      <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">←</a>
+      <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">← Regresar</a>
   </div>
-  <section class="estudiante ">
+
+  <!-- Filtros -->
+  <section class="filtros">
+    <form method="get">
+      <label for="nivel">Filtrar por nivel:</label>
+      <select name="nivel" id="nivel">
+        <option value="">Todos</option>
+        <option value="1" {% if nivel == "1" %}selected{% endif %}>Nivel 1</option>
+        <option value="2" {% if nivel == "2" %}selected{% endif %}>Nivel 2</option>
+        <option value="3" {% if nivel == "3" %}selected{% endif %}>Nivel 3</option>
+        <option value="4" {% if nivel == "4" %}selected{% endif %}>Nivel 4</option>
+        <option value="5" {% if nivel == "5" %}selected{% endif %}>Nivel 5</option>
+      </select>
+
+      <label for="fecha">Fecha:</label>
+      <input type="date" name="fecha" id="fecha" value="{{ fecha|default:'' }}">
+
+      <button type="submit" class="btn-filtrar">Filtrar</button>
+    </form>
+  </section>
+
+  <!-- Reportes -->
+  <section class="estudiante">
     <div class="contenido-reportes">
-        <h4 >Reportes:</h4>
+        <h4>📋 Reportes</h4>
         <div class="reportes">
           {% for reporte in reportes %}
-          <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
-            <strong></strong>
-             <span>{{ reporte.titulo }}</span>
-            <span>Duración:{{ reporte.duracion_evaluacion }}</span>
-            <span>Fecha:{{ reporte.fecha }}</span>
-          </a>
+            <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
+              <span><strong>{{ reporte.titulo }}</strong></span>
+              <span>📊 Nivel: {{ reporte.nivel }}</span>
+              <span>🕒 Duración: {{ reporte.duracion_evaluacion }}</span>
+              <span>📅 Fecha: {{ reporte.fecha|date:"d-m-Y" }}</span>
+            </a>
+          {% empty %}
+            <p style="padding: 20px; font-style: italic;">No se encontraron reportes con esos filtros.</p>
           {% endfor %}
         </div>
     </div>
@@ -36,8 +62,3 @@
 </main>
 </body>
 </html>
-
-
-
-
-

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Lista de Estudiantes</title>
     <link rel="stylesheet" href="{% static 'css/estudiantes.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -14,12 +15,12 @@
             {% for niño in niños %}
                 <li class="item-estudiante">
                     <a href="{% url 'profesor:estudiante' curso.id niño.id %}">
-                        <span class="nombre">{{ niño.nombres }} {{ niño.apellidos }}</span>
+                        <span class="nombre">📘 {{ niño.nombres }} {{ niño.apellidos }}</span>
                         <span class="ver-mas">Ver detalle ➜</span>
                     </a>
                 </li>
             {% empty %}
-                <li>No hay estudiantes registrados.</li>
+                <li class="sin-estudiantes">😕 No hay estudiantes registrados.</li>
             {% endfor %}
         </ul>
     </div>

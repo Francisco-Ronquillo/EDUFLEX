@@ -103,6 +103,7 @@ class DesvincularNinoView(View):
             messages.success(request, "Niño desvinculado correctamente.")
 
         return redirect('padre:reportKid')
+
 class reportTotal(TemplateView):
     template_name = 'report_total.html'
 
@@ -169,3 +170,7 @@ class verReporte(TemplateView):
         }
 
         return context
+
+
+class estadisticasGenerales(TemplateView):
+    template_name = "estadisticas_generales.html"

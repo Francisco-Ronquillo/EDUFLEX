@@ -1,24 +1,25 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #e6f7ff);
+    color: #2c3e50;
 }
 
 .container {
     max-width: 800px;
-    margin: 40px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
-    color: #2c3e50;
+    font-size: 2rem;
     margin-bottom: 30px;
+    color: #4A90E2;
 }
 
 .lista-estudiantes {
@@ -28,33 +29,46 @@ h1 {
 }
 
 .item-estudiante {
-    border-bottom: 1px solid #ddd;
-    padding: 15px 10px;
-    transition: background-color 0.2s;
+    border: 2px solid #e3f2fd;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 15px;
+    background: #f9fbff;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.item-estudiante:last-child {
-    border-bottom: none;
+.item-estudiante:hover {
+    background-color: #e3f2fd;
+    transform: translateY(-3px);
 }
 
 .item-estudiante a {
     text-decoration: none;
-    color: #34495e;
+    color: #2c3e50;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.item-estudiante:hover {
-    background-color: #f0f8ff;
-}
-
 .nombre {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .ver-mas {
     font-size: 0.9rem;
-    color: #3498db;
+    color: #4A90E2;
+    font-weight: 500;
+}
+
+.sin-estudiantes {
+    font-size: 1rem;
+    padding: 20px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 10px;
+    color: #856404;
 }

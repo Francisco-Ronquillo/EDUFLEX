@@ -1,125 +1,158 @@
-body {
-  font-family: 'Open Sans', sans-serif;
-  background: #f6f6f6;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: linear-gradient(to right, #e3f2fd, #fce4ec);
+  color: #333;
+}
+
+/* HEADER */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #e0e0e0;
-  border-radius: 12px;
+  background-color: #ffffff;
+  border-bottom: 2px solid #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .logo img {
-  height: 50px;
-  margin-right: 10px;
+  height: 55px;
 }
 
 .btn {
-  background-color: #c4ff57;
+  background-color: #81c784;
   border: none;
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 30px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
-  color: black;
+  color: white;
   text-decoration: none;
-}
-.btn-cerrar{
-  background-color: #f8a6c8;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-weight: bold;
-  font-size: 20px;
-  cursor: pointer;
-  color: black;
-  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
+.btn:hover {
+  background-color: #66bb6a;
+}
+
+.btn-cerrar {
+  background-color: #f48fb1;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cerrar:hover {
+  background-color: #ec407a;
+}
+
+/* CONTAINER */
 .container {
   padding: 2rem;
 }
 
+/* BIENVENIDA */
 .welcome {
-  background-color: #e0e0e0;
-  padding: 1.5rem;
-  border-radius: 15px;
-  margin-bottom: 5px;
-  font-weight: bold;
-  width: 700px;
-  height: 110px;
-  font-size: 26px;
+  background-color: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  font-size: 24px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  width: fit-content;
+  max-width: 90%;
 }
 
+/* CONTENIDO PRINCIPAL */
 .content {
   display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
+/* REPORTES */
 .progress-courses {
-  padding: 20px;
-  background-color: #e0e0e0;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  width: 725px;
-  transition: all 0.3s ease;
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 20px 25px;
+  width: 100%; /* permite que se adapte al contenedor */
+  max-width: 1000px; /* o más si quieres mayor espacio */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-}
-.sin-reportes {
-  padding: 10px 20px;
-  background-color: #e0e0e0;
-  min-height: 0;
-  height: auto;
-}
-.sin-reportes p {
-  margin: 0;
-  font-size: 16px;
-  font-style: italic;
-  color: #666;
-}
+
 .progress-title {
-  font-size: 27px;
+  font-size: 22px;
+  font-weight: 700;
   margin-bottom: 15px;
-  font-weight: bold;
 }
 
+.sin-reportes-texto {
+  font-style: italic;
+  font-size: 16px;
+  color: #777;
+}
+
+/* CARDS */
 .card-container {
   display: flex;
-  gap: 70px;
   flex-wrap: wrap;
+  gap: 20px;
+  width: 100%; /* se expande al máximo */
+  justify-content: flex-start; /* alinea las tarjetas al inicio */
 }
 
 .card {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 15px;
-  margin: 20px 20px;
-  width: 250px;
-  height: 250px;
-  font-size: 25px;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+  padding: 20px;
+  width: 350px;
+  height: 300px;
+  font-size: 16px;
   text-align: center;
   text-decoration: none;
-  color: black;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #bfbfbf;
 }
 
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* IMAGEN */
 .imagen-con-circulo {
   position: relative;
-  width: 500px; /* o el tamaño que desees */
-  height: 500px;
+  width: 350px;
+  height: 350px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,18 +160,35 @@ header {
 
 .circulo-beis {
   position: absolute;
-  width: 300px;
-  height: 300px;
-  background-color: #f1f1ab; /* beige */
-  border-radius: 100%;
+  width: 280px;
+  height: 280px;
+  background-color: #fff9c4;
+  border-radius: 50%;
   z-index: 0;
-  margin-top: -525px;
 }
 
 .imagen-con-circulo img {
-  width: 250px;  /* más pequeño que el círculo */
-  height: auto;
+  width: 200px;
   z-index: 1;
   position: relative;
-  margin-top: -525px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .progress-courses {
+    width: 100%;
+  }
+
+  .card-container {
+    justify-content: center;
+  }
+
+  .imagen-con-circulo {
+    margin-top: 30px;
+  }
 }

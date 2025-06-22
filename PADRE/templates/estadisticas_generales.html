@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Estadísticas Generales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "CSS/estadisticasGeneralesPadre.css" %}">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="{% static 'img/logo.png' %}" alt="Eduflex Logo">
+    <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">🏠 Home</a>
+  </div>
+  <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
+</header>
+
+<div class="regresar">
+      <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">← Regresar</a>
+</div>
+
+<div class="contenedor-central">
+  <div class="container" >
+    <h1>📊 Estadísticas Generales</h1>
+
+    <!-- FORMULARIO DE FILTRO -->
+    <form method="get">
+      <div>
+        <label for="nivel">Nivel:</label><br>
+        <select name="nivel" id="nivel">
+          <option value="">Todos</option>
+          <option value="1" {% if request.GET.nivel == '1' %}selected{% endif %}>Nivel 1</option>
+          <option value="2" {% if request.GET.nivel == '2' %}selected{% endif %}>Nivel 2</option>
+          <option value="3" {% if request.GET.nivel == '3' %}selected{% endif %}>Nivel 3</option>
+          <option value="4" {% if request.GET.nivel == '4' %}selected{% endif %}>Nivel 4</option>
+          <option value="5" {% if request.GET.nivel == '5' %}selected{% endif %}>Nivel 5</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="fecha">Fecha:</label><br>
+        <input type="date" name="fecha" id="fecha" value="{{ request.GET.fecha }}">
+      </div>
+
+      <div>
+        <button type="submit">Filtrar</button>
+      </div>
+    </form>
+
+    <!-- RESULTADOS (opcional) -->
+    <div class="resultados">
+      {% if reportes %}
+        <p>Se encontraron <strong>{{ reportes|length }}</strong> reportes.</p>
+      {% else %}
+        <p>No hay reportes que coincidan con los filtros.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

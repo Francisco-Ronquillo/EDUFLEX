@@ -1,8 +1,9 @@
 body {
-  font-family: 'Open Sans', sans-serif;
-  background: #f6f6f6;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #e6f7ff);
   margin: 0;
   padding: 0;
+  color: #2C3E50;
 }
 
 header {
@@ -10,114 +11,134 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #e0e0e0;
-  border-radius: 12px;
+  background-color: #ffffff;
+  border-bottom: 2px solid #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .logo img {
-  height: 50px;
-  margin-right: 10px;
+  height: 55px;
 }
 
 .btn {
-  background-color: #c4ff57;
+  background-color: #A3E635;
   border: none;
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 30px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
-  color: black;
   text-decoration: none;
+  color: #1f2937;
+  transition: background-color 0.3s ease;
 }
-.btn-cerrar{
-  background-color: #f8a6c8;
+
+.btn:hover {
+  background-color: #8cc63f;
+}
+
+.btn-cerrar {
+  background-color: #F48FB1;
   border: none;
   padding: 10px 20px;
-  border-radius: 50px;
+  border-radius: 30px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
-  color: black;
+  color: white;
   text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cerrar:hover {
+  background-color: #ec407a;
 }
 
 .container {
-  padding: 2rem;
+  padding: 2rem 3rem;
 }
 
 .welcome {
-  background-color: #e0e0e0;
-  padding: 1.5rem;
-  border-radius: 15px;
-  margin-bottom: 5px;
-  font-weight: bold;
-  width: 700px;
-  height: 110px;
-  font-size: 26px;
+  background-color: #ffffff;
+  padding: 1.8rem;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 1.6rem;
+  max-width: 900px;
+  line-height: 1.6;
 }
 
 .content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .progress-courses {
-  padding: 20px;
-  background-color: #e0e0e0;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  width: 725px;
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+  width: 720px;
+  min-height: 250px;
   transition: all 0.3s ease;
+}
 
-}
-.sin-reportes {
-  padding: 10px 20px;
-  background-color: #e0e0e0;
-  min-height: 0;
-  height: auto;
-}
-.sin-reportes p {
-  margin: 0;
-  font-size: 16px;
-  font-style: italic;
-  color: #666;
-}
 .progress-title {
-  font-size: 27px;
-  margin-bottom: 15px;
+  font-size: 1.6rem;
   font-weight: bold;
+  color: #4A90E2;
+  margin-bottom: 1.2rem;
 }
 
 .card-container {
   display: flex;
-  gap: 70px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .card {
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 15px;
-  margin: 20px 20px;
+  border: 2px solid #e3f2fd;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 20px;
   width: 250px;
-  height: 250px;
-  font-size: 25px;
-  text-align: center;
+  font-size: 0.95rem;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  background-color: #f9fbff;
+}
+
+.card div {
+  margin-bottom: 6px;
+}
+
+.sin-reportes p {
+  margin: 0;
+  font-size: 1rem;
+  font-style: italic;
+  color: #666;
 }
 
 .imagen-con-circulo {
   position: relative;
-  width: 500px; /* o el tamaño que desees */
-  height: 500px;
+  width: 300px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,18 +146,15 @@ header {
 
 .circulo-beis {
   position: absolute;
-  width: 300px;
-  height: 300px;
-  background-color: #f1f1ab; /* beige */
-  border-radius: 100%;
+  width: 220px;
+  height: 220px;
+  background-color: #FFF9C4;
+  border-radius: 50%;
   z-index: 0;
-  margin-top: -525px;
 }
 
 .imagen-con-circulo img {
-  width: 250px;  /* más pequeño que el círculo */
-  height: auto;
+  width: 160px;
   z-index: 1;
   position: relative;
-  margin-top: -525px;
 }
