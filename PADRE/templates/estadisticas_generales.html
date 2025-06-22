@@ -40,19 +40,26 @@
       </div>
 
       <div>
-        <label for="fecha">Fecha:</label><br>
-        <input type="date" name="fecha" id="fecha" value="{{ request.GET.fecha }}">
+        <label for="fecha">Desde:</label><br>
+        <input type="date" name="fecha_i" id="fecha_i" value="{{ request.GET.fecha_i }}">
       </div>
+       <div>
+            <label for="fecha">Hasta:</label><br>
+            <input type="date" name="fecha_f" id="fecha_f" value="{{ request.GET.fecha_f }}">
+        </div>
 
       <div>
         <button type="submit">Filtrar</button>
       </div>
     </form>
 
-    <!-- RESULTADOS (opcional) -->
+
     <div class="resultados">
       {% if reportes %}
-        <p>Se encontraron <strong>{{ reportes|length }}</strong> reportes.</p>
+        <h2>Total distracciones:{{ total_distracciones }}</h2>
+        <h2>Total somnolencias:{{ total_somnolencias }}</h2>
+        <h2>Promedio distracciones:{{ promedio_distracciones }}</h2>
+        <h2>Promedio somnolencias:{{ promedio_somnolencias }}</h2>
       {% else %}
         <p>No hay reportes que coincidan con los filtros.</p>
       {% endif %}

@@ -188,13 +188,13 @@ class juego_completar_palabraView(TemplateView):
             request.session[session_key] = True
             request.session[tiempo_key] = datetime.now().isoformat()
 
-            # 🔵 CREAR REPORTE VACÍO
+
             niño = Niño.objects.get(pk=nino_id)
             nuevo_reporte = Reporte.objects.create(niño=niño)
-            request.session['reporte_id'] = nuevo_reporte.id  # 🟢 Guardamos en sesión
+            request.session['reporte_id'] = nuevo_reporte.id
 
             def run_detection():
-                gen_frames_background(nino_id, nuevo_reporte.id)  # usamos ID real
+                gen_frames_background(nino_id, nuevo_reporte.id)
 
             t = Thread(target=run_detection)
             t.daemon = True
@@ -252,7 +252,6 @@ class GuardarProgresoView(View):
                 reporte.duracion_evaluacion = timedelta(seconds=tiempo)
                 reporte.save()
 
-                # Limpiar sesión
                 request.session[f"deteccion_iniciada_{nino_id}"] = False
                 request.session.pop('reporte_id', None)
                 request.session.modified = True
@@ -291,7 +290,6 @@ class GuardarProgresoCartasView(View):
             progreso.tiempo_total += tiempo
             progreso.save()
 
-            # ✅ Obtener el ID del reporte previamente creado
             reporte_id = request.session.get('reporte_id')
             if not reporte_id:
                 return JsonResponse({'error': 'ID de reporte no encontrado'}, status=400)
@@ -415,7 +413,7 @@ class PreferenciasUsuarioView(View):
             niño = Niño.objects.get(pk=nino_id)
             preferencias, _ = PreferenciasUsuario.objects.get_or_create(niño=niño)
 
-            # Leer los datos del cuerpo de la petición
+
             sonido = request.POST.get('sonido_activado')
             texto = request.POST.get('texto_grande')
 
@@ -440,13 +438,13 @@ class EditarPerfilView(View):
         try:
             niño = Niño.objects.get(pk=nino_id)
 
-            # === DATOS DEL FORMULARIO ===
+
             nuevo_usuario = request.POST.get("usuario", "").strip()
             nuevo_email = request.POST.get("email", "").strip()
             nuevos_nombres = request.POST.get("nombres", "").strip()
             nuevos_apellidos = request.POST.get("apellidos", "").strip()
 
-            # === VALIDAR NOMBRE DE USUARIO DUPLICADO ===
+
             if nuevo_usuario:
                 if Niño.objects.filter(usuario=nuevo_usuario).exclude(pk=niño.pk).exists():
                     return JsonResponse({
@@ -455,7 +453,7 @@ class EditarPerfilView(View):
                     }, status=400)
                 niño.usuario = nuevo_usuario
 
-            # === VALIDAR EMAIL (FORMATO Y DUPLICADO) ===
+
             if nuevo_email:
                 try:
                     validate_email(nuevo_email)
@@ -472,7 +470,6 @@ class EditarPerfilView(View):
                     }, status=400)
                 niño.email = nuevo_email
 
-            # === VALIDAR NOMBRES Y APELLIDOS DUPLICADOS ===
             if nuevos_nombres and nuevos_apellidos:
                 if Niño.objects.filter(
                     nombres__iexact=nuevos_nombres,
@@ -486,7 +483,7 @@ class EditarPerfilView(View):
                 niño.nombres = nuevos_nombres
                 niño.apellidos = nuevos_apellidos
 
-            # === VALIDAR FOTO DE PERFIL ===
+
             if 'foto' in request.FILES:
                 niño.foto_perfil = request.FILES['foto']
 
@@ -518,7 +515,7 @@ class GuardarProgresoMultiplicacionView(View):
         progreso.tiempo_total += tiempo
         progreso.save()
 
-        # Opcional: generar reporte
+
         puntaje_real = Decimal(puntaje)
         stop_event.set()
         if not deteccion_finalizada.wait(timeout=60):
@@ -557,9 +554,9 @@ class JuegoMultiplicacionView(TemplateView):
         if not nino_id:
             return redirect('accounts:login')
 
-        # Iniciar detección como en juego_cartas
-        ultimo_reporte = Reporte.objects.order_by('-id').first()
-        nuevo_id = ultimo_reporte.id + 1 if ultimo_reporte else 1
+        niño = Niño.objects.get(pk=nino_id)
+        nuevo_reporte = Reporte.objects.create(niño=niño)
+        request.session['reporte_id'] = nuevo_reporte.id
         session_key = f"deteccion_iniciada_{nino_id}"
         tiempo_key = f"tiempo_inicio_deteccion_{nino_id}"
 
@@ -584,7 +581,7 @@ class JuegoMultiplicacionView(TemplateView):
             request.session.modified = True
 
             def run_detection():
-                gen_frames_background(nino_id, nuevo_id)
+                gen_frames_background(nino_id, nuevo_reporte)
 
             t = Thread(target=run_detection)
             t.daemon = True
@@ -604,3 +601,16 @@ class NivelesDiscalculiaView(View):
         return render(request, 'niveles_discalculia.html', {
             'nivel_desbloqueado': progreso.nivel_desbloqueado
         })
+
+
+class cerrar_juegoView(View):
+    def get(self, request):
+        stop_event.set()
+        reporte_id = request.session.get('reporte_id')
+        if reporte_id:
+            try:
+                Reporte.objects.filter(pk=reporte_id).delete()
+            except Exception:
+                pass
+            request.session.pop('reporte_id', None)
+        return redirect('niño:niveles_discalculia')

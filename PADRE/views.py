@@ -8,6 +8,7 @@ from NIÑO.models import  Niño,Reporte
 from PADRE.models import  Padre
 from datetime import timedelta
 import os,statistics
+from django.db.models import Q
 from django.conf import settings
 class DashboardDad(TemplateView):
     template_name = 'dashboardDad.html'
@@ -104,23 +105,46 @@ class DesvincularNinoView(View):
 
         return redirect('padre:reportKid')
 
-class reportTotal(TemplateView):
+class reportTotal(ListView):
     template_name = 'report_total.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    model=Reporte
+    context_object_name = 'reportes'
+    def get_queryset(self):
         pk = self.kwargs.get('pk')
-        nino = Niño.objects.get(pk=pk)
-        reportes=Reporte.objects.filter(niño=nino).order_by('-fecha')
-        for reporte in reportes:
+        niño=Niño.objects.get(pk=pk)
+        queryset=Reporte.objects.filter(niño=niño).order_by('-fecha')
+        nivel =self.request.GET.get('nivel')
+        fecha_i=self.request.GET.get('fecha_i')
+        fecha_f=self.request.GET.get('fecha_f')
+
+        if nivel:
+            queryset = queryset.filter(titulo__icontains=f'nivel {nivel}')
+        if fecha_i and fecha_f:
+            queryset = queryset.filter(fecha__range=[fecha_i, fecha_f])
+        elif fecha_i:
+            queryset = queryset.filter(fecha__gte=fecha_i)
+        elif fecha_f:
+            queryset = queryset.filter(fecha__lte=fecha_f)
+
+        for reporte in queryset:
             total_segundos = int(reporte.duracion_evaluacion.total_seconds())
             horas = total_segundos // 3600
             minutos = (total_segundos % 3600) // 60
             segundos = total_segundos % 60
             reporte.duracion_evaluacion = f"{horas}:{minutos:02}:{segundos:02}"
+
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        nino = Niño.objects.get(pk=pk)
         context['nino'] = nino
-        context['reportes'] =reportes
+        context['nivel'] = self.request.GET.get('nivel', '')
+        context['fecha_i'] = self.request.GET.get('fecha_i', '')
+        context['fecha_f'] = self.request.GET.get('fecha_f', '')
         return context
+
+
 class verReporte(TemplateView):
     template_name = 'verReporte.html'
 
@@ -172,5 +196,43 @@ class verReporte(TemplateView):
         return context
 
 
+
 class estadisticasGenerales(TemplateView):
     template_name = "estadisticas_generales.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        nino = get_object_or_404(Niño, pk=pk)
+        reportes = Reporte.objects.filter(niño=nino).order_by('-fecha')
+
+        # Filtros
+        nivel = self.request.GET.get('nivel')
+        fecha_i = self.request.GET.get('fecha_i')
+        fecha_f = self.request.GET.get('fecha_f')
+
+        if nivel:
+            reportes = reportes.filter(titulo__icontains=f'nivel {nivel}')
+        if fecha_i and fecha_f:
+            reportes = reportes.filter(fecha__range=[fecha_i, fecha_f])
+        elif fecha_i:
+            reportes = reportes.filter(fecha__gte=fecha_i)
+        elif fecha_f:
+            reportes = reportes.filter(fecha__lte=fecha_f)
+
+        total_distracciones = sum(r.distracciones or 0 for r in reportes)
+        total_somnolencias = sum(r.somnolencias or 0 for r in reportes)
+        cantidad_reportes = reportes.count()
+        promedio_distracciones = round(total_distracciones / cantidad_reportes, 2) if cantidad_reportes > 0 else 0
+        promedio_somnolencias = round(total_somnolencias / cantidad_reportes, 2) if cantidad_reportes > 0 else 0
+        context['nino'] = nino
+        context['reportes'] = reportes
+        context['total_distracciones'] = total_distracciones
+        context['total_somnolencias'] = total_somnolencias
+        context['nivel'] = nivel or ''
+        context['fecha_i'] = fecha_i or ''
+        context['fecha_f'] = fecha_f or ''
+        context['promedio_distracciones'] = promedio_distracciones
+        context['promedio_somnolencias'] = promedio_somnolencias
+        return context
+

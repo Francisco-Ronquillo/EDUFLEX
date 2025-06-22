@@ -16,10 +16,10 @@ body {
 
 #game {
    display: grid;
-   gap: 1rem; /* Espacio entre las cartas */
-   grid-template-rows: repeat(3, 180px); /* 3 filas, cada una con 180px de altura */
-   justify-items: center; /* Centra las cartas dentro de la cuadrícula */
-   max-height: 600px; /* Altura máxima que cubre 3 filas */
+   gap: 1rem;
+   grid-template-rows: repeat(3, 180px);
+   justify-items: center;
+   max-height: 600px;
    height: auto;
    overflow-y: auto;
    padding: 1rem;
@@ -32,8 +32,8 @@ body {
    padding: 1rem;
    text-align: center;
    width: calc(100% - 2rem);
-   font-size: 2rem; /* Reducir tamaño de la fuente */
-   top: 1px; /* Mover un poco hacia abajo para evitar que toque las cartas */
+   font-size: 2rem;
+   top: 1px;
 }
 
 
@@ -133,11 +133,11 @@ body {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  min-width: 150px; /* ✅ Fuerza un ancho común mínimo */
+  min-width: 150px;
   text-align: center;
 }
 
-/* Contenedor de estadísticas */
+
 .contenedor-estadisticas {
     background: white;
     padding: 30px;
@@ -180,5 +180,5 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px; /* espacio entre los botones */
+  gap: 10px;
 }

@@ -34,9 +34,10 @@
         <option value="5" {% if nivel == "5" %}selected{% endif %}>Nivel 5</option>
       </select>
 
-      <label for="fecha">Fecha:</label>
-      <input type="date" name="fecha" id="fecha" value="{{ fecha|default:'' }}">
-
+      <label for="fecha">Desde:</label>
+      <input type="date" name="fecha_" id="fecha_i" value="{{ fecha_i|default:'' }}">
+      <label for="fecha">Hasta:</label>
+      <input type="date" name="fecha_f" id="fecha_f" value="{{ fecha_f|default:'' }}">
       <button type="submit" class="btn-filtrar">Filtrar</button>
     </form>
   </section>

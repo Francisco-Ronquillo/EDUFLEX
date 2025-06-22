@@ -21,7 +21,7 @@
   <div class="container" id="modalPausa">
     <div class="input-field">
       <input type="button" value="Continuar" class="button-input" onclick="togglePausa()">
-      <input type="button" value="Salir" class="button-input" onclick="volverAlMenu()">
+      <a class="button-input" href="{% url 'niño:cerrar_juego' %}">Salir</a>
     </div>
   </div>
 

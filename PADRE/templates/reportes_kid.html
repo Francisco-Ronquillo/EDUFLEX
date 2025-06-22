@@ -12,7 +12,7 @@
 <header>
   <img src="{% static 'img/logo.png' %}" alt="Logo Eduflex" class="logo" />
   <nav class="nav-links">
-    <a href="{% url 'padre:estadisticas_generales' %}" class="btn-nav">📄estadisticas generales</a>
+
     <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">🏠 Home</a>
     <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
   </nav>
@@ -41,6 +41,7 @@
       <div class="header-estudiante">
         <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
         <div class="btn-group">
+          <a href="{% url 'padre:estadisticas_generales' item.niño.id %}" class="btn-ver">📄estadisticas generales</a>
           <a href="{% url 'padre:report_total' item.niño.id %}" class="btn-ver">Ver todos</a>
           <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">Quitar Niño</button>
         </div>
@@ -50,7 +51,7 @@
         {% if item.reportes %}
           <h4>Reportes:</h4>
           <div class="reportes">
-            {% for reporte in item.reportes|slice:":6" %}
+            {% for reporte in item.reportes|slice:":4" %}
               <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
                 <span class="titulo-reporte">{{ reporte.titulo }}</span>
                 <span>⏳ Duración: {{ reporte.duracion_evaluacion }}</span>

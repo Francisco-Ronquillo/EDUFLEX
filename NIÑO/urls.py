@@ -17,4 +17,5 @@ urlpatterns = [
     path('guardar_progreso_multiplicacion/', GuardarProgresoMultiplicacionView.as_view(), name='guardar_progreso_multiplicacion'),
     path('juego_multiplicacion/', JuegoMultiplicacionView.as_view(), name='juego_multiplicacion'),
     path('niveles_discalculia/', NivelesDiscalculiaView.as_view(), name='niveles_discalculia'),
+    path('cerrar_juego/', cerrar_juegoView.as_view(), name='cerrar_juego'),
 ]

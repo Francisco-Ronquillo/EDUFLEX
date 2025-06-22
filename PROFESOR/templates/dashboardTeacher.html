@@ -26,19 +26,25 @@
         </div>
 
         <div class="content">
-          <div class="progress-courses {% if not reportes_recientes %}sin-reportes{% endif %}">
+          <div class="progress-courses {% if not cursos %}sin-reportes{% endif %}">
               <div class="progress-title">Cursos visitados recientemente</div>
-              {% if reportes_recientes %}
+              {% if cursos%}
                 <div class="card-container">
-                  {% for reporte in reportes_recientes %}
+                  {% for curso in cursos %}
                   <div class="card">
-                    <div><strong>{{ reporte.titulo }}</strong></div>
-                      <div><strong>Niño:</strong></div>
-                      <div>  {{ reporte.niño.nombres }} {{ reporte.niño.apellidos }}</div>
-                    <div>Puntaje: {{ reporte.puntaje }}</div>
-                    <div>Distracciones: {{ reporte.distracciones }}</div>
-                    <div>Duración: {{ reporte.duracion }}</div>
-                    <div>Fecha: {{ reporte.fecha|date:"M d, Y" }}</div>
+                    <div><strong>{{ curso.nombre_curso}}</strong></div>
+                      <div>
+                          {% if curso.seccion == "M" %}
+                            Matutina
+                          {% elif curso.seccion == "V" %}
+                            Vespertina
+                          {% else %}
+                            {{ curso.seccion }}
+                          {% endif %}
+                      </div>
+                      <div>Periodo: {{ curso.periodo }}</div>
+                      <div>Fecha inicio: {{ curso.fecha_inicio|date:"M d, Y" }}</div>
+                      <div>Fecha inicio: {{ curso.fecha_fin|date:"M d, Y" }}</div>
                   </div>
                   {% endfor %}
                 </div>

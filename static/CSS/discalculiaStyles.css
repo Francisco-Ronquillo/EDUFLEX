@@ -141,8 +141,9 @@ h1 {
     background-color: #087e75;
 }
 
-/* === Botón de pausa === */
+
 #pausaBtn {
+    text-decoration: none;
     position: absolute;
     top: 15px;
     right: 15px;
