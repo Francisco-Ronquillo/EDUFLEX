@@ -29,8 +29,8 @@
           <div class="progress-courses {% if not cursos %}sin-reportes{% endif %}">
               <div class="progress-title">Cursos visitados recientemente</div>
               {% if cursos%}
-                <div class="card-container">
-                  {% for curso in cursos %}
+              {% for curso in cursos %}
+                <a class="card-container" href="{% url 'profesor:curso' curso.id %}" >
                   <div class="card">
                     <div><strong>{{ curso.nombre_curso}}</strong></div>
                       <div>
@@ -46,8 +46,9 @@
                       <div>Fecha inicio: {{ curso.fecha_inicio|date:"M d, Y" }}</div>
                       <div>Fecha inicio: {{ curso.fecha_fin|date:"M d, Y" }}</div>
                   </div>
-                  {% endfor %}
-                </div>
+                </a>
+              {% endfor %}
+
               {% else %}
                     <p>No tienes cursos disponibles</p>
               {% endif %}

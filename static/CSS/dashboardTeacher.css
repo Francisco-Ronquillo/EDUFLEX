@@ -105,6 +105,8 @@ header {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  text-decoration: none;
+  color:black;
 }
 
 .card {
