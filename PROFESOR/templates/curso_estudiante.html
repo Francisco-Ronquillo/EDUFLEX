@@ -8,6 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+
+
+    <header>
+        <div class="logo">
+            <img src="{% static 'img/logo.png' %}" alt="Eduflex">
+            <a href="{% url 'profesor:verEstadisticasCurso' %}" class="btn">Estadistiocas generales curso</a>
+        </div>
+        <nav>
+
+
+        </nav>
+    </header>
+
     <div class="regresar">
       <a onclick="window.history.back()" class="boton-recuperar"> <button class="btn-return"> ← Regresar</button> </a>
     </div>
@@ -19,6 +32,7 @@
             {% for niño in niños %}
                 <li class="item-estudiante">
                     <a href="{% url 'profesor:estudiante' curso.id niño.id %}">
+                        <span class="foto">{{ niño.foto_perfil }}  </span>
                         <span class="nombre">📘 {{ niño.nombres }} {{ niño.apellidos }}</span>
                         <span class="ver-mas">Ver detalle ➜</span>
                     </a>

@@ -115,3 +115,10 @@ class verReportStudent(TemplateView):
             }
 
             return context
+
+
+class Estadisticas_niño(TemplateView):
+    template_name = "estadisticas_generales_niño.html"
+
+class Estadisticas_curso(TemplateView):
+    template_name = "estadisticas_generales_curso.html"

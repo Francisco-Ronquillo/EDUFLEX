@@ -50,6 +50,14 @@ h1 {
     align-items: center;
 }
 
+.foto {
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .nombre {
     font-weight: 600;
     font-size: 1.1rem;
@@ -78,7 +86,7 @@ h1 {
 
 .regresar {
   position: absolute;
-  top: 15px;
+  top: 100px;
   left: 20px;
   font-size: 24px;
 }
@@ -99,4 +107,43 @@ h1 {
     font-size: 25px;
     border-radius: 20px;
     /*border: none;*/
+}
+
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 2px solid #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  height: 55px;
+}
+
+.btn {
+  background-color: #A3E635;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #1f2937;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #8cc63f;
 }

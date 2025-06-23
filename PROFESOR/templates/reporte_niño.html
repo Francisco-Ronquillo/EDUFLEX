@@ -14,13 +14,18 @@
   <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
 </header>
 
+<div class="regresar">
+      <a onclick="window.history.back()" class="boton-recuperar"><button class="btn-return"> ← Regresar</button> </a>
+</div>
+
+
 <main>
-  <div class="regresar">
-      <a onclick="window.history.back()" class="boton-recuperar">←</a>
-  </div>
+
   <section class="estudiante ">
     <div class="contenido-reportes">
         <h4 >Reportes:</h4>
+        <a href="{% url 'profesor:verEstadisticasNiño' %}" class="btn">Estadistiocas generales niño</a>
+
         <div class="reportes">
           {% for reporte in reportes %}
           <a class="card reporte" href="{% url 'profesor:verReportStudent' reporte.id %}">

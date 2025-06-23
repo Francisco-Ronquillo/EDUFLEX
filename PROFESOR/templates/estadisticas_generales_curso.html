@@ -1,11 +1,87 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Estadísticas Generales Curso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "CSS/estadisticasGeneralesCurso.css" %}">
+  <script src="{% static 'js/graficas_reportes.js' %}"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 
+<header>
+  <div class="logo">
+    <img src="{% static 'img/logo.png' %}" alt="Eduflex Logo">
+    <a href="{% url 'profesor:dashboardTeacher' %}" class="btn-nav">🏠 Home</a>
+  </div>
+</header>
+
+<div class="regresar">
+      <a onclick="window.history.back()" class="boton-recuperar"><button class="btn-return"> ← Regresar</button> </a>
+</div>
+
+<div class="contenedor-central">
+  <div class="container" >
+    <h1>📊 Estadísticas Generales del Curso</h1>
+
+    <!-- FORMULARIO DE FILTRO -->
+    <form method="get">
+      <div>
+        <label for="nivel">Nivel:</label><br>
+        <select name="nivel" id="nivel">
+          <option value="">Todos</option>
+          <option value="1" {% if request.GET.nivel == '1' %}selected{% endif %}>Nivel 1</option>
+          <option value="2" {% if request.GET.nivel == '2' %}selected{% endif %}>Nivel 2</option>
+          <option value="3" {% if request.GET.nivel == '3' %}selected{% endif %}>Nivel 3</option>
+          <option value="4" {% if request.GET.nivel == '4' %}selected{% endif %}>Nivel 4</option>
+          <option value="5" {% if request.GET.nivel == '5' %}selected{% endif %}>Nivel 5</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="fecha">Desde:</label><br>
+        <input type="date" name="fecha_i" id="fecha_i" value="{{ request.GET.fecha_i }}">
+      </div>
+       <div>
+            <label for="fecha">Hasta:</label><br>
+            <input type="date" name="fecha_f" id="fecha_f" value="{{ request.GET.fecha_f }}">
+        </div>
+
+      <div>
+        <button type="submit">Filtrar</button>
+      </div>
+    </form>
+
+
+    <div class="resultados">
+      {% if reportes %}
+        <h2>Promedio puntaje:{{ promedio_puntaje }}</h2>
+        <div id="grafica_puntajes" style="height: 300px;"></div>
+        <h2>Total distracciones:{{ total_distracciones }}</h2>
+        <h2>Total somnolencias:{{ total_somnolencias }}</h2>
+        <h2>Promedio distracciones:{{ promedio_distracciones }}</h2>
+        <h2>Promedio somnolencias:{{ promedio_somnolencias }}</h2>
+      {% else %}
+        <p>No hay reportes que coincidan con los filtros.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 </body>
+<script>
+    const puntajes = {{ puntajes|safe }};
+    const totalDistracciones = {{ total_distracciones }};
+
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (puntajes.length > 0) {
+            renderGraficoLineasPuntaje(puntajes, "#grafica_puntajes");
+            renderGraficoLineaDistraccion(totalDistracciones,"grafica_distracciones");
+        }
+
+    });
+</script>
 </html>
