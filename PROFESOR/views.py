@@ -65,7 +65,6 @@ class reportEstudiante(TemplateView):
 
 
 class verReportStudent(ListView):
-    class verReporte(TemplateView):
         template_name = 'verReporteStudent.html'
 
         def get_context_data(self, **kwargs):

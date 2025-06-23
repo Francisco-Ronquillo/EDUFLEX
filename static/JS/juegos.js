@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const musica = document.getElementById("musicaJuegos");
 
-  // === Cargar preferencias desde el servidor ===
+
   fetch("/preferencias/")
     .then(response => response.json())
     .then(data => {

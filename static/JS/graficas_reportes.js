@@ -1,100 +1,34 @@
 
-async function cargarDatosYGraficar(apiUrl) {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    renderGraficoBarrasAgrupadas(data, '#grafico1');
-    renderGraficoLineasPuntaje(data, '#grafico2');
-    renderGraficoDuracion(data, '#grafico3');
-    renderGraficoDispersión(data, '#grafico4');
-    renderGraficoPorFecha(data, '#grafico5');
-}
-
-function renderGraficoBarrasAgrupadas(data, selector) {
-    const agrupado = {};
-    data.forEach(r => {
-        const nombre = r["niño__nombre_completo"];
-        if (!agrupado[nombre]) agrupado[nombre] = { distracciones: 0, somnolencias: 0 };
-        agrupado[nombre].distracciones += r.distracciones || 0;
-        agrupado[nombre].somnolencias += r.somnolencias || 0;
-    });
-
-    const dataset = Object.entries(agrupado).map(([nombre, valores]) => ({
-        nombre,
-        ...valores
-    }));
-
-    const width = 600, height = 300;
-    const margin = {top: 20, right: 30, bottom: 70, left: 40};
-
-    const svg = d3.select(selector).append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    const x = d3.scaleBand()
-        .domain(dataset.map(d => d.nombre))
-        .range([margin.left, width - margin.right])
-        .padding(0.2);
-
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(dataset, d => Math.max(d.distracciones, d.somnolencias))])
-        .nice()
-        .range([height - margin.bottom, margin.top]);
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
-
-    svg.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
-
-    svg.selectAll(".bar1")
-        .data(dataset)
-        .enter()
-        .append("rect")
-        .attr("x", d => x(d.nombre))
-        .attr("y", d => y(d.distracciones))
-        .attr("width", x.bandwidth() / 2)
-        .attr("height", d => y(0) - y(d.distracciones))
-        .attr("fill", "#1f77b4");
-
-    svg.selectAll(".bar2")
-        .data(dataset)
-        .enter()
-        .append("rect")
-        .attr("x", d => x(d.nombre) + x.bandwidth() / 2)
-        .attr("y", d => y(d.somnolencias))
-        .attr("width", x.bandwidth() / 2)
-        .attr("height", d => y(0) - y(d.somnolencias))
-        .attr("fill", "#ff7f0e");
-}
-
 function renderGraficoLineasPuntaje(data, selector) {
-    const agrupado = {};
-    data.forEach(d => {
-        const nombre = d["niño__nombre_completo"];
-        if (!agrupado[nombre]) agrupado[nombre] = [];
-        agrupado[nombre].push({fecha: new Date(d.fecha), puntaje: +d.puntaje});
-    });
+
+    d3.select(selector).selectAll("*").remove();
+
+    const puntos = data
+        .filter(d => d.fecha && d.puntaje !== undefined)
+        .map(d => ({
+            fecha: new Date(d.fecha),
+            puntaje: +d.puntaje
+        }));
+    console.log("Puntos procesados:", puntos);
+    if (puntos.length === 0) {
+        console.warn("No hay puntos para graficar.");
+        return;
+    }
 
     const width = 600, height = 300;
-    const margin = {top: 20, right: 30, bottom: 50, left: 40};
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
-    const svg = d3.select(selector).append("svg")
+    const svg = d3.select(selector)
+        .append("svg")
         .attr("width", width)
         .attr("height", height);
 
-    const allData = Object.values(agrupado).flat();
     const x = d3.scaleTime()
-        .domain(d3.extent(allData, d => d.fecha))
+        .domain(d3.extent(puntos, d => d.fecha))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(allData, d => d.puntaje)])
+        .domain([0, d3.max(puntos, d => d.puntaje)])
         .nice()
         .range([height - margin.bottom, margin.top]);
 
@@ -113,133 +47,53 @@ function renderGraficoLineasPuntaje(data, selector) {
         .x(d => x(d.fecha))
         .y(d => y(d.puntaje));
 
-    Object.entries(agrupado).forEach(([nombre, puntos]) => {
-        svg.append("path")
-            .datum(puntos)
-            .attr("fill", "none")
-            .attr("stroke", d3.schemeCategory10[Math.floor(Math.random() * 10)])
-            .attr("stroke-width", 2)
-            .attr("d", line);
-    });
-}
-
-function renderGraficoDuracion(data, selector) {
-    const agrupado = {};
-    data.forEach(r => {
-        const nombre = r["niño__nombre_completo"];
-        const dur = r.duracion_evaluacion ? parseFloat(r.duracion_evaluacion.replace(":", ".")) : 0;
-        if (!agrupado[nombre]) agrupado[nombre] = [];
-        agrupado[nombre].push(dur);
-    });
-
-    const promedios = Object.entries(agrupado).map(([nombre, valores]) => ({
-        nombre,
-        promedio: valores.reduce((a, b) => a + b, 0) / valores.length
-    }));
-
-    const width = 600, height = 300;
-    const margin = {top: 20, right: 30, bottom: 70, left: 50};
-
-    const svg = d3.select(selector).append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    const x = d3.scaleBand()
-        .domain(promedios.map(d => d.nombre))
-        .range([margin.left, width - margin.right])
-        .padding(0.3);
-
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(promedios, d => d.promedio)])
-        .nice()
-        .range([height - margin.bottom, margin.top]);
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
-
-    svg.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
-
-    svg.selectAll("rect")
-        .data(promedios)
-        .enter()
-        .append("rect")
-        .attr("x", d => x(d.nombre))
-        .attr("y", d => y(d.promedio))
-        .attr("width", x.bandwidth())
-        .attr("height", d => y(0) - y(d.promedio))
-        .attr("fill", "#6a3d9a");
-}
-
-function renderGraficoDispersión(data, selector) {
-    const dataset = data.map(d => ({
-        puntaje: +d.puntaje || 0,
-        distracciones: +d.distracciones || 0
-    }));
-
-    const width = 600, height = 300;
-    const margin = {top: 20, right: 20, bottom: 50, left: 50};
-
-    const svg = d3.select(selector).append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    const x = d3.scaleLinear()
-        .domain([0, d3.max(dataset, d => d.distracciones)])
-        .range([margin.left, width - margin.right]);
-
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(dataset, d => d.puntaje)])
-        .range([height - margin.bottom, margin.top]);
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x));
-
-    svg.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
+    svg.append("path")
+        .datum(puntos)
+        .attr("fill", "none")
+        .attr("stroke", "#2ca02c")
+        .attr("stroke-width", 2)
+        .attr("d", line);
 
     svg.selectAll("circle")
-        .data(dataset)
+        .data(puntos)
         .enter()
         .append("circle")
-        .attr("cx", d => x(d.distracciones))
+        .attr("cx", d => x(d.fecha))
         .attr("cy", d => y(d.puntaje))
-        .attr("r", 5)
-        .attr("fill", "#e41a1c");
+        .attr("r", 4)
+        .attr("fill", "#2ca02c");
 }
+function renderGraficoLineasDistraccion(data, selector) {
 
-function renderGraficoPorFecha(data, selector) {
-    const conteo = {};
-    data.forEach(d => {
-        const fecha = d.fecha;
-        conteo[fecha] = (conteo[fecha] || 0) + 1;
-    });
+    d3.select(selector).selectAll("*").remove();
 
-    const dataset = Object.entries(conteo).map(([fecha, cantidad]) => ({
-        fecha: new Date(fecha),
-        cantidad
-    }));
+    const puntos = data
+        .filter(d => d.fecha && d.distraccion !== undefined)
+        .map(d => ({
+            fecha: new Date(d.fecha),
+            distraccion: +d.distraccion
+        }));
+    console.log("Puntos procesados:", puntos);
+    if (puntos.length === 0) {
+        console.warn("No hay puntos para graficar.");
+        return;
+    }
 
     const width = 600, height = 300;
-    const margin = {top: 20, right: 20, bottom: 50, left: 50};
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
-    const svg = d3.select(selector).append("svg")
+    const svg = d3.select(selector)
+        .append("svg")
         .attr("width", width)
         .attr("height", height);
 
     const x = d3.scaleTime()
-        .domain(d3.extent(dataset, d => d.fecha))
+        .domain(d3.extent(puntos, d => d.fecha))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(dataset, d => d.cantidad)])
+        .domain([0, d3.max(puntos, d => d.distraccion)])
+        .nice()
         .range([height - margin.bottom, margin.top]);
 
     svg.append("g")
@@ -253,15 +107,25 @@ function renderGraficoPorFecha(data, selector) {
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y));
 
+    const line = d3.line()
+        .x(d => x(d.fecha))
+        .y(d => y(d.distraccion));
+
     svg.append("path")
-        .datum(dataset)
+        .datum(puntos)
         .attr("fill", "none")
-        .attr("stroke", "#4daf4a")
+        .attr("stroke", "#2ca02c")
         .attr("stroke-width", 2)
-        .attr("d", d3.line()
-            .x(d => x(d.fecha))
-            .y(d => y(d.cantidad))
-        );
+        .attr("d", line);
+
+    svg.selectAll("circle")
+        .data(puntos)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.fecha))
+        .attr("cy", d => y(d.distraccion))
+        .attr("r", 4)
+        .attr("fill", "#2ca02c");
 }
 
 function renderGraficoPastelReporte(data, selector) {

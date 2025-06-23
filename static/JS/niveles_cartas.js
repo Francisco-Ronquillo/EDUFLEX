@@ -1,8 +1,8 @@
-// Esperar a que cargue el DOM
+
 document.addEventListener("DOMContentLoaded", () => {
   const musica = document.getElementById("musicaJuegos");
 
-  // ✅ Cargar preferencias del servidor
+
   fetch("/preferencias/")
     .then(res => res.json())
     .then(data => {
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Aplicar texto grande
+
       if (data.texto_grande) {
         document.body.classList.add("texto-grande");
       }
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// ✅ Función para mostrar mensajes flotantes
+
 function mostrarMensajeFlotante(texto, color) {
   const mensaje = document.getElementById('mensaje-flotante');
   if (!mensaje) return;

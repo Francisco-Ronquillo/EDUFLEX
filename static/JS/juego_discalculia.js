@@ -1,4 +1,4 @@
-// === CONFIGURACIÓN INICIAL ===
+
 const totalPreguntas = 10;
 let contadorCorrecto = 0;
 let contadorIncorrecto = 0;
@@ -24,7 +24,7 @@ const dificultadPorNivel = [
 
 
 
-// === MENSAJE FLOTANTE ===
+
 function mostrarMensajeFlotante(texto, color) {
     const mensaje = document.getElementById("mensaje-flotante");
     if (!mensaje) return;
@@ -39,7 +39,7 @@ function mostrarMensajeFlotante(texto, color) {
     }, 2000);
 }
 
-// === BURBUJAS ===
+
 function crearBurbujas() {
     const contenedor = document.getElementById("burbujas-container");
     for (let i = 0; i < 15; i++) {
@@ -51,7 +51,7 @@ function crearBurbujas() {
     }
 }
 
-// === GENERADOR DE PREGUNTAS ===
+
 function generarPregunta() {
     if (contadorPreguntas >= totalPreguntas) {
         finalizarJuego();
@@ -66,7 +66,7 @@ function generarPregunta() {
     let num1, num2, clave;
     let intentos = 0;
 
-    // Evitar repeticiones dentro del mismo nivel
+
     do {
         num1 = Math.floor(Math.random() * (max - min + 1)) + min;
         num2 = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -80,7 +80,7 @@ function generarPregunta() {
         }
     } while (preguntasHechasEnNivel.has(clave));
 
-    preguntasHechasEnNivel.add(clave); // ← NUEVO
+    preguntasHechasEnNivel.add(clave);
 
     const respuestaCorrecta = num1 * num2;
     contadorPreguntas++;
@@ -117,10 +117,10 @@ function verificarRespuesta(seleccionada, correcta) {
 
         const valor = parseInt(btn.innerText);
         if (valor === correcta) {
-            btn.classList.add('correcta'); // Siempre mostrar cuál era la correcta
+            btn.classList.add('correcta');
         }
         if (valor === seleccionada && valor !== correcta) {
-            btn.classList.add('incorrecta'); // Si se equivocó, marcarlo
+            btn.classList.add('incorrecta');
         }
     });
 
@@ -148,7 +148,7 @@ function verificarRespuesta(seleccionada, correcta) {
 
 
 
-// === FINALIZAR JUEGO ===
+
 function finalizarJuego() {
     const tiempoTotal = Math.round((Date.now() - tiempoInicio - tiempoPausado) / 1000);
     const totalPuntos = puntos;
@@ -183,7 +183,7 @@ function finalizarJuego() {
     document.body.appendChild(modal);
 }
 
-// === REDIRECCIÓN AL MENÚ ===
+
 function volverAlMenu() {
     window.location.href = "/niveles_discalculia/";
 }
@@ -218,7 +218,7 @@ function togglePausa() {
     }
 }
 
-// === UTILIDADES ===
+
 function obtenerNivelDesdeURL() {
     const params = new URLSearchParams(window.location.search);
     const nivel = parseInt(params.get('nivel'));
@@ -251,7 +251,7 @@ function formatearTiempo(segundosTotales) {
     return partes.join(' ');
 }
 
-// === INICIO DEL JUEGO ===
+
 crearBurbujas();
 generarPregunta();
 

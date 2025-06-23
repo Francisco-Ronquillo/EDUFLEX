@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const musica = document.getElementById("musicaJuegos");
 
-  // === Cargar preferencias del servidor ===
+
   fetch("/preferencias/")
     .then(response => response.json())
     .then(data => {
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// === MENSAJE FLOTANTE ===
+
 function mostrarMensajeFlotante(texto, color) {
   const mensaje = document.getElementById('mensaje-flotante');
   if (!mensaje) return;

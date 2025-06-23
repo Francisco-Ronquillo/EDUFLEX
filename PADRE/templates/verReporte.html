@@ -21,7 +21,7 @@
         </div>
         <h1 style="text-align: center;">📋 Reporte de Evaluación del Niño</h1>
 
-        <!-- TAB: DATOS -->
+
         <div id="tab-datos" class="tab-content active">
             <div class="resumen">
                 <div class="card"><h3>Puntaje</h3><p>{{ reporte.puntaje }}</p></div>
@@ -31,7 +31,7 @@
             </div>
 
             <section>
-                <h2>🟡 Capturas de Somnolencia</h2>
+                <h2>Capturas de Somnolencia</h2>
                 <div class="galeria">
                     {% for imagen, duracion in pares_somnolencia %}
                         <div class="imagen">
@@ -45,7 +45,7 @@
             </section>
 
             <section>
-                <h2>🟠 Capturas de Distracción</h2>
+                <h2>Capturas de Distracción</h2>
                 <div class="galeria">
                     {% for imagen, duracion in pares_distraccion %}
                         <div class="imagen">
@@ -59,10 +59,10 @@
             </section>
         </div>
 
-        <!-- TAB: GRÁFICAS -->
+
         <div id="tab-graficas" class="tab-content">
             <div class="grafico-title">📊 Gráfica del Reporte</div>
-            <div id="grafico6" style="margin-top: 20px;"></div>
+            <div id="grafico_Distraccion_Somnolencia" style="margin-top: 20px;"></div>
             <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
             <div class="grafico-title">
                 <span>Promedio de somonolencia: </span>
@@ -85,12 +85,11 @@
             </div>
             <div id="grafico_distraccion" style="margin-top: 30px;"></div>
 
-            <div id="mi-div-grafico"></div>
+            <div id="grafico_tiempos_de_evaluavion"></div>
 
         </div>
     </div>
 
-    <!-- JS para alternar pestañas y dibujar gráfica -->
     <script>
         const dataReporte = {{ grafico_data|safe }};
         const tiemposSomnolencia = {{ grafico_data.tiempos_somnolencia|safe }};
@@ -114,10 +113,10 @@
 
 
                 if (tab === 'graficas' && !graficaMostrada) {
-                    renderGraficoPastelReporte(dataReporte, "#grafico6");
+                    renderGraficoPastelReporte(dataReporte, "#grafico_Distraccion_Somnolencia");
                     renderGraficoLineaSomnolencia(tiemposSomnolencia, "#grafico_tiempos_somnolencia");
                     renderGraficoLineaDistraccion(dataReporte, "#grafico_distraccion");
-                    renderGraficoPastelTiempo(datosGrafico, "#mi-div-grafico");
+                    renderGraficoPastelTiempo(datosGrafico, "#grafico_tiempos_de_evaluavion");
                     graficaMostrada = true;
                 }
             });

@@ -6,6 +6,8 @@
   <title>Estadísticas Generales</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static "CSS/estadisticasGeneralesPadre.css" %}">
+  <script src="{% static 'js/graficas_reportes.js' %}"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 
@@ -56,6 +58,8 @@
 
     <div class="resultados">
       {% if reportes %}
+        <h2>Promedio puntaje:{{ promedio_puntaje }}</h2>
+        <div id="grafica_puntajes" style="height: 300px;"></div>
         <h2>Total distracciones:{{ total_distracciones }}</h2>
         <h2>Total somnolencias:{{ total_somnolencias }}</h2>
         <h2>Promedio distracciones:{{ promedio_distracciones }}</h2>
@@ -68,4 +72,17 @@
 </div>
 
 </body>
+<script>
+    const puntajes = {{ puntajes|safe }};
+    const totalDistracciones = {{ total_distracciones }};
+
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (puntajes.length > 0) {
+            renderGraficoLineasPuntaje(puntajes, "#grafica_puntajes");
+            renderGraficoLineaDistraccion(totalDistracciones,"grafica_distracciones");
+        }
+
+    });
+</script>
 </html>
