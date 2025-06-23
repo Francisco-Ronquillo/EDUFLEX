@@ -1,78 +1,104 @@
 body {
-  font-family: 'Open Sans', sans-serif;
-  background: #f7f7f7;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #e6f7ff);
   margin: 0;
   padding: 0;
+  color: #2C3E50;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ccc;
+  background: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .logo img {
-  height: 50px;
+  height: 55px;
 }
 
 .btn-home {
-  background-color: rgba(86, 250, 1, 0.82);
-  padding: 10px 15px;
+  background-color: #A3E635;
+  padding: 10px 18px;
   border-radius: 30px;
   font-weight: bold;
   text-decoration: none;
-  color: black;
-  margin-left: 20px;
+  color: #1f2937;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-home:hover {
+  background-color: #8cc63f;
 }
 
 .btn-logout {
-  background-color: #f8a6c8;
-  padding: 10px 15px;
+  background-color: #F48FB1;
+  padding: 10px 18px;
   border-radius: 30px;
   font-weight: bold;
   text-decoration: none;
-  color: black;
+  color: white;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.btn-logout:hover {
+  background-color: #ec407a;
 }
 
 main {
-  padding: 30px;
+  padding: 40px;
 }
 
 h2 {
-  margin-bottom: 20px;
-  font-size: 22px;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #4A90E2;
 }
 
 .curso-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  background: #f1f1f1;
-  border-radius: 30px;
-  padding: 20px;
+  gap: 25px;
+  justify-content: center;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .curso-card {
-  width: 250px;
-  height: 250px;
-  border-radius: 15px;
+  width: 230px;
+  height: 230px;
+  border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  background-color: white;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   text-decoration: none;
-  color: black;
+  color: #2C3E50;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.curso-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
 
+.curso-card span {
+  margin: 6px 0;
+  font-size: 1.05rem;
+}

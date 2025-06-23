@@ -10,13 +10,13 @@
 
 <header>
   <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
-  <a href="{% url 'profesor:dashboardTeacher' %}" class="btn-nav">Home</a>
+  <a href="{% url 'padre:dashboardDad' %}" class="btn-nav">Home</a>
   <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
 </header>
 
 <main>
   <div class="regresar">
-      <a onclick="window.history.back()" class="boton-recuperar">←</a>
+      <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">←</a>
   </div>
   <section class="estudiante ">
     <div class="contenido-reportes">

@@ -1,187 +1,169 @@
-/* --- Estilos Generales --- */
 body {
-    font-family: 'Open Sans', sans-serif;
-    margin: 0;
-    background: #f9fafb;
-    color: #1f2937;
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #e0f7fa, #fef9f9);
+  color: #1f2937;
+  padding-bottom: 40px;
 }
 
-/* --- Encabezado --- */
+/* Header */
 header {
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 40px;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 0 0 16px 16px;
 }
 
 .logo {
-    height: 55px;
+  height: 55px;
 }
 
 .btn-nav {
-    background: #A3E635;
-    border: none;
-    font-size: 16px;
-    padding: 10px 18px;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    text-decoration: none;
-    color: #1f2937;
-    transition: background-color 0.3s;
+  background: #A3E635;
+  font-size: 16px;
+  padding: 10px 18px;
+  font-weight: bold;
+  border-radius: 30px;
+  text-decoration: none;
+  color: #1f2937;
+  transition: background-color 0.3s;
 }
 
 .btn-nav:hover {
-    background-color: #8cc63f;
+  background-color: #8cc63f;
 }
 
 .btn-cerrar {
-    background: #FF6B6B;
-    border: none;
-    padding: 10px 18px;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    text-decoration: none;
-    color: white;
-    transition: background-color 0.3s;
+  background: #FF6B6B;
+  padding: 10px 18px;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 30px;
+  text-decoration: none;
+  color: white;
+  transition: background-color 0.3s;
 }
 
 .btn-cerrar:hover {
-    background-color: #e45757;
+  background-color: #e45757;
 }
 
-/* --- Botón regresar --- */
+/* Botón regresar */
 .regresar {
-    margin: 20px 40px;
+  margin: 20px 40px;
 }
 
 .boton-recuperar {
-    font-size: 1.2rem;
-    background: #E5E7EB;
-    padding: 6px 12px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #1f2937;
-    transition: background-color 0.3s;
+  font-size: 1.1rem;
+  background: #E5E7EB;
+  padding: 8px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #1f2937;
+  transition: background-color 0.3s;
 }
 
 .boton-recuperar:hover {
-    background-color: #d1d5db;
+  background-color: #d1d5db;
 }
 
-/* --- Contenido --- */
+/* Contenido Principal */
 main h4 {
-    font-size: 1.6rem;
-    margin-left: 40px;
-    color: #4A90E2;
+  font-size: 1.8rem;
+  margin-left: 40px;
+  color: #4A90E2;
 }
 
+/* Contenedor de Reportes */
 .estudiante {
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 30px;
-    margin: 20px auto;
-    width: 90%;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px auto;
+  width: 90%;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* --- Tarjetas de reportes --- */
+/* Tarjetas */
 .reportes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-    padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 0;
+  justify-content: flex-start;
 }
 
 .card.reporte {
-    background-color: #f3f4f6;
-    border-radius: 16px;
-    width: 200px;
-    height: 200px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-decoration: none;
-    color: #1f2937;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f3f4f6;
+  border-radius: 20px;
+  width: 220px;
+  height: 220px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  color: #1f2937;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .card.reporte:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-    background-color: #e0f2fe;
+  transform: scale(1.03);
+  background-color: #e0f2fe;
 }
 
 .card.reporte span {
-    margin: 6px 0;
-    font-size: 0.95rem;
-    color: #374151;
+  margin: 6px 0;
+  font-size: 1rem;
+  color: #374151;
 }
 
-
-
-
-
-
-
-
+/* Filtros */
 .filtros {
-    background-color: #ffffff;
-    margin: 20px auto;
-    padding: 20px 30px;
-    width: 90%;
-    border-radius: 15px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 15px;
-}
-
-.filtros form {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 100%;
+  background-color: #ffffff;
+  margin: 20px auto;
+  padding: 20px 30px;
+  width: 90%;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 15px;
 }
 
 .filtros label {
-    font-weight: bold;
-    color: #1f2937;
+  font-weight: bold;
+  color: #1f2937;
 }
 
 .filtros select,
 .filtros input[type="date"] {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    background-color: #f9fafb;
-    font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  font-size: 14px;
 }
 
 .btn-filtrar {
-    background-color: #60a5fa;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: #60a5fa;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .btn-filtrar:hover {
-    background-color: #3b82f6;
+  background-color: #3b82f6;
 }
