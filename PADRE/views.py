@@ -232,6 +232,13 @@ class estadisticasGenerales(TemplateView):
             }
             for r in reportes
         ]
+        distracciones=[
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'puntaje': round(float(r.puntaje) / 10, 2) if r.puntaje is not None else 0
+            }
+            for r in reportes
+        ]
         solo_puntajes = [p['puntaje'] for p in puntajes]
         promedio_puntaje = round(statistics.mean(solo_puntajes), 2) if solo_puntajes else 0
         promedio_distracciones = round(total_distracciones / cantidad_reportes, 2) if cantidad_reportes > 0 else 0

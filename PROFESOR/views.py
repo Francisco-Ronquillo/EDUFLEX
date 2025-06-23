@@ -64,8 +64,8 @@ class reportEstudiante(TemplateView):
         return context
 
 
-class verReportStudent(ListView):
-        template_name = 'verReporteStudent.html'
+class verReportStudent(TemplateView):
+        template_name = 'verReportStudent.html'
 
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)

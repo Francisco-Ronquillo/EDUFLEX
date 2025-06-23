@@ -23,7 +23,7 @@
         <h4 >Reportes:</h4>
         <div class="reportes">
           {% for reporte in reportes %}
-          <a class="card reporte" href="{% url 'padre:verReporte' reporte.id %}">
+          <a class="card reporte" href="{% url 'profesor:verReportStudent' reporte.id %}">
             <strong></strong>
              <span>{{ reporte.titulo }}</span>
             <span>Duración:{{ reporte.duracion_evaluacion }}</span>
