@@ -222,9 +222,7 @@ class estadisticasGenerales(TemplateView):
 
         total_distracciones = sum(r.distracciones or 0 for r in reportes)
         total_somnolencias = sum(r.somnolencias or 0 for r in reportes)
-        somnolencias_array = [r.somnolencias or 0 for r in reportes]
         cantidad_reportes = reportes.count()
-        distracciones_array = [r.distracciones or 0 for r in reportes]
         puntajes = [
             {
                 'fecha': r.fecha.strftime('%Y-%m-%d'),
@@ -235,15 +233,39 @@ class estadisticasGenerales(TemplateView):
         distracciones=[
             {
                 'fecha': r.fecha.strftime('%Y-%m-%d'),
-                'puntaje': round(float(r.puntaje) / 10, 2) if r.puntaje is not None else 0
+                'distracciones': int(r.distracciones)  if r.distracciones is not None else 0
             }
             for r in reportes
         ]
+        somnolencias = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'somnolencias': int(r.somnolencias)  if r.somnolencias is not None else 0
+            }
+            for r in reportes
+        ]
+        tiempos_distraccion_sumados = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'tiempo_total_distraccion': float(sum(r.tiempos_distraccion or []))
+            }
+            for r in reportes
+        ]
+        tiempos_somnolencia_sumados = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'tiempo_total_somnolencia': float(sum(r.tiempos_somnolencia or []))
+            }
+            for r in reportes
+        ]
+        tiempos = [r['tiempo_total_distraccion'] for r in tiempos_distraccion_sumados]
+        promedio_tiempo_distraccion = round(statistics.mean(tiempos), 2) if tiempos else 0
+        tiempos_som = [r['tiempo_total_somnolencia'] for r in tiempos_somnolencia_sumados]
+        promedio_tiempo_somnolencia = round(statistics.mean(tiempos_som), 2) if tiempos_som else 0
         solo_puntajes = [p['puntaje'] for p in puntajes]
         promedio_puntaje = round(statistics.mean(solo_puntajes), 2) if solo_puntajes else 0
         promedio_distracciones = round(total_distracciones / cantidad_reportes, 2) if cantidad_reportes > 0 else 0
         promedio_somnolencias = round(total_somnolencias / cantidad_reportes, 2) if cantidad_reportes > 0 else 0
-
         context['nino'] = nino
         context['reportes'] = reportes
         context['total_distracciones'] = total_distracciones
@@ -254,15 +276,17 @@ class estadisticasGenerales(TemplateView):
         context['promedio_distracciones'] = promedio_distracciones
         context['promedio_somnolencias'] = promedio_somnolencias
         context['promedio_puntaje'] = promedio_puntaje
-
+        context['distracciones'] = distracciones
+        context['somnolencias'] = somnolencias
         context['puntajes'] = puntajes
-
-        context['distracciones_array'] = distracciones_array
-        context['grafico_data'] = {
+        context['tiempos_distraccion_sumados'] = tiempos_distraccion_sumados
+        context['tiempos_somnolencia_sumados'] = tiempos_somnolencia_sumados
+        context['promedio_tiempo_distraccion'] = promedio_tiempo_distraccion
+        context['promedio_tiempo_somnolencia'] = promedio_tiempo_somnolencia
+        context ['graficodis_som']={
             'distracciones': total_distracciones,
             'somnolencias': total_somnolencias,
         }
-
         return context
 
 

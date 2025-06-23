@@ -9,11 +9,6 @@ function renderGraficoLineasPuntaje(data, selector) {
             fecha: new Date(d.fecha),
             puntaje: +d.puntaje
         }));
-    console.log("Puntos procesados:", puntos);
-    if (puntos.length === 0) {
-        console.warn("No hay puntos para graficar.");
-        return;
-    }
 
     const width = 600, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
@@ -63,21 +58,18 @@ function renderGraficoLineasPuntaje(data, selector) {
         .attr("r", 4)
         .attr("fill", "#2ca02c");
 }
-function renderGraficoLineasDistraccion(data, selector) {
-
+function renderGraficoLineasDistraccionGeneral(data, selector) {
     d3.select(selector).selectAll("*").remove();
 
-    const puntos = data
-        .filter(d => d.fecha && d.distraccion !== undefined)
+
+    const distracciones = data
+        .filter(d => d.fecha && d.distracciones !== undefined)
         .map(d => ({
             fecha: new Date(d.fecha),
-            distraccion: +d.distraccion
+            distraccion: +d.distracciones
         }));
-    console.log("Puntos procesados:", puntos);
-    if (puntos.length === 0) {
-        console.warn("No hay puntos para graficar.");
-        return;
-    }
+
+
 
     const width = 600, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
@@ -88,11 +80,11 @@ function renderGraficoLineasDistraccion(data, selector) {
         .attr("height", height);
 
     const x = d3.scaleTime()
-        .domain(d3.extent(puntos, d => d.fecha))
+        .domain(d3.extent(distracciones, d => d.fecha))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(puntos, d => d.distraccion)])
+        .domain([0, d3.max(distracciones, d => d.distraccion)])
         .nice()
         .range([height - margin.bottom, margin.top]);
 
@@ -112,20 +104,266 @@ function renderGraficoLineasDistraccion(data, selector) {
         .y(d => y(d.distraccion));
 
     svg.append("path")
-        .datum(puntos)
+        .datum(distracciones)
         .attr("fill", "none")
-        .attr("stroke", "#2ca02c")
+        .attr("stroke", "#fff500")
         .attr("stroke-width", 2)
         .attr("d", line);
 
     svg.selectAll("circle")
-        .data(puntos)
+        .data(distracciones)
         .enter()
         .append("circle")
         .attr("cx", d => x(d.fecha))
         .attr("cy", d => y(d.distraccion))
         .attr("r", 4)
-        .attr("fill", "#2ca02c");
+        .attr("fill", "#fff500");
+}
+
+function renderGraficoLineasSomnolenciaGeneral(data, selector) {
+    d3.select(selector).selectAll("*").remove();
+
+    const somnolencias = data
+        .filter(d => d.fecha && d.somnolencias !== undefined)
+        .map(d => ({
+            fecha: new Date(d.fecha),
+            somnolencia: +d.somnolencias
+        }));
+
+    const width = 600, height = 300;
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+
+    const svg = d3.select(selector)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const x = d3.scaleTime()
+        .domain(d3.extent(somnolencias, d => d.fecha))
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(somnolencias, d => d.somnolencia)])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
+
+    const line = d3.line()
+        .x(d => x(d.fecha))
+        .y(d => y(d.somnolencia));
+
+    svg.append("path")
+        .datum(somnolencias)
+        .attr("fill", "none")
+        .attr("stroke", "#ff6200")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+    svg.selectAll("circle")
+        .data(somnolencias)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.fecha))
+        .attr("cy", d => y(d.somnolencia))
+        .attr("r", 4)
+        .attr("fill", "#ff6200");
+}
+
+function renderGraficoLineasTiemposDisGeneral(data, selector) {
+    d3.select(selector).selectAll("*").remove();
+
+    const tiempos = data
+        .filter(d => d.fecha && d.tiempo_total_distraccion !== undefined)
+        .map(d => ({
+            fecha: new Date(d.fecha),
+            tiempo_total_dis: +d.tiempo_total_distraccion
+        }));
+
+    const width = 600, height = 300;
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+
+    const svg = d3.select(selector)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const x = d3.scaleTime()
+        .domain(d3.extent(tiempos, d => d.fecha))
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(tiempos, d => d.tiempo_total_dis)])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
+
+    const line = d3.line()
+        .x(d => x(d.fecha))
+        .y(d => y(d.tiempo_total_dis));
+
+    svg.append("path")
+        .datum(tiempos)
+        .attr("fill", "none")
+        .attr("stroke", "#ff6200")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+    svg.selectAll("circle")
+        .data(tiempos)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.fecha))
+        .attr("cy", d => y(d.tiempo_total_dis))
+        .attr("r", 4)
+        .attr("fill", "#ff6200");
+}
+function renderGraficoLineasTiemposSomGeneral(data, selector) {
+    d3.select(selector).selectAll("*").remove();
+
+    const tiempos = data
+        .filter(d => d.fecha && d.tiempo_total_somnolencia !== undefined)
+        .map(d => ({
+            fecha: new Date(d.fecha),
+            tiempo_total_dis: +d.tiempo_total_distraccion
+        }));
+
+    const width = 600, height = 300;
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+
+    const svg = d3.select(selector)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const x = d3.scaleTime()
+        .domain(d3.extent(tiempos, d => d.fecha))
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(tiempos, d => d.tiempo_total_dis)])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
+
+    const line = d3.line()
+        .x(d => x(d.fecha))
+        .y(d => y(d.tiempo_total_dis));
+
+    svg.append("path")
+        .datum(tiempos)
+        .attr("fill", "none")
+        .attr("stroke", "#ff6200")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+    svg.selectAll("circle")
+        .data(tiempos)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.fecha))
+        .attr("cy", d => y(d.tiempo_total_dis))
+        .attr("r", 4)
+        .attr("fill", "#ff6200");
+}
+
+function renderGraficoLineasTiemposSomGeneral(data, selector) {
+    d3.select(selector).selectAll("*").remove();
+
+    const tiempos = data
+        .filter(d => d.fecha && d.tiempo_total_somnolencia !== undefined)
+        .map(d => ({
+            fecha: new Date(d.fecha),
+            tiempo_total_som: +d.tiempo_total_somnolencia
+        }));
+
+    const width = 600, height = 300;
+    const margin = { top: 20, right: 30, bottom: 50, left: 40 };
+
+    const svg = d3.select(selector)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    const x = d3.scaleTime()
+        .domain(d3.extent(tiempos, d => d.fecha))
+        .range([margin.left, width - margin.right]);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(tiempos, d => d.tiempo_total_som)])
+        .nice()
+        .range([height - margin.bottom, margin.top]);
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y));
+
+    const line = d3.line()
+        .x(d => x(d.fecha))
+        .y(d => y(d.tiempo_total_som));
+
+    svg.append("path")
+        .datum(tiempos)
+        .attr("fill", "none")
+        .attr("stroke", "#ff6200")
+        .attr("stroke-width", 2)
+        .attr("d", line);
+
+    svg.selectAll("circle")
+        .data(tiempos)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.fecha))
+        .attr("cy", d => y(d.tiempo_total_som))
+        .attr("r", 4)
+        .attr("fill", "#ff6200");
+    svg.selectAll("text.valor-punto")
+        .data(tiempos)
+        .enter()
+        .append("text")
+        .attr("class", "valor-punto")
+        .attr("x", d => x(d.fecha))
+        .attr("y", d => y(d.tiempo_total_som) - 8)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("fill", "#ff6200")
+        .text(d => d.tiempo_total_som);
 }
 
 function renderGraficoPastelReporte(data, selector) {
@@ -168,6 +406,8 @@ function renderGraficoPastelReporte(data, selector) {
         .attr("text-anchor", "middle")
         .text(d => `${d.data.etiqueta}: ${d.data.valor}`);
 }
+
+
 
 function renderGraficoLineaSomnolencia(data, contenedor) {
     // Limpia cualquier gráfico anterior
