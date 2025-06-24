@@ -29,6 +29,11 @@ class Niño(models.Model):
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
+
+    def get_image(self):
+        if self.foto_perfil:
+            return self.foto_perfil.url
+
 class Reporte(models.Model):
     niño = models.ForeignKey(Niño, on_delete=models.CASCADE, related_name='reportes', null=True, blank=True)
     titulo = models.CharField(max_length=100, null=True, blank=True)

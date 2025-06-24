@@ -32,7 +32,10 @@
             {% for niño in niños %}
                 <li class="item-estudiante">
                     <a href="{% url 'profesor:estudiante' curso.id niño.id %}">
-                        <span class="foto">{{ niño.foto_perfil }}  </span>
+                        {% if niño.foto_perfil %}
+                            <img src="{{ niño.get_image}}">
+                        {% endif %}
+
                         <span class="nombre">📘 {{ niño.nombres }} {{ niño.apellidos }}</span>
                         <span class="ver-mas">Ver detalle ➜</span>
                     </a>
