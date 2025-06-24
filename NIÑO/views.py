@@ -609,8 +609,15 @@ class cerrar_juegoView(View):
         reporte_id = request.session.get('reporte_id')
         if reporte_id:
             try:
+                niño= Niño.objects.get(pk=request.session.get('nino_id'))
                 Reporte.objects.filter(pk=reporte_id).delete()
             except Exception:
                 pass
             request.session.pop('reporte_id', None)
-        return redirect('niño:niveles_discalculia')
+        if niño.especialidad=='D':
+            return redirect('niño:niveles_disgrafia')
+        elif niño.especialidad=='DC':
+
+            return redirect('niño:niveles_discalculia')
+        else:
+            return redirect('niño:niveles_cartas')
