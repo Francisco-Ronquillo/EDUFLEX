@@ -9,41 +9,106 @@
 </head>
 <body>
 
-
-    <header>
-        <div class="logo">
-            <img src="{% static 'img/logo.png' %}" alt="Eduflex">
-            <a href="{% url 'profesor:verEstadisticasCurso' %}" class="btn">Estadistiocas generales curso</a>
-        </div>
-        <nav>
-
-
-        </nav>
-    </header>
-
-    <div class="regresar">
-      <a href="{% url 'profesor:tuscursos' %}" class="boton-recuperar">← Regresar</a>
+<header>
+    <div class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Eduflex">
+        <a href="{% url 'profesor:verEstadisticasCurso' %}" class="btn">Estadísticas generales curso</a>
     </div>
+</header>
 
-    <div class="container">
-        <h1>👨‍🎓 Estudiantes del Curso</h1>
+<div class="regresar">
+    <a onclick="window.history.back()" class="boton-recuperar">
+        <button class="btn-return"> ← Regresar</button>
+    </a>
+</div>
 
-        <ul class="lista-estudiantes">
-            {% for niño in niños %}
-                <li class="item-estudiante">
-                    <a href="{% url 'profesor:estudiante' curso.id niño.id %}">
-                        {% if niño.foto_perfil %}
-                            <img src="{{ niño.get_image}}">
-                        {% endif %}
+<!-- Filtros -->
+<div class="filtros">
+    <input type="text" id="filtro-nombre" placeholder="Buscar por nombre...">
+    <select id="filtro-genero">
+        <option value="">Todos los géneros</option>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+    </select>
+</div>
 
-                        <span class="nombre">📘 {{ niño.nombres }} {{ niño.apellidos }}</span>
-                        <span class="ver-mas">Ver detalle ➜</span>
-                    </a>
-                </li>
-            {% empty %}
-                <li class="sin-estudiantes">😕 No hay estudiantes registrados.</li>
-            {% endfor %}
-        </ul>
-    </div>
+<!-- Lista de Estudiantes -->
+<div class="container">
+    <h1>👨‍🎓 Estudiantes del Curso</h1>
+
+    <ul class="lista-estudiantes">
+        {% for niño in niños %}
+            <li class="item-estudiante"
+                data-nombre="{{ niño.nombres }} {{ niño.apellidos }}"
+                data-genero="{{ niño.genero }}">
+                <a href="{% url 'profesor:estudiante' curso.id niño.id %}">
+                    {% if niño.foto_perfil %}
+                        <img src="{{ niño.get_image }}" class="imagen-niño">
+                    {% endif %}
+                    <span class="nombre">📘 {{ niño.nombres }} {{ niño.apellidos }}</span>
+                    <span class="ver-mas">Ver detalle ➜</span>
+                </a>
+            </li>
+        {% empty %}
+            <li class="sin-estudiantes">😕 No hay estudiantes registrados.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Modal para imagen ampliada -->
+<div id="modal-imagen" class="modal">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <img class="modal-contenido" id="imagen-ampliada">
+</div>
+
+<!-- JS -->
+<script>
+  // Normaliza texto para búsqueda sin tildes
+  function normalizar(texto) {
+    return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const inputNombre = document.getElementById("filtro-nombre");
+    const selectGenero = document.getElementById("filtro-genero");
+    const estudiantes = document.querySelectorAll(".item-estudiante");
+
+    function aplicarFiltro() {
+      const nombreValor = normalizar(inputNombre.value);
+      const generoValor = selectGenero.value;
+
+      estudiantes.forEach(estudiante => {
+        const nombre = normalizar(estudiante.dataset.nombre);
+        const genero = estudiante.dataset.genero;
+
+        const coincideNombre = nombre.includes(nombreValor);
+        const coincideGenero = !generoValor || genero === generoValor;
+
+        estudiante.style.display = (coincideNombre && coincideGenero) ? "block" : "none";
+      });
+    }
+
+    inputNombre.addEventListener("input", aplicarFiltro);
+    selectGenero.addEventListener("change", aplicarFiltro);
+
+    // Ampliar imagen
+    const imagenes = document.querySelectorAll('.imagen-niño');
+    const modal = document.getElementById('modal-imagen');
+    const imagenAmpliada = document.getElementById('imagen-ampliada');
+
+    imagenes.forEach(function (img) {
+      img.addEventListener('click', function (e) {
+        e.preventDefault();
+        imagenAmpliada.src = this.src;
+        modal.style.display = 'block';
+      });
+    });
+  });
+
+  function cerrarModal() {
+    document.getElementById('modal-imagen').style.display = 'none';
+  }
+</script>
+
 </body>
 </html>

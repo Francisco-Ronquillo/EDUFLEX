@@ -21,7 +21,7 @@
     <main>
         <div class="container">
         <div class="welcome">
-          ¡Bienvenida,{{profesor.nombre_completo}} !<br>
+          ¡Bienvenido/a, {{profesor.nombre_completo}}!<br>
           Accede a tus cursos y al seguimiento de tus estudiantes.
         </div>
 
@@ -44,7 +44,7 @@
                       </div>
                       <div>Periodo: {{ curso.periodo }}</div>
                       <div>Fecha inicio: {{ curso.fecha_inicio|date:"M d, Y" }}</div>
-                      <div>Fecha inicio: {{ curso.fecha_fin|date:"M d, Y" }}</div>
+                      <div>Fecha fin: {{ curso.fecha_final|date:"M d, Y" }}</div>
                   </div>
                 </a>
               {% endfor %}
