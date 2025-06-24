@@ -15,7 +15,7 @@
 </header>
 
 <div class="regresar">
-      <a onclick="window.history.back()" class="boton-recuperar"><button class="btn-return"> ← Regresar</button> </a>
+      <a href="{% url 'profesor:curso' curso.id %}" class="boton-recuperar">← Regresar</a>
 </div>
 
 
@@ -24,7 +24,7 @@
   <section class="estudiante ">
     <div class="contenido-reportes">
         <h4 >Reportes:</h4>
-        <a href="{% url 'profesor:verEstadisticasNiño' %}" class="btn">Estadistiocas generales niño</a>
+        <a href="{% url 'profesor:verEstadisticasNiño' nino.id curso.id %}" class="btn">Estadistiocas generales niño</a>
 
         <div class="reportes">
           {% for reporte in reportes %}

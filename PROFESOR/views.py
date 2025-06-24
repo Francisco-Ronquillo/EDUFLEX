@@ -60,6 +60,7 @@ class reportEstudiante(TemplateView):
         curso=Curso.objects.get(pk=curso_id)
         nino = Niño.objects.get(pk=niño_id)
         context['nino'] = nino
+        context['curso'] = curso
         context['reportes'] = Reporte.objects.filter(niño=nino,fecha__range=(curso.fecha_inicio, curso.fecha_final)).order_by('-fecha')
         return context
 
@@ -119,6 +120,97 @@ class verReportStudent(TemplateView):
 
 class Estadisticas_niño(TemplateView):
     template_name = "estadisticas_generales_niño.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        niño_id = self.kwargs.get('niño_id')
+        curso_id = self.kwargs.get('curso_id')
+        nino = get_object_or_404(Niño, pk=niño_id)
+        reportes = Reporte.objects.filter(niño=nino)
+        curso=get_object_or_404(Curso, pk=curso_id)
+        nivel = self.request.GET.get('nivel')
+        fecha_i = self.request.GET.get('fecha_i')
+        fecha_f = self.request.GET.get('fecha_f')
+
+        if nivel:
+            reportes = reportes.filter(titulo__icontains=f'nivel {nivel}')
+        if fecha_i and fecha_f:
+            reportes = reportes.filter(fecha__range=[fecha_i, fecha_f])
+        elif fecha_i:
+            reportes = reportes.filter(fecha__gte=fecha_i)
+        elif fecha_f:
+            reportes = reportes.filter(fecha__lte=fecha_f)
+
+        total_distracciones = sum(r.distracciones or 0 for r in reportes)
+        total_somnolencias = sum(r.somnolencias or 0 for r in reportes)
+        cantidad_reportes = reportes.count()
+        puntajes = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'puntaje': round(float(r.puntaje) / 10, 2) if r.puntaje is not None else 0
+            }
+            for r in reportes
+        ]
+        distracciones = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'distracciones': int(r.distracciones) if r.distracciones is not None else 0
+            }
+            for r in reportes
+        ]
+        somnolencias = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'somnolencias': int(r.somnolencias) if r.somnolencias is not None else 0
+            }
+            for r in reportes
+        ]
+        tiempos_distraccion_sumados = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'tiempo_total_distraccion': float(sum(r.tiempos_distraccion or []))
+            }
+            for r in reportes
+        ]
+        tiempos_somnolencia_sumados = [
+            {
+                'fecha': r.fecha.strftime('%Y-%m-%d'),
+                'tiempo_total_somnolencia': float(sum(r.tiempos_somnolencia or []))
+            }
+            for r in reportes
+        ]
+        tiempos = [r['tiempo_total_distraccion'] for r in tiempos_distraccion_sumados]
+        promedio_tiempo_distraccion = round(statistics.mean(tiempos), 2) if tiempos else 0
+        tiempos_som = [r['tiempo_total_somnolencia'] for r in tiempos_somnolencia_sumados]
+        promedio_tiempo_somnolencia = round(statistics.mean(tiempos_som), 2) if tiempos_som else 0
+        solo_puntajes = [p['puntaje'] for p in puntajes]
+        promedio_puntaje = round(statistics.mean(solo_puntajes), 2) if solo_puntajes else 0
+        promedio_distracciones = round(total_distracciones / cantidad_reportes, 2) if cantidad_reportes > 0 else 0
+        promedio_somnolencias = round(total_somnolencias / cantidad_reportes, 2) if cantidad_reportes > 0 else 0
+        context['nino'] = nino
+        context['reportes'] = reportes
+        context['total_distracciones'] = total_distracciones
+        context['total_somnolencias'] = total_somnolencias
+        context['nivel'] = nivel or ''
+        context['fecha_i'] = fecha_i or ''
+        context['fecha_f'] = fecha_f or ''
+        context['promedio_distracciones'] = promedio_distracciones
+        context['promedio_somnolencias'] = promedio_somnolencias
+        context['promedio_puntaje'] = promedio_puntaje
+        context['distracciones'] = distracciones
+        context['somnolencias'] = somnolencias
+        context['puntajes'] = puntajes
+        context['tiempos_distraccion_sumados'] = tiempos_distraccion_sumados
+        context['tiempos_somnolencia_sumados'] = tiempos_somnolencia_sumados
+        context['promedio_tiempo_distraccion'] = promedio_tiempo_distraccion
+        context['promedio_tiempo_somnolencia'] = promedio_tiempo_somnolencia
+        context['nino']= nino
+        context['curso'] = curso
+        context['graficodis_som'] = {
+            'distracciones': total_distracciones,
+            'somnolencias': total_somnolencias,
+        }
+        return context
 
 class Estadisticas_curso(TemplateView):
     template_name = "estadisticas_generales_curso.html"

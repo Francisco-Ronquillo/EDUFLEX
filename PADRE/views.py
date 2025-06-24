@@ -206,7 +206,7 @@ class estadisticasGenerales(TemplateView):
         nino = get_object_or_404(Niño, pk=pk)
         reportes = Reporte.objects.filter(niño=nino)
 
-        # Filtros
+
         nivel = self.request.GET.get('nivel')
         fecha_i = self.request.GET.get('fecha_i')
         fecha_f = self.request.GET.get('fecha_f')
