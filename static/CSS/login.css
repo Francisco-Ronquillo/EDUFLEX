@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -32,7 +32,7 @@ h2 {
   position: relative;
 }
 
-/* Logo en esquina superior izquierda */
+
 .logo {
   position: absolute;
   top: 15px;
@@ -71,14 +71,14 @@ h2 {
   background-color: #e6c759;
 }
 
-/* Formularios dinámicos */
+
 .form-role {
     display: none;
 }
 .form-role.active {
     display: block;
 }
-/* Inputs */
+
 input[type="text"],
 input[type="password"] {
   width: 100%;
@@ -92,7 +92,7 @@ input[type="password"] {
   color: #666;
 }
 
-/* Crear cuenta + botón ingresar */
+
 .crear-cuenta {
   margin-top: 5px;
   display: flex;
@@ -123,7 +123,7 @@ input[type="password"] {
   background-color: rgba(86, 250, 1, 0.82);
 }
 
-/* Texto olvidado */
+
 .forgot-password {
   margin-top: 30px;
   font-size: 13px;
@@ -150,4 +150,22 @@ input[type="password"] {
   background-color: transparent;
   color: #000000;
   text-decoration: none;
+}
+.errorlist {
+  background-color: #fdecea;
+  color: #d93025;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  font-size: 0.9em;
+  transition: opacity 0.5s ease;
+  list-style-type: none;
+}
+.errorlist.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.errorlist li {
+  margin-left: 0;
 }

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar Sesión - Eduflex</title>
   <link rel="stylesheet" href="{% static 'CSS/login.css' %}" />
+  <script src="{% static 'js/login.js' %}"></script>
 </head>
 <body>
 
@@ -32,6 +33,13 @@
     <!-- Formulario PADRE -->
     <form id="form-padre" class="form-role active" method="post">
       {% csrf_token %}
+       {% if messages %}
+           <ul class="messages errorlist">
+             {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+             {% endfor %}
+           </ul>
+        {% endif %}
       <input type="text" name="usuario_padre" placeholder="Usuario del padre" required />
       <input type="password" name="clave_padre" placeholder="Contraseña" required />
 
@@ -48,6 +56,13 @@
     <!-- Formulario NIÑO -->
     <form id="form-nino" class="form-role" method="post">
       {% csrf_token %}
+         {% if messages %}
+           <ul class="messages errorlist">
+             {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+             {% endfor %}
+           </ul>
+        {% endif %}
       <input type="text" name="usuario_nino" placeholder="Usuario del niño" required />
       <input type="password" name="clave_nino" placeholder="Contraseña" required />
 
@@ -62,6 +77,13 @@
     </form>
     <form id="form-profesor" class="form-role" method="post">
       {% csrf_token %}
+       {% if messages %}
+           <div class="messages errorlist">
+             {% for message in messages %}
+               <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+             {% endfor %}
+           </div>
+       {% endif %}
       <input type="text" name="usuario_profesor" placeholder="Usuario del profesor" required />
       <input type="password" name="clave_profesor" placeholder="Contraseña" required />
 
@@ -72,20 +94,14 @@
     </form>
   </div>
 
-  <script>
-    function mostrarFormulario(rol) {
-      document.getElementById('form-padre').classList.remove('active');
-      document.getElementById('form-nino').classList.remove('active');
-      document.getElementById('form-profesor').classList.remove('active');
-      if (rol === 'padre') {
-        document.getElementById('form-padre').classList.add('active');
-      } else if (rol==='nino') {
-        document.getElementById('form-nino').classList.add('active');
-      }else {
-          document.getElementById('form-profesor').classList.add('active');
-      }
-    }
-  </script>
+<script>
+  setTimeout(() => {
+    document.querySelectorAll('.errorlist').forEach(el => {
+      el.classList.add('fade-out');
+      setTimeout(() => el.style.display = 'none', 600);
+    });
+  }, 3000);
+</script>
 
 </body>
 </html>
