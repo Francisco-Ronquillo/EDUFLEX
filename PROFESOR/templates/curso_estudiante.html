@@ -12,7 +12,7 @@
 <header>
     <div class="logo">
         <img src="{% static 'img/logo.png' %}" alt="Eduflex">
-        <a href="{% url 'profesor:verEstadisticasCurso' %}" class="btn">Estadísticas generales curso</a>
+        <a href="{% url 'profesor:verEstadisticasCurso' curso.id %}" class="btn">Estadísticas generales curso</a>
     </div>
 </header>
 
@@ -63,7 +63,7 @@
 
 <!-- JS -->
 <script>
-  // Normaliza texto para búsqueda sin tildes
+
   function normalizar(texto) {
     return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }

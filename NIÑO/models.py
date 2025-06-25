@@ -46,15 +46,13 @@ class Reporte(models.Model):
     frames_distraccion = models.JSONField(null=True, blank=True)
     fecha = models.DateField(auto_now_add=True, null=True, blank=True)
     duracion_evaluacion = models.DurationField(null=True, blank=True, help_text="Duración total de la evaluación")
-
+    comentario = models.TextField(max_length=500, null=True, blank=True)
 
 class ProgresoNiño(models.Model):
     niño = models.OneToOneField(Niño, on_delete=models.CASCADE, related_name='progreso')
     nivel_desbloqueado = models.IntegerField(default=1)
     puntaje_total = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    tiempo_total = models.IntegerField(default=0)  # segundos
-    ##añadido 21/06/2025 2:07 am Ricardo
-    # nivel = models.PositiveSmallIntegerField(default=1)
+    tiempo_total = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Progreso de {self.niño.nombre_completo}"

@@ -28,7 +28,7 @@
 
         <div class="reportes">
           {% for reporte in reportes %}
-          <a class="card reporte" href="{% url 'profesor:verReportStudent' reporte.id %}">
+          <a class="card reporte" href="{% url 'profesor:verReportStudent' reporte.id curso.id %}">
             <strong></strong>
              <span>{{ reporte.titulo }}</span>
             <span>Duración:{{ reporte.duracion_evaluacion }}</span>
