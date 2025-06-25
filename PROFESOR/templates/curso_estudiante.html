@@ -22,19 +22,23 @@
     </a>
 </div>
 
-<!-- Filtros -->
-<div class="filtros">
-    <input type="text" id="filtro-nombre" placeholder="Buscar por nombre...">
-    <select id="filtro-genero">
-        <option value="">Todos los géneros</option>
-        <option value="M">Masculino</option>
-        <option value="F">Femenino</option>
-    </select>
-</div>
 
-<!-- Lista de Estudiantes -->
+<form method="get">
+    <div class="filtros">
+        <input type="text" id="filtro-nombre" name="nombre" value="{{ nombre }}" placeholder="Buscar por nombre...">
+        <select id="filtro-genero" name="genero">
+            <option value="" {% if genero == "" %}selected{% endif %}>Todos los géneros</option>
+            <option value="M" {% if genero == "M" %}selected{% endif %}>Masculino</option>
+            <option value="F" {% if genero == "F" %}selected{% endif %}>Femenino</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </div>
+</form>
+
+
+
 <div class="container">
-    <h1>👨‍🎓 Estudiantes del Curso</h1>
+    <h1>Estudiantes del Curso</h1>
 
     <ul class="lista-estudiantes">
         {% for niño in niños %}
@@ -50,65 +54,18 @@
                 </a>
             </li>
         {% empty %}
-            <li class="sin-estudiantes">😕 No hay estudiantes registrados.</li>
+            <li class="sin-estudiantes">No hay estudiantes registrados.</li>
         {% endfor %}
     </ul>
 </div>
 
-<!-- Modal para imagen ampliada -->
+
 <div id="modal-imagen" class="modal">
     <span class="cerrar" onclick="cerrarModal()">&times;</span>
     <img class="modal-contenido" id="imagen-ampliada">
 </div>
 
-<!-- JS -->
-<script>
 
-  function normalizar(texto) {
-    return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const inputNombre = document.getElementById("filtro-nombre");
-    const selectGenero = document.getElementById("filtro-genero");
-    const estudiantes = document.querySelectorAll(".item-estudiante");
-
-    function aplicarFiltro() {
-      const nombreValor = normalizar(inputNombre.value);
-      const generoValor = selectGenero.value;
-
-      estudiantes.forEach(estudiante => {
-        const nombre = normalizar(estudiante.dataset.nombre);
-        const genero = estudiante.dataset.genero;
-
-        const coincideNombre = nombre.includes(nombreValor);
-        const coincideGenero = !generoValor || genero === generoValor;
-
-        estudiante.style.display = (coincideNombre && coincideGenero) ? "block" : "none";
-      });
-    }
-
-    inputNombre.addEventListener("input", aplicarFiltro);
-    selectGenero.addEventListener("change", aplicarFiltro);
-
-    // Ampliar imagen
-    const imagenes = document.querySelectorAll('.imagen-niño');
-    const modal = document.getElementById('modal-imagen');
-    const imagenAmpliada = document.getElementById('imagen-ampliada');
-
-    imagenes.forEach(function (img) {
-      img.addEventListener('click', function (e) {
-        e.preventDefault();
-        imagenAmpliada.src = this.src;
-        modal.style.display = 'block';
-      });
-    });
-  });
-
-  function cerrarModal() {
-    document.getElementById('modal-imagen').style.display = 'none';
-  }
-</script>
 
 </body>
 </html>

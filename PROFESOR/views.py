@@ -1,10 +1,11 @@
-from django.shortcuts import redirect, get_object_or_404,render
+from django.shortcuts import redirect, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView,CreateView,ListView
-
+from django.views.generic import TemplateView,ListView
+from django.db.models import Q
 from PROFESOR.models import  Profesor,Curso
 from NIÑO.models import  Reporte,Niño
-import  os,statistics
+import  os,statistics,operator
+from functools import reduce
 from datetime import timedelta
 from django.conf import settings
 class DashboardTeacher(TemplateView):
@@ -37,18 +38,42 @@ class CursoTeacher(TemplateView):
         context['cursos'] = curso_profesor
         return context
 
-class PresentarCursoTeacher(TemplateView):
+class PresentarCursoTeacher(ListView):
     template_name = 'curso_estudiante.html'
+    context_object_name = 'niños'
+    pk_url_kwarg = 'curso_id'
+
     def dispatch(self, request, *args, **kwargs):
         if 'profesor_id' not in request.session:
             return redirect('accounts:login')
         return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        curso = get_object_or_404(Curso, pk=pk)
+        queryset = curso.niños.all()
+
+        nombre = self.request.GET.get('nombre', '').strip()
+        genero = self.request.GET.get('genero')
+
+        if nombre:
+            palabras = nombre.split()
+            queries = [
+                Q(nombres__icontains=palabra) | Q(apellidos__icontains=palabra)
+                for palabra in palabras
+            ]
+            queryset = queryset.filter(reduce(operator.and_, queries))
+        if genero:
+            queryset = queryset.filter(genero=genero)
+
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pk=self.kwargs.get('curso_id')
-        curso=Curso.objects.get(pk=pk)
+        curso = get_object_or_404(Curso, pk=self.kwargs.get(self.pk_url_kwarg))
         context['curso'] = curso
-        context['niños'] =curso.niños.all()
+        context['nombre'] = self.request.GET.get('nombre', '')
+        context['genero'] = self.request.GET.get('genero', '')
         return context
 
 class reportEstudiante(TemplateView):
