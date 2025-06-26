@@ -230,7 +230,6 @@ class CambiarContraseñaConCodigoView(View):
 
                 usuario.contraseña = nueva
                 usuario.save()
-                messages.success(request, "Contraseña actualizada correctamente.")
                 request.session.flush()
                 return redirect('accounts:login')
 

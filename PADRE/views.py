@@ -38,6 +38,11 @@ class reportKid(FormView, ListView):
     success_url = reverse_lazy('padre:reportKid')
     form_class = CodigoNinoForm
 
+    def dispatch(self, request, *args, **kwargs):
+        if 'padre_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         padre_id = self.request.session.get('padre_id')
@@ -86,6 +91,11 @@ class reportKid(FormView, ListView):
         return redirect(self.success_url)
 
 class DesvincularNinoView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'padre_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         nino_id = kwargs.get('pk')  # Asegúrate que lo pasas en la URL como <int:pk>
         padre_id = request.session.get('padre_id')
@@ -109,6 +119,12 @@ class reportTotal(ListView):
     template_name = 'report_total.html'
     model=Reporte
     context_object_name = 'reportes'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'padre_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         niño=Niño.objects.get(pk=pk)
@@ -147,6 +163,11 @@ class reportTotal(ListView):
 
 class verReporte(TemplateView):
     template_name = 'verReporte.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'padre_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -200,6 +221,11 @@ class verReporte(TemplateView):
 
 class estadisticasGenerales(TemplateView):
     template_name = "estadisticas_generales.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'padre_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

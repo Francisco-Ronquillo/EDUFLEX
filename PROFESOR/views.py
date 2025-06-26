@@ -78,7 +78,10 @@ class PresentarCursoTeacher(ListView):
 
 class reportEstudiante(TemplateView):
     template_name = 'reporte_niño.html'
-
+    def dispatch(self, request, *args, **kwargs):
+        if 'profesor_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         niño_id = self.kwargs.get('niño_id')
@@ -93,7 +96,10 @@ class reportEstudiante(TemplateView):
 
 class verReportStudent(TemplateView):
         template_name = 'verReportStudent.html'
-
+        def dispatch(self, request, *args, **kwargs):
+            if 'profesor_id' not in request.session:
+                return redirect('accounts:login')
+            return super().dispatch(request, *args, **kwargs)
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
             reporte_id = self.kwargs.get('reporte_id')
@@ -150,7 +156,10 @@ class verReportStudent(TemplateView):
 
 class Estadisticas_niño(TemplateView):
     template_name = "estadisticas_generales_niño.html"
-
+    def dispatch(self, request, *args, **kwargs):
+        if 'profesor_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         niño_id = self.kwargs.get('niño_id')
@@ -244,7 +253,10 @@ class Estadisticas_niño(TemplateView):
 
 class Estadisticas_curso(TemplateView):
     template_name = "estadisticas_generales_curso.html"
-
+    def dispatch(self, request, *args, **kwargs):
+        if 'profesor_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         curso_id = self.kwargs.get('curso_id')
@@ -286,7 +298,7 @@ class Estadisticas_curso(TemplateView):
                 puntajes_por_fecha[fecha_str] = puntaje
                 conteo_por_fecha[fecha_str] = 1
 
-        # Lista de promedios diarios
+
         puntajes = [
             {'fecha': fecha, 'puntaje': round(puntajes_por_fecha[fecha] / conteo_por_fecha[fecha], 2)}
             for fecha in puntajes_por_fecha
@@ -352,7 +364,7 @@ class Estadisticas_curso(TemplateView):
         context['tiempos_somnolencia_sumados'] = tiempos_somnolencia_sumados
         context['tiempos_distraccion_sumados'] = tiempos_distraccion_sumados
 
-        # Para evitar errores JS
+
         context['puntajes'] = puntajes
         context['distracciones'] = distracciones
         context['somnolencias'] = somnolencias
@@ -363,6 +375,11 @@ class Estadisticas_curso(TemplateView):
 
         return context
 class GuardarComentarios(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'profesor_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         reporte_id = request.POST.get('reporte_id')
         comentario = request.POST.get('comentario')

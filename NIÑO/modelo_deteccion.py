@@ -43,7 +43,7 @@ def get_iris_position(iris_points, eye_points):
         return "centro"
 
 def gen_frames(nino_id, nuevo_id):
-    STATIC_CAPTURE_DIR = os.path.join('musica', 'capturas', str(nino_id), str(nuevo_id))
+    STATIC_CAPTURE_DIR = os.path.join('media', 'capturas', str(nino_id), str(nuevo_id))
     os.makedirs(STATIC_CAPTURE_DIR, exist_ok=True)
 
     # Contadores y banderas
