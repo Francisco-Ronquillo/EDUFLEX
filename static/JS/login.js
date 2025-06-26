@@ -3,6 +3,7 @@ function mostrarFormulario(rol) {
       document.getElementById('form-padre').classList.remove('active');
       document.getElementById('form-nino').classList.remove('active');
       document.getElementById('form-profesor').classList.remove('active');
+      limpiarInputsLogin(rol);
       if (rol === 'padre') {
         document.getElementById('form-padre').classList.add('active');
       } else if (rol==='nino') {
@@ -19,3 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     mostrarFormulario(rolGuardado);
   }
 });
+
+function limpiarInputsLogin(rol) {
+  const usuario = document.getElementById('usuario_' + rol);
+  const clave = document.getElementById('clave_' + rol);
+  if (usuario) usuario.value = '';
+  if (clave) clave.value = '';
+}

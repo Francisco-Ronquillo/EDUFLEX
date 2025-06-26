@@ -1,171 +1,221 @@
-
+/* Reinicio y estilos base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif; /* Fuente moderna y amigable */
 }
 
+/* Fondo con gradiente suave */
 body, html {
   height: 100%;
-  background: linear-gradient(to right, #53ae63 50%, #a7d69e 50%);
+  background: linear-gradient(135deg, #E8F5E9 0%, #BBDEFB 100%);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-h2 {
-  font-size: 24px;
-  color: #333;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
+/* Contenedor del formulario más grande */
 .container {
-  background: white;
-  width: 320px;
-  height: auto;
-  border-radius: 15px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
-  padding: 30px 25px;
+  background: #FFFFFF;
+  width: 520px; /* Aumentado de 450px a 520px para un cuadro más grande */
+  padding: 60px 50px; /* Más padding para mayor espacio interno */
+  border-radius: 30px; /* Bordes más redondeados para suavidad */
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
   position: relative;
+  animation: fadeIn 0.5s ease-in-out; /* Animación de entrada */
 }
 
+/* Animación de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
+/* Estilo del logo */
 .logo {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
+  top: 30px; /* Ajustado para el contenedor más grande */
+  left: 30px;
 }
 
 .logo img {
-  width: 120px;
-  height: 120px;
-  padding: 5px;
+  width: 140px; /* Ligeramente más grande para equilibrar */
+  height: auto;
+  transition: transform 0.3s ease; /* Animación al pasar el ratón */
 }
 
+.logo img:hover {
+  transform: scale(1.1);
+}
 
+/* Título */
+h2 {
+  font-size: 36px; /* Aumentado para el contenedor más grande */
+  color: #333333;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 35px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+/* Botones de selección de rol */
 .role-buttons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 20px; /* Más espacio entre botones */
+  margin-bottom: 35px;
 }
 
 .role-buttons button {
-  padding: 8px 18px;
+  padding: 14px 30px; /* Botones más grandes */
   border: none;
-  border-radius: 20px;
-  background-color: #f0d479;
-  font-weight: bold;
+  border-radius: 30px;
+  background-color: #FFCA28;
+  color: #333333;
+  font-weight: 600;
+  font-size: 18px; /* Fuente más grande */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .role-buttons button:hover {
-  background-color: #e6c759;
+  background-color: #FFB300;
+  transform: translateY(-2px); /* Efecto de elevación */
 }
 
+.role-buttons button.active {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+}
 
+/* Estilo de formularios */
 .form-role {
-    display: none;
-}
-.form-role.active {
-    display: block;
+  display: none;
 }
 
+.form-role.active {
+  display: block;
+  animation: slideIn 0.3s ease; /* Transición suave al cambiar formulario */
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Campos de entrada */
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 10px 15px;
-  margin-bottom: 40px;
-  border-radius: 20px;
-  border: none;
-  background: #e0e0e0;
-  font-size: 14px;
+  padding: 16px 20px; /* Más padding para entradas más grandes */
+  margin-bottom: 30px;
+  border-radius: 15px;
+  border: 1px solid #DDDDDD;
+  background: #F5F5F5;
+  font-size: 20px; /* Fuente más grande para legibilidad */
+  color: #333333;
   outline: none;
-  color: #666;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+}
 
+/* Botones de crear cuenta e ingresar */
 .crear-cuenta {
-  margin-top: 5px;
   display: flex;
-  gap: 40px;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 }
 
 .boton-crear {
-  padding: 5px 5px;
-  border-radius: 5px;
-  background-color: transparent;
-  color: #000000;
+  color: #4CAF50;
   text-decoration: none;
+  font-size: 18px; /* Aumentado */
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.btn-ingresar {
-  padding: 5px 20px;
-  background-color: #64f49e;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-ingresar:hover {
-  background-color: rgba(86, 250, 1, 0.82);
-}
-
-
-.forgot-password {
-  margin-top: 30px;
-  font-size: 13px;
-  text-align: center;
-  color: #222;
-  cursor: pointer;
-  user-select: none;
-}
-
-.forgot-password:hover {
+.boton-crear:hover {
+  color: #388E3C;
   text-decoration: underline;
 }
 
-.boton-recuperar {
-  border-radius: 5px;
-  background-color: transparent;
-  color: #000000;
-  text-decoration: none;
+.btn-ingresar {
+  padding: 14px 35px; /* Botón más grande */
+  background-color: #4CAF50;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 18px; /* Aumentado */
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.regresar {
-  font-size: 30px;
-  border-radius: 5px;
-  background-color: transparent;
-  color: #000000;
+.btn-ingresar:hover {
+  background-color: #388E3C;
+  transform: translateY(-2px);
+}
+
+/* Enlace de olvidar contraseña */
+.forgot-password {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.boton-recuperar {
+  color: #4CAF50;
   text-decoration: none;
+  font-size: 16px; /* Ligeramente más grande */
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
+
+.boton-recuperar:hover {
+  color: #388E3C;
+  text-decoration: underline;
+}
+
+/* Botón de regresar */
+.regresar {
+  position: absolute;
+  top: 30px; /* Ajustado para el contenedor más grande */
+  left: 30px;
+}
+
+.regresar a {
+  font-size: 32px; /* Ligeramente más grande */
+  color: #333333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.regresar a:hover {
+  color: #4CAF50;
+}
+
+/* Mensajes de error */
 .errorlist {
-  background-color: #fdecea;
-  color: #d93025;
-  padding: 8px 12px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  margin-top: 5px;
-  font-size: 0.9em;
-  transition: opacity 0.5s ease;
-  list-style-type: none;
+  background-color: #FFF3F3;
+  color: #EF5350;
+  padding: 15px; /* Más padding */
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 18px; /* Aumentado */
+  list-style: none;
+  text-align: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
+
 .errorlist.fade-out {
   opacity: 0;
   transform: translateY(-10px);
-}
-.errorlist li {
-  margin-left: 0;
 }

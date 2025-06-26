@@ -1,109 +1,163 @@
-body {
+/* Reinicio y estilos base */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: Arial, sans-serif;
- background: linear-gradient(to right, #53ae63 50%, #a7d69e 50%);
+  padding: 0;
+  font-family: 'Poppins', sans-serif; /* Fuente moderna y amigable */
+}
+
+body, html {
+  height: 100%;
+  background: radial-gradient(circle at center, #E8F5E9 0%, #BBDEFB 100%); /* Gradiente radial para un diseño dinámico */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
-.container h2 {
-  margin-top: 10px;
-  margin-bottom: 15px;
-  font-size: 22px;
-  line-height: 1.2;
-}
-.regresar {
-  top: 10px;
-  left: 10px;
-  font-size: 24px;
-  width: fit-content;
-}
-.boton-recuperar {
-  text-decoration: none;
-  color: #000000;
-  padding: 5px 5px;
-  border-radius: 5px;
-}
+
 .container {
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 600px;
+  top: 100px;
+  background: #FFFFFF;
+  width: 700px; /* Aumentado de 600px a 700px */
+  max-width: 90%; /* Responsivo */
+  padding: 50px 40px; /* Más espacio interno */
+  border-radius: 25px; /* Bordes redondeados */
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15); /* Sombra suave */
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 20px; /* Más espacio entre campos */
   justify-content: space-between;
-  min-height: 300px;
+  min-height: 500px; /* Aumentado para más espacio */
+  position: relative;
+  animation: fadeIn 0.5s ease-in-out; /* Animación de entrada */
 }
 
+/* Animación de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+}
+
+.logo img {
+  width: 120px; /* Tamaño consistente con login */
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.1);
+}
+
+/* Botón de regresar */
+.regresar {
+  position: absolute;
+  top: 25px;
+  right: 25px; /* Movido a la derecha para mejor balance */
+}
+
+.boton-recuperar {
+  font-size: 28px; /* Más grande para visibilidad */
+  color: #333333;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.boton-recuperar:hover {
+  background-color: #F5F5F5; /* Fondo gris claro en hover */
+  color: #4CAF50; /* Verde consistente */
+}
+
+/* Título */
 .container h2 {
   width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: center; /* Centrado horizontal */
+  font-size: 36px; /* Más grande para destacar */
+  color: #333333;
+  font-weight: 600;
+  margin: 50px auto; /* Ajustado para centrado vertical */
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  line-height: 1.2;
 }
 
+/* Campos de formulario */
 .field {
-  width: 48%;
+  width: 48%; /* Dos columnas */
   display: flex;
   flex-direction: column;
-  gap: 8px
+  gap: 10px; /* Más espacio entre etiqueta e input */
 }
 
 .field label {
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
 }
 
 .field input,
 .field select {
-  padding: 10px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
+  padding: 14px 18px; /* Más padding para campos más grandes */
+  border-radius: 12px;
+  border: 1px solid #DDDDDD;
+  background: #F5F5F5; /* Fondo gris claro */
+  font-size: 18px; /* Fuente más grande */
+  color: #333333;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.field input:focus,
+.field select:focus {
+  border-color: #4CAF50; /* Verde principal */
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+}
+
+/* Botón de crear cuenta */
 .full-width {
   width: 100%;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .btn {
-  padding: 10px 15px;
-  background: gold;
+  padding: 14px 40px; /* Botón más grande */
+  background-color: #4CAF50; /* Verde principal */
+  color: #FFFFFF;
   border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: модель
+  transition: all 0.3s ease;
 }
 
-.logo {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  text-align: center;
+.btn:hover {
+  background-color: #388E3C; /* Verde más oscuro en hover */
+  transform: translateY(-2px); /* Efecto de elevación */
 }
 
-.logo img {
-  height: 60px;
-}
-
+/* Mensajes de error */
 .errorlist {
-  background-color: #fdecea;
-  color: #d93025;
-  padding: 8px 12px;
-  border-radius: 5px;
+  background-color: #FFF3F3; /* Fondo rojo suave */
+  color: #EF5350; /* Rojo para errores */
+  padding: 12px;
+  border-radius: 10px;
   margin-top: 10px;
-
-  font-size: 0.9em;
-  transition: opacity 0.5s ease;
-  list-style-type: none;
+  font-size: 16px; /* Más grande */
+  list-style: none;
+  text-align: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
+
 .errorlist.fade-out {
   opacity: 0;
   transform: translateY(-10px);
-}
-.errorlist li {
-  margin-left: 0;
 }
