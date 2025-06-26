@@ -42,7 +42,7 @@
         <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
         <div class="btn-group">
           {% if item.reportes|length > 5 %}
-                <a href="{% url 'padre:estadisticas_generales' item.niño.id %}" class="btn-ver">📄estadisticas generales</a>
+                <a href="{% url 'padre:estadisticas_generales' item.niño.id %}" class="btn-ver">Estadisticas generales</a>
           {% endif %}
           <a href="{% url 'padre:report_total' item.niño.id %}" class="btn-ver">Ver todos</a>
           <button type="button" class="btn-eliminar" onclick="abrirModalDesvincular({{ item.niño.id }})">Quitar Niño</button>

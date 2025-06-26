@@ -186,6 +186,7 @@ class verReporte(TemplateView):
         context['total_somnolencia'] = total_somnolencia
         context['total_distraccion'] = total_distraccion
         context['tiempo_concentracion'] = tiempo_concentracion
+        context['nino']=nino_id
         context['grafico_data'] = {
             'distracciones': reporte.distracciones or 0,
             'somnolencias': reporte.somnolencias or 0,

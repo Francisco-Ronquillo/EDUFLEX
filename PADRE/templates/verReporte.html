@@ -11,7 +11,7 @@
 <body>
 
     <div class="regresar">
-        <a href="{% url 'profesor:estudiante' curso.id nino.id %}" class="boton-recuperar">← Regresar</a>
+        <a href="{% url 'padre:report_total' nino %}" class="boton-recuperar">← Regresar</a>
     </div>
 
     <div class="container">
@@ -63,7 +63,7 @@
 
 
         <div id="tab-graficas" class="tab-content">
-           {% if total_distraccion > 4 or total_distraccion >4 %}
+           {% if total_distraccion > 4 or total_distraccion > 4 %}
                 <div class="grafico-title">📊 Gráfica del Reporte</div>
                 <div id="grafico_Distraccion_Somnolencia" style="margin-top: 20px;"></div>
                 <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>

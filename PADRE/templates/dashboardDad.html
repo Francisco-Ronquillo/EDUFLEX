@@ -13,7 +13,7 @@
 <header>
   <div class="logo">
     <img src="{% static 'img/logo.png' %}" alt="Eduflex Logo">
-    <a href="{% url 'padre:reportKid' %}" class="btn">📑 Reportes</a>
+    <a href="{% url 'padre:reportKid' %}" class="btn">Reportes</a>
   </div>
   <a href="{% url 'accounts:logout' %}" class="btn-cerrar">Cerrar sesión</a>
 </header>
@@ -26,7 +26,7 @@
 
   <div class="content">
     <div class="progress-courses {% if not reportes_recientes %}sin-reportes{% endif %}">
-        <div class="progress-title">📈 Últimos reportes de tus hijos</div>
+        <div class="progress-title">Últimos reportes de tus hijos</div>
         {% if reportes_recientes %}
           <div class="card-container">
             {% for reporte in reportes_recientes %}

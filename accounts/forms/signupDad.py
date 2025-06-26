@@ -1,8 +1,6 @@
 import datetime
 from EDUFLEX.utils import calcular_edad
 from django import forms
-
-import PADRE
 from PADRE.models import Padre
 class PadreForm(forms.ModelForm):
     confirmar_contraseña = forms.CharField(
