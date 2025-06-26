@@ -56,10 +56,11 @@
                         <p>No hay imágenes de distracción.</p>
                     {% endfor %}
                 </div>
-                <form method="post" action="{% url 'profesor:guardar_comentario' %}">
+                <form method="post" action="{% url 'profesor:guardar_comentario'%}">
                     <H2>Comentarios</H2>
                     {% csrf_token %}
                     <input type="hidden" name="reporte_id" value="{{ reporte.id }}">
+                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
                     <textarea name="comentario">{{ reporte.comentario }}</textarea>
                     <button type="submit">Guardar comentario</button>
                 </form>
@@ -69,31 +70,35 @@
         <!-- TAB: GRÁFICAS -->
         <div id="tab-graficas" class="tab-content">
             <div class="grafico-title">📊 Gráfica del Reporte</div>
-            <div id="grafico6" style="margin-top: 20px;"></div>
-            <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
-            <div class="grafico-title">
-                <span>Promedio de somonolencia: </span>
-                <span>{{promedio_somnolencia}}s</span>
-            </div>
-            <div class="grafico-title">
-                <span>Total de tiempo de somnolencias: </span>
-                <span>{{total_somnolencia}}s</span>
-            </div>
-            <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
-            <div class="grafico-title">📈 Gráfico de Distracciones</div>
-            <div class="grafico-title">
-                <span>Promedio de somonolencia: </span>
-                <span>{{promedio_distraccion}}s</span>
 
-            </div>
-            <div class="grafico-title">
-                <span>Total de tiempo de distracciones: </span>
-                <span>{{total_distraccion}}s</span>
-            </div>
-            <div id="grafico_distraccion" style="margin-top: 30px;"></div>
+            {% if total_distraccion > 4 or total_distraccion > 4 %}
+                <div id="grafico6" style="margin-top: 20px;"></div>
+                <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
+                <div class="grafico-title">
+                    <span>Promedio de somonolencia: </span>
+                    <span>{{promedio_somnolencia}}s</span>
+                </div>
+                <div class="grafico-title">
+                    <span>Total de tiempo de somnolencias: </span>
+                    <span>{{total_somnolencia}}s</span>
+                </div>
+                <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
+                <div class="grafico-title">📈 Gráfico de Distracciones</div>
+                <div class="grafico-title">
+                    <span>Promedio de somonolencia: </span>
+                    <span>{{promedio_distraccion}}s</span>
 
-            <div id="mi-div-grafico"></div>
+                </div>
+                <div class="grafico-title">
+                    <span>Total de tiempo de distracciones: </span>
+                    <span>{{total_distraccion}}s</span>
+                </div>
+                <div id="grafico_distraccion" style="margin-top: 30px;"></div>
 
+                <div id="mi-div-grafico"></div>
+            {% else%}
+                <h2>No hay suficientes datos para generar gráficas.</h2>
+           {% endif %}
         </div>
     </div>
 

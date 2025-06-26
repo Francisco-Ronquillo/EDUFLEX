@@ -243,7 +243,6 @@ class Estadisticas_niño(TemplateView):
         context['tiempos_somnolencia_sumados'] = tiempos_somnolencia_sumados
         context['promedio_tiempo_distraccion'] = promedio_tiempo_distraccion
         context['promedio_tiempo_somnolencia'] = promedio_tiempo_somnolencia
-        context['nino']= nino
         context['curso'] = curso
         context['graficodis_som'] = {
             'distracciones': total_distracciones,
@@ -382,9 +381,10 @@ class GuardarComentarios(View):
 
     def post(self, request, *args, **kwargs):
         reporte_id = request.POST.get('reporte_id')
+        curso_id=request.POST.get('curso_id')
         comentario = request.POST.get('comentario')
         reporte = get_object_or_404(Reporte, pk=reporte_id)
         reporte.comentario = comentario
         reporte.save()
 
-        return redirect('profesor:verReportStudent',pk=reporte_id)
+        return redirect('profesor:verReportStudent',reporte_id=reporte_id,curso_id=curso_id)

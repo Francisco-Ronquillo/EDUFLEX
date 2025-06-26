@@ -50,7 +50,7 @@ class DashboardKid(TemplateView):
 
         total_niveles = 5
 
-        # Obtener progreso según especialidad
+
         if niño.especialidad == 'T':
             progreso = ProgresoCartas.objects.filter(niño=niño).first()
         else:
@@ -58,7 +58,7 @@ class DashboardKid(TemplateView):
 
         nivel_desbloqueado = progreso.nivel_desbloqueado if progreso else 1
 
-        # Obtener todos los reportes válidos con puntaje >= 70
+
         reportes_validos = Reporte.objects.filter(niño=niño, puntaje__gte=70)
 
         niveles_completados = set()
@@ -101,14 +101,14 @@ class DashboardKid(TemplateView):
         niveles_completados_count = len(niveles_completados)
         progreso_porcentaje = int((niveles_completados_count / total_niveles) * 100)
 
-        # Convertir a lista ordenada
+
         records = sorted([
             {k: v for k, v in record.items() if k != 'duracion'}
             for record in records_dict.values()
         ], key=lambda x: x['nivel'])
 
         context.update({
-            'niño': niño,  # ✅ Este es el cambio clave
+            'niño': niño,
             'progreso_completado': niveles_completados_count,
             'total_niveles': total_niveles,
             'progreso_porcentaje': progreso_porcentaje,
@@ -120,6 +120,11 @@ class DashboardKid(TemplateView):
 
 
 class JuegosRecomendadosView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         nino_id = request.session.get('nino_id')
 
@@ -171,7 +176,7 @@ class juego_completar_palabraView(TemplateView):
         iniciado = request.session.get(session_key, False)
         tiempo_inicio_str = request.session.get(tiempo_key)
 
-        # Si ya está iniciado y excedió 2 minutos → reiniciar
+
         if iniciado and tiempo_inicio_str:
             try:
                 tiempo_inicio = datetime.fromisoformat(tiempo_inicio_str)
@@ -206,6 +211,10 @@ class juego_completar_palabraView(TemplateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class GuardarProgresoView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -220,7 +229,7 @@ class GuardarProgresoView(View):
             niño = Niño.objects.get(pk=nino_id)
             progreso, _ = ProgresoNiño.objects.get_or_create(niño=niño)
 
-            # Actualizar progreso
+
             if puntaje >= 70:
                 if nivel + 1 > progreso.nivel_desbloqueado:
                     progreso.nivel_desbloqueado = nivel + 1
@@ -229,7 +238,6 @@ class GuardarProgresoView(View):
             progreso.tiempo_total += tiempo
             progreso.save()
 
-            # 🔵 Recuperar reporte ya creado
             reporte_id = request.session.get('reporte_id')
             if not reporte_id:
                 return JsonResponse({}, status=400)
@@ -268,6 +276,10 @@ class GuardarProgresoView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class GuardarProgresoCartasView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -372,6 +384,10 @@ class juego_cartasView(TemplateView):
 
 
 class NivelesCartasView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -387,7 +403,10 @@ class NivelesCartasView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class PreferenciasUsuarioView(View):
-
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -430,6 +449,10 @@ class PreferenciasUsuarioView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class EditarPerfilView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -482,6 +505,10 @@ class EditarPerfilView(View):
 
 
 class GuardarProgresoMultiplicacionView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def post(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -577,6 +604,10 @@ class JuegoMultiplicacionView(TemplateView):
         return super().dispatch(request, *args, **kwargs)
 
 class NivelesDiscalculiaView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get(self, request):
         nino_id = request.session.get('nino_id')
         if not nino_id:
@@ -591,6 +622,10 @@ class NivelesDiscalculiaView(View):
 
 
 class cerrar_juegoView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'nino_id' not in request.session:
+            return redirect('accounts:login')
+        return super().dispatch(request, *args, **kwargs)
     def get(self, request):
         stop_event.set()
         niño = None
