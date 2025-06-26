@@ -38,10 +38,11 @@
 
   {% for item in niños %}
     <section class="estudiante {% if item.reportes|length == 0 %}sin-reportes{% endif %}">
+
       <div class="header-estudiante">
         <h3>{{ item.niño.nombres }} {{ item.niño.apellidos }}</h3>
         <div class="btn-group">
-          {% if item.reportes|length > 5 %}
+          {% if item.reportes|length >= 5 %}
                 <a href="{% url 'padre:estadisticas_generales' item.niño.id %}" class="btn-ver">Estadisticas generales</a>
           {% endif %}
           <a href="{% url 'padre:report_total' item.niño.id %}" class="btn-ver">Ver todos</a>

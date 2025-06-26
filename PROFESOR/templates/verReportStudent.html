@@ -23,7 +23,7 @@
 
         <div id="tab-datos" class="tab-content active">
             <div class="resumen">
-                <div class="card"><h3>Puntaje</h3><p>{{ reporte.puntaje }}</p></div>
+                <div class="card"><h3>Puntaje</h3><p>{{ puntaje }}</p></div>
                 <div class="card"><h3>Distracciones</h3><p>{{ reporte.distracciones }}</p></div>
                 <div class="card"><h3>Somnolencias</h3><p>{{ reporte.somnolencias }}</p></div>
                 <div class="card"><h3>Duración</h3><p>{{ reporte.duracion_evaluacion }}</p></div>
@@ -64,6 +64,7 @@
                     <h2>Agregar Comentario</h2>
                     {% csrf_token %}
                     <input type="hidden" name="reporte_id" value="{{ reporte.id }}">
+                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
                     <textarea name="comentario" placeholder="Escribe tu comentario aquí...">{{ reporte.comentario }}</textarea>
                     <button type="submit" class="btn">Guardar comentario</button>
 

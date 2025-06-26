@@ -57,7 +57,7 @@ class LoginView(TemplateView):
                 request.session['profesor_id'] = profesor.id
                 return redirect('profesor:dashboardTeacher')
             except Profesor.DoesNotExist:
-                messages.error(request, "Credenciales incorrectas para niño.")
+                messages.error(request, "Credenciales incorrectas para profesor.")
                 return render(request, self.template_name)
 
         messages.error(request, "Formulario no válido.")

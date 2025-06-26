@@ -137,6 +137,7 @@ class verReportStudent(TemplateView):
             context['nino'] = nino
             context['curso']=curso
             context['reporte'] = reporte
+            context['puntaje']= round((reporte.puntaje or 0) / 10, 2)
             context['pares_somnolencia'] = list(pares_somnolencia)
             context['pares_distraccion'] = list(pares_distraccion)
             context['promedio_somnolencia'] = promedio_somnolencia

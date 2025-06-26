@@ -15,6 +15,8 @@ class Profesor(models.Model):
     @property
     def nombre_completo(self):
         return f"{self.nombres} {self.apellidos}"
+    def __str__(self):
+        return f"{self.nombres} {self.apellidos}"
 
 class Curso(models.Model):
     profesor=models.ForeignKey(Profesor,on_delete=models.CASCADE ,null=True)

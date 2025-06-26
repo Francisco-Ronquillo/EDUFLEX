@@ -56,3 +56,19 @@ class PadreForm(forms.ModelForm):
         if Padre.objects.filter(usuario=usuario).exists():
             raise forms.ValidationError("Este usario ya existe.")
         return usuario
+
+    def clean_nombres(self):
+        nombres = self.cleaned_data.get('nombres')
+        if not nombres:
+            raise forms.ValidationError("Este campo es obligatorio.")
+        if not nombres.replace(' ', '').isalpha():
+            raise forms.ValidationError("El nombre solo debe contener letras y espacios.")
+        return nombres
+
+    def clean_apellidos(self):
+        apellidos = self.cleaned_data.get('apellidos')
+        if not apellidos:
+            raise forms.ValidationError("Este campo es obligatorio.")
+        if not apellidos.replace(' ', '').isalpha():
+            raise forms.ValidationError("El apellido solo debe contener letras y espacios.")
+        return apellidos

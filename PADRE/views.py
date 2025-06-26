@@ -74,8 +74,12 @@ class reportKid(FormView, ListView):
         try:
             nino = Niño.objects.get(codigo=codigo)
             if nino.padre is not None:
-                messages.warning(self.request, "Este niño ya está asociado a otro padre.")
-                return redirect(self.success_url)
+                if nino.padre.id == self.request.session.get('padre_id'):
+                    messages.warning(self.request, "Este niño ya lo tienes asociado.")
+                    return redirect(self.success_url)
+                else:
+                    messages.warning(self.request, "Este niño ya está asociado a otro padre.")
+                    return redirect(self.success_url)
 
             padre_id = self.request.session.get('padre_id')
             if padre_id:
@@ -200,6 +204,7 @@ class verReporte(TemplateView):
                 - timedelta(seconds=total_distraccion)
         )
         context['reporte'] = reporte
+        context['puntaje'] = round((reporte.puntaje or 0) / 10, 2)
         context['pares_somnolencia'] = list(pares_somnolencia)
         context['pares_distraccion'] = list(pares_distraccion)
         context['promedio_somnolencia'] = promedio_somnolencia
