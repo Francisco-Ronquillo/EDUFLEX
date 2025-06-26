@@ -11,7 +11,7 @@
 <body>
 
     <div class="regresar">
-        <a onclick="window.history.back()" class="boton-recuperar">← Regresar</a>
+        <a href="{% url 'profesor:estudiante' curso.id nino.id %}" class="boton-recuperar">← Regresar</a>
     </div>
 
     <div class="container">
