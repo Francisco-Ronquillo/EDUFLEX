@@ -20,11 +20,11 @@
 </header>
 
 <div class="regresar">
-      <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">← Regresar</a>
+  <a href="{% url 'padre:reportKid' %}" class="boton-recuperar">← Regresar</a>
 </div>
 
 <div class="contenedor-central">
-  <div class="container" >
+  <div class="container">
     <h1>📊 Estadísticas Generales</h1>
 
     <!-- FORMULARIO DE FILTRO -->
@@ -40,42 +40,45 @@
           <option value="5" {% if request.GET.nivel == '5' %}selected{% endif %}>Nivel 5</option>
         </select>
       </div>
-
       <div>
         <label for="fecha">Desde:</label><br>
         <input type="date" name="fecha_i" id="fecha_i" value="{{ request.GET.fecha_i }}">
       </div>
-       <div>
-            <label for="fecha">Hasta:</label><br>
-            <input type="date" name="fecha_f" id="fecha_f" value="{{ request.GET.fecha_f }}">
-        </div>
-
+      <div>
+        <label for="fecha">Hasta:</label><br>
+        <input type="date" name="fecha_f" id="fecha_f" value="{{ request.GET.fecha_f }}">
+      </div>
       <div>
         <button type="submit">Filtrar</button>
       </div>
     </form>
 
-
     <div class="resultados">
       {% if reportes %}
-        <div id="grafico_Distraccion_Somnolencia" style="height: 300px;"></div>
+        <div class="graficas-row">
+          <div id="grafico_Distraccion_Somnolencia" style="height: 300px; flex: 1;"></div>
+          <div id="grafica_puntajes" style="height: 300px; flex: 1;"></div>
+        </div>
 
-        <h2>Promedio puntaje:{{ promedio_puntaje }}</h2>
-        <div id="grafica_puntajes" style="height: 300px;"></div>
-        <h2>Total distracciones:{{ total_distracciones }}</h2>
-        <h2>Promedio distracciones:{{ promedio_distracciones }}</h2>
-        <h2>Promedio tiempo distracciones:{{ promedio_tiempo_distraccion}}</h2>
-        <div id="grafica_distracciones" style="height: 300px;"></div>
-        <div id="grafico_Distraccion_Tiempos" style="height: 300px;"></div>
-        <h2>Total somnolencias:{{ total_somnolencias }}</h2>
-        <h2>Promedio somnolencias:{{ promedio_somnolencias }}</h2>
-        <h2>Promedio tiempo somnolencia:{{ promedio_tiempo_somnolencia }}</h2>
-        <div id="grafica_somnolencias" style="height: 300px;"></div>
-        <div id="grafico_Somnolencia_Tiempos" style="height: 300px;"></div>
+        <h2>Promedio puntaje: {{ promedio_puntaje }}</h2>
 
+        <div class="graficas-row">
+          <div id="grafica_distracciones" style="height: 300px; flex: 1;"></div>
+          <div id="grafico_Distraccion_Tiempos" style="height: 300px; flex: 1;"></div>
+        </div>
 
+        <h2>Total distracciones: {{ total_distracciones }}</h2>
+        <h2>Promedio distracciones: {{ promedio_distracciones }}</h2>
+        <h2>Promedio tiempo distracciones: {{ promedio_tiempo_distraccion }}</h2>
 
+        <div class="graficas-row">
+          <div id="grafica_somnolencias" style="height: 300px; flex: 1;"></div>
+          <div id="grafico_Somnolencia_Tiempos" style="height: 300px; flex: 1;"></div>
+        </div>
 
+        <h2>Total somnolencias: {{ total_somnolencias }}</h2>
+        <h2>Promedio somnolencias: {{ promedio_somnolencias }}</h2>
+        <h2>Promedio tiempo somnolencia: {{ promedio_tiempo_somnolencia }}</h2>
       {% else %}
         <p>No hay reportes que coincidan con los filtros.</p>
       {% endif %}
@@ -85,22 +88,21 @@
 
 </body>
 <script>
-    const puntajes = {{ puntajes|safe }};
-    const distracciones = {{ distracciones|safe }};
-    const somnolencias = {{ somnolencias|safe }};
-    const graficodis_som = {{ graficodis_som|safe }};
-    const distraccion_data = {{ tiempos_distraccion_sumados|safe }};
-    const somnolencia_data = {{ tiempos_somnolencia_sumados|safe }};
-    window.addEventListener('DOMContentLoaded', () => {
-        if (puntajes.length > 0) {
-            renderGraficoLineasPuntaje(puntajes, "#grafica_puntajes");
-            renderGraficoLineasDistraccionGeneral(distracciones, "#grafica_distracciones");
-            renderGraficoLineasSomnolenciaGeneral(somnolencias, "#grafica_somnolencias");
-            renderGraficoPastelReporte(graficodis_som, "#grafico_Distraccion_Somnolencia");
-            renderGraficoLineasTiemposDisGeneral(distraccion_data, "#grafico_Distraccion_Tiempos");
-            renderGraficoLineasTiemposSomGeneral(somnolencia_data, "#grafico_Somnolencia_Tiempos");
-        }
-
-    });
+  const puntajes = {{ puntajes|safe }};
+  const distracciones = {{ distracciones|safe }};
+  const somnolencias = {{ somnolencias|safe }};
+  const graficodis_som = {{ graficodis_som|safe }};
+  const distraccion_data = {{ tiempos_distraccion_sumados|safe }};
+  const somnolencia_data = {{ tiempos_somnolencia_sumados|safe }};
+  window.addEventListener('DOMContentLoaded', () => {
+    if (puntajes.length > 0) {
+      renderGraficoLineasPuntaje(puntajes, "#grafica_puntajes");
+      renderGraficoLineasDistraccionGeneral(distracciones, "#grafica_distracciones");
+      renderGraficoLineasSomnolenciaGeneral(somnolencias, "#grafica_somnolencias");
+      renderGraficoPastelReporte(graficodis_som, "#grafico_Distraccion_Somnolencia");
+      renderGraficoLineasTiemposDisGeneral(distraccion_data, "#grafico_Distraccion_Tiempos");
+      renderGraficoLineasTiemposSomGeneral(somnolencia_data, "#grafico_Somnolencia_Tiempos");
+    }
+  });
 </script>
 </html>

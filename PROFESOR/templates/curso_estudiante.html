@@ -57,12 +57,34 @@
     </ul>
 </div>
 
-
+<!-- Modal para imagen -->
 <div id="modal-imagen" class="modal">
-    <span class="cerrar" onclick="cerrarModal()">&times;</span>
-    <img class="modal-contenido" id="imagen-ampliada">
+    <span class="cerrar" id="cerrar-modal">&times;</span>
+    <img class="modal-contenido" id="img-modal">
 </div>
 
+
+<script>
+document.querySelectorAll('.imagen-niño').forEach(img => {
+    img.style.cursor = "pointer";
+    img.addEventListener('click', function(event) {
+        event.preventDefault(); // Evita navegación si la imagen está dentro de un enlace
+        document.getElementById('modal-imagen').style.display = "block";
+        document.getElementById('img-modal').src = this.src;
+    });
+});
+
+document.getElementById('cerrar-modal').onclick = function() {
+    document.getElementById('modal-imagen').style.display = "none";
+};
+
+document.getElementById('modal-imagen').onclick = function(event) {
+    // Solo cierra si el clic es fuera de la imagen modal y fuera de la "X"
+    if (event.target === this) {
+        this.style.display = "none";
+    }
+};
+</script>
 
 
 </body>

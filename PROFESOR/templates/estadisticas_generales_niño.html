@@ -55,27 +55,32 @@
       </div>
     </form>
 
-
     <div class="resultados">
       {% if reportes %}
-        <div id="grafico_Distraccion_Somnolencia" style="height: 300px;"></div>
+        <div class="graficas-row">
+          <div id="grafico_Distraccion_Somnolencia" style="height: 300px; flex: 1;"></div>
+          <div id="grafica_puntajes" style="height: 300px; flex: 1;"></div>
+        </div>
 
-        <h2>Promedio puntaje:{{ promedio_puntaje }}</h2>
-        <div id="grafica_puntajes" style="height: 300px;"></div>
-        <h2>Total distracciones:{{ total_distracciones }}</h2>
-        <h2>Promedio distracciones:{{ promedio_distracciones }}</h2>
-        <h2>Promedio tiempo distracciones:{{ promedio_tiempo_distraccion}}</h2>
-        <div id="grafica_distracciones" style="height: 300px;"></div>
-        <div id="grafico_Distraccion_Tiempos" style="height: 300px;"></div>
-        <h2>Total somnolencias:{{ total_somnolencias }}</h2>
-        <h2>Promedio somnolencias:{{ promedio_somnolencias }}</h2>
-        <h2>Promedio tiempo somnolencia:{{ promedio_tiempo_somnolencia }}</h2>
-        <div id="grafica_somnolencias" style="height: 300px;"></div>
-        <div id="grafico_Somnolencia_Tiempos" style="height: 300px;"></div>
+        <h2>Promedio puntaje: {{ promedio_puntaje }}</h2>
 
+        <div class="graficas-row">
+          <div id="grafica_distracciones" style="height: 300px; flex: 1;"></div>
+          <div id="grafico_Distraccion_Tiempos" style="height: 300px; flex: 1;"></div>
+        </div>
 
+        <h2>Total distracciones: {{ total_distracciones }}</h2>
+        <h2>Promedio distracciones: {{ promedio_distracciones }}</h2>
+        <h2>Promedio tiempo distracciones: {{ promedio_tiempo_distraccion }}</h2>
 
+        <div class="graficas-row">
+          <div id="grafica_somnolencias" style="height: 300px; flex: 1;"></div>
+          <div id="grafico_Somnolencia_Tiempos" style="height: 300px; flex: 1;"></div>
+        </div>
 
+        <h2>Total somnolencias: {{ total_somnolencias }}</h2>
+        <h2>Promedio somnolencias: {{ promedio_somnolencias }}</h2>
+        <h2>Promedio tiempo somnolencia: {{ promedio_tiempo_somnolencia }}</h2>
       {% else %}
         <p>No hay reportes que coincidan con los filtros.</p>
       {% endif %}
@@ -100,7 +105,6 @@
             renderGraficoLineasTiemposDisGeneral(distraccion_data, "#grafico_Distraccion_Tiempos");
             renderGraficoLineasTiemposSomGeneral(somnolencia_data, "#grafico_Somnolencia_Tiempos");
         }
-
     });
 </script>
 </html>

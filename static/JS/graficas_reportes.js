@@ -10,7 +10,7 @@ function renderGraficoLineasPuntaje(data, selector) {
             puntaje: +d.puntaje
         }));
 
-    const width = 600, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
     const svg = d3.select(selector)
@@ -71,7 +71,7 @@ function renderGraficoLineasDistraccionGeneral(data, selector) {
 
 
 
-    const width = 600, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
     const svg = d3.select(selector)
@@ -130,7 +130,7 @@ function renderGraficoLineasSomnolenciaGeneral(data, selector) {
             somnolencia: +d.somnolencias
         }));
 
-    const width = 600, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
     const svg = d3.select(selector)
@@ -189,7 +189,7 @@ function renderGraficoLineasTiemposDisGeneral(data, selector) {
             tiempo_total_dis: +d.tiempo_total_distraccion
         }));
 
-    const width = 600, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
     const svg = d3.select(selector)
@@ -247,7 +247,7 @@ function renderGraficoLineasTiemposSomGeneral(data, selector) {
             tiempo_total_dis: +d.tiempo_total_distraccion
         }));
 
-    const width = 600, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
     const svg = d3.select(selector)
@@ -306,7 +306,7 @@ function renderGraficoLineasTiemposSomGeneral(data, selector) {
             tiempo_total_som: +d.tiempo_total_somnolencia
         }));
 
-    const width = 600, height = 300;
+    const width = 400, height = 300;
     const margin = { top: 20, right: 30, bottom: 50, left: 40 };
 
     const svg = d3.select(selector)
@@ -372,7 +372,7 @@ function renderGraficoPastelReporte(data, selector) {
         { etiqueta: "Distracciones", valor: data.distracciones }
     ];
 
-    const width = 300, height = 300, radius = Math.min(width, height) / 2;
+    const width = 400, height = 300, radius = Math.min(width, height) / 2;
 
     const color = d3.scaleOrdinal()
         .domain(valores.map(d => d.etiqueta))
