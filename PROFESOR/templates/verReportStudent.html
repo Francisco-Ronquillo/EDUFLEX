@@ -55,8 +55,8 @@
                         <p>No hay imágenes de distracción.</p>
                     {% endfor %}
                 </div>
-                <h2>Comentarios</h2>
-                <h3>{{ reporte.comentario }}</h3>
+
+
             </section>
 
             <section class="comentario-section">
@@ -66,6 +66,7 @@
                     <input type="hidden" name="reporte_id" value="{{ reporte.id }}">
                     <textarea name="comentario" placeholder="Escribe tu comentario aquí...">{{ reporte.comentario }}</textarea>
                     <button type="submit" class="btn">Guardar comentario</button>
+
                 </form>
             </section>
         </div>
@@ -111,6 +112,8 @@
             {% else %}
                 <h2>No hay suficientes datos para generar gráficas.</h2>
             {% endif %}
+
+
         </div>
     </div>
 
