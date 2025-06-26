@@ -1,5 +1,5 @@
 import datetime
-
+from EDUFLEX.utils import calcular_edad
 from django import forms
 
 import PADRE
@@ -39,8 +39,8 @@ class PadreForm(forms.ModelForm):
                 raise forms.ValidationError('La fecha de nacimiento no puede ser en el futuro.')
 
             edad = calcular_edad(fecha)
-            if edad > 14:
-                raise forms.ValidationError('La edad mínima es de 4 años.')
+            if edad < 18:
+                raise forms.ValidationError('La edad mínima es de 18 años.')
 
         return fecha
 

@@ -8,15 +8,15 @@
 </head>
 <body>
 
-  <!-- Botón del logo -->
+
   <a class="logo-btn">
     <img src="{% static 'img/logo.png' %}" alt="Logo">
   </a>
 
-  <!-- Botón de configuración -->
+
   <button class="settings-btn" onclick="openModal()">⚙️</button>
 
-  <!-- Modal Configuración -->
+
   <div id="configModal" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
       <button class="modal-close-btn" onclick="closeModal(event)">✖</button>
@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <!-- Modal: Ver Perfil -->
+
   <div id="profileViewModal" class="modal-overlay" onclick="closeProfileViewModal(event)">
     <div class="modal-content perfil-modal-content">
       <button class="modal-close-btn" onclick="closeProfileViewModal(event)">✖</button>
@@ -84,7 +84,7 @@
     </div>
   </div>
 
-  <!-- Modal: Editar Perfil -->
+
   <div id="editProfileModal" class="modal-overlay" onclick="closeEditProfileModal(event)">
     <div class="modal-content perfil-modal-content">
       <button class="modal-close-btn" onclick="closeEditProfileModal(event)">✖</button>
@@ -131,7 +131,7 @@
     </div>
   </div>
 
-  <!-- Modal de RECORD -->
+
   <div id="recordModal" class="modal-overlay" onclick="closeRecordModal(event)">
     <div class="modal-content record-modal">
       <button class="modal-close-btn" onclick="closeRecordModal(event)">✖</button>
@@ -150,7 +150,7 @@
     </div>
   </div>
 
-  <!-- Dashboard -->
+
   <div class="dashboard">
     <div class="sidebar">
       <h3>Panel</h3>
@@ -162,7 +162,7 @@
           </button>
         </a>
         <button onclick="openProfileViewModal()">
-          <img src="{% static 'img/Metrica.png' %}" alt="Perfil">
+          <img src="{% static 'img/IconoPerfil.png' %}" alt="Perfil">
           Perfil
         </button>
       </div>

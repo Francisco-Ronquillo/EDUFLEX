@@ -63,31 +63,33 @@
 
 
         <div id="tab-graficas" class="tab-content">
-            <div class="grafico-title">📊 Gráfica del Reporte</div>
-            <div id="grafico_Distraccion_Somnolencia" style="margin-top: 20px;"></div>
-            <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
-            <div class="grafico-title">
-                <span>Promedio de somonolencia: </span>
-                <span>{{promedio_somnolencia}}s</span>
-            </div>
-            <div class="grafico-title">
-                <span>Total de tiempo de somnolencias: </span>
-                <span>{{total_somnolencia}}s</span>
-            </div>
-            <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
-            <div class="grafico-title">📈 Gráfico de Distracciones</div>
-            <div class="grafico-title">
-                <span>Promedio de somonolencia: </span>
-                <span>{{promedio_distraccion}}s</span>
+           {% if total_distraccion > 4 or total_distraccion >4 %}
+                <div class="grafico-title">📊 Gráfica del Reporte</div>
+                <div id="grafico_Distraccion_Somnolencia" style="margin-top: 20px;"></div>
+                <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
+                <div class="grafico-title">
+                    <span>Promedio de somonolencia: </span>
+                    <span>{{promedio_somnolencia}}s</span>
+                </div>
+                <div class="grafico-title">
+                    <span>Total de tiempo de somnolencias: </span>
+                    <span>{{total_somnolencia}}s</span>
+                </div>
+                <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
+                <div class="grafico-title">📈 Gráfico de Distracciones</div>
+                <div class="grafico-title">
+                    <span>Promedio de somonolencia: </span>
+                    <span>{{promedio_distraccion}}s</span>
 
-            </div>
-            <div class="grafico-title">
-                <span>Total de tiempo de distracciones: </span>
-                <span>{{total_distraccion}}s</span>
-            </div>
-            <div id="grafico_distraccion" style="margin-top: 30px;"></div>
+                </div>
+                <div class="grafico-title">
+                    <span>Total de tiempo de distracciones: </span>
+                    <span>{{total_distraccion}}s</span>
+                </div>
+                <div id="grafico_distraccion" style="margin-top: 30px;"></div>
 
-            <div id="grafico_tiempos_de_evaluavion"></div>
+                <div id="grafico_tiempos_de_evaluavion"></div>
+           {% endif %}
 
         </div>
     </div>
