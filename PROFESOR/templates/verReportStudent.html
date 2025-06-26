@@ -4,24 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Reporte del Niño</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/verReporte.css' %}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="{% static 'js/graficas_reportes.js' %}"></script>
 </head>
 <body>
-
     <div class="regresar">
-      <a href="{% url 'profesor:estudiante' curso.id nino.id %}" class="boton-recuperar">← Regresar</a>
-  </div>
+        <a href="{% url 'profesor:estudiante' curso.id nino.id %}" class="boton-recuperar">← Regresar</a>
+    </div>
 
     <div class="container">
         <div class="tabs">
             <button class="tab-btn active" data-tab="datos">📋 Datos</button>
             <button class="tab-btn" data-tab="graficas">📊 Gráficas</button>
         </div>
-        <h1 style="text-align: center;"Reporte de Evaluación del Niño</h1>
+        <h1>📋 Reporte de Evaluación del Niño</h1>
 
-        <!-- TAB: DATOS -->
         <div id="tab-datos" class="tab-content active">
             <div class="resumen">
                 <div class="card"><h3>Puntaje</h3><p>{{ reporte.puntaje }}</p></div>
@@ -56,75 +55,87 @@
                         <p>No hay imágenes de distracción.</p>
                     {% endfor %}
                 </div>
+                <h2>Comentarios</h2>
+                <h3>{{ reporte.comentario }}</h3>
+            </section>
+
+            <section class="comentario-section">
                 <form method="post" action="{% url 'profesor:guardar_comentario' %}">
-                    <H2>Comentarios</H2>
+                    <h2>Agregar Comentario</h2>
                     {% csrf_token %}
                     <input type="hidden" name="reporte_id" value="{{ reporte.id }}">
-                    <textarea name="comentario">{{ reporte.comentario }}</textarea>
-                    <button type="submit">Guardar comentario</button>
+                    <textarea name="comentario" placeholder="Escribe tu comentario aquí...">{{ reporte.comentario }}</textarea>
+                    <button type="submit" class="btn">Guardar comentario</button>
                 </form>
             </section>
         </div>
 
-        <!-- TAB: GRÁFICAS -->
         <div id="tab-graficas" class="tab-content">
-            <div class="grafico-title">📊 Gráfica del Reporte</div>
-            <div id="grafico6" style="margin-top: 20px;"></div>
-            <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
-            <div class="grafico-title">
-                <span>Promedio de somonolencia: </span>
-                <span>{{promedio_somnolencia}}s</span>
-            </div>
-            <div class="grafico-title">
-                <span>Total de tiempo de somnolencias: </span>
-                <span>{{total_somnolencia}}s</span>
-            </div>
-            <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
-            <div class="grafico-title">📈 Gráfico de Distracciones</div>
-            <div class="grafico-title">
-                <span>Promedio de somonolencia: </span>
-                <span>{{promedio_distraccion}}s</span>
-
-            </div>
-            <div class="grafico-title">
-                <span>Total de tiempo de distracciones: </span>
-                <span>{{total_distraccion}}s</span>
-            </div>
-            <div id="grafico_distraccion" style="margin-top: 30px;"></div>
-
-            <div id="mi-div-grafico"></div>
-
+            {% if total_distraccion > 4 or total_somnolencia > 4 %}
+                <div class="graficas-row">
+                    <div class="grafica-col">
+                        <div class="grafico-title">📊 Gráfica de Distracción y Somnolencia</div>
+                        <div id="grafico_Distraccion_Somnolencia"></div>
+                    </div>
+                    <div class="grafica-col">
+                        <div class="grafico-title">📊 Distribución de Tiempos de Evaluación</div>
+                        <div id="grafico_tiempos_de_evaluacion"></div>
+                    </div>
+                </div>
+                <div class="graficas-row">
+                    <div class="grafica-col">
+                        <div class="grafico-title">📈 Gráfico de Distracciones</div>
+                        <div class="grafico-title">
+                            <span>Promedio de distracción: </span>
+                            <span>{{ promedio_distraccion }}s</span>
+                        </div>
+                        <div class="grafico-title">
+                            <span>Total de tiempo de distracciones: </span>
+                            <span>{{ total_distraccion }}s</span>
+                        </div>
+                        <div id="grafico_distraccion"></div>
+                    </div>
+                    <div class="grafica-col">
+                        <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
+                        <div class="grafico-title">
+                            <span>Promedio de somnolencia: </span>
+                            <span>{{ promedio_somnolencia }}s</span>
+                        </div>
+                        <div class="grafico-title">
+                            <span>Total de tiempo de somnolencias: </span>
+                            <span>{{ total_somnolencia }}s</span>
+                        </div>
+                        <div id="grafico_tiempos_somnolencia"></div>
+                    </div>
+                </div>
+            {% else %}
+                <h2>No hay suficientes datos para generar gráficas.</h2>
+            {% endif %}
         </div>
     </div>
 
-    <!-- JS para alternar pestañas y dibujar gráfica -->
     <script>
         const dataReporte = {{ grafico_data|safe }};
         const tiemposSomnolencia = {{ grafico_data.tiempos_somnolencia|safe }};
         const datosGrafico = {
             total_tiempo_distraccion: {{ total_distraccion }},
             total_somnolencia: {{ total_somnolencia }},
-            total_tiempo_evaluacion: {{ tiempo_concentracion.total_seconds}},
+            total_tiempo_evaluacion: {{ tiempo_concentracion.total_seconds }},
         };
         let graficaMostrada = false;
 
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tab = btn.getAttribute('data-tab');
-
-
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
                 btn.classList.add('active');
                 document.getElementById('tab-' + tab).classList.add('active');
-
-
                 if (tab === 'graficas' && !graficaMostrada) {
-                    renderGraficoPastelReporte(dataReporte, "#grafico6");
+                    renderGraficoPastelReporte(dataReporte, "#grafico_Distraccion_Somnolencia");
                     renderGraficoLineaSomnolencia(tiemposSomnolencia, "#grafico_tiempos_somnolencia");
                     renderGraficoLineaDistraccion(dataReporte, "#grafico_distraccion");
-                    renderGraficoPastelTiempo(datosGrafico, "#mi-div-grafico");
+                    renderGraficoPastelTiempo(datosGrafico, "#grafico_tiempos_de_evaluacion");
                     graficaMostrada = true;
                 }
             });

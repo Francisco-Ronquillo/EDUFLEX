@@ -385,13 +385,18 @@ function renderGraficoPastelReporte(data, selector) {
         .innerRadius(0)
         .outerRadius(radius - 10);
 
+    // Limpia el contenedor
+    d3.select(selector).selectAll("*").remove();
+
+    // SVG principal
     const svg = d3.select(selector)
         .append("svg")
-        .attr("width", width)
+        .attr("width", width + 150) // espacio extra para la leyenda
         .attr("height", height)
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2})`);
 
+    // Dibuja el pastel
     const arcs = svg.selectAll("arc")
         .data(pie(valores))
         .enter()
@@ -401,10 +406,30 @@ function renderGraficoPastelReporte(data, selector) {
         .attr("d", arc)
         .attr("fill", d => color(d.data.etiqueta));
 
-    arcs.append("text")
-        .attr("transform", d => `translate(${arc.centroid(d)})`)
-        .attr("text-anchor", "middle")
-        .text(d => `${d.data.etiqueta}: ${d.data.valor}`);
+    // Leyenda
+    const legend = d3.select(selector).select("svg")
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${width + 20},${height / 2 - valores.length * 15})`);
+
+    legend.selectAll("rect")
+        .data(valores)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", (d, i) => i * 25)
+        .attr("width", 18)
+        .attr("height", 18)
+        .attr("fill", d => color(d.etiqueta));
+
+    legend.selectAll("text")
+        .data(valores)
+        .enter()
+        .append("text")
+        .attr("x", 25)
+        .attr("y", (d, i) => i * 25 + 13)
+        .text(d => d.etiqueta)
+        .attr("font-size", "14px");
 }
 
 
@@ -415,7 +440,7 @@ function renderGraficoLineaSomnolencia(data, contenedor) {
 
     // Tamaño y márgenes
     const margin = { top: 30, right: 30, bottom: 50, left: 60 };
-    const width = 600 - margin.left - margin.right;
+    const width = 400 - margin.left - margin.right;
     const height = 350 - margin.top - margin.bottom;
 
     // Crear SVG
@@ -490,7 +515,7 @@ function renderGraficoLineaSomnolencia(data, contenedor) {
 
 function renderGraficoLineaDistraccion(data, selector) {
     const datos = data.tiempos_distraccion || [];
-    const svgWidth = 500, svgHeight = 250, margin = {top: 20, right: 20, bottom: 30, left: 40};
+    const svgWidth = 400, svgHeight = 300, margin = {top: 20, right: 20, bottom: 30, left: 40};
     const width = svgWidth - margin.left - margin.right;
     const height = svgHeight - margin.top - margin.bottom;
 
@@ -574,13 +599,18 @@ function renderGraficoPastelTiempo(data, selector) {
         .innerRadius(0)
         .outerRadius(radius - 10);
 
+    // Limpia el contenedor
+    d3.select(selector).selectAll("*").remove();
+
+    // SVG principal
     const svg = d3.select(selector)
         .append("svg")
-        .attr("width", width)
+        .attr("width", width + 240) // espacio extra para la leyenda
         .attr("height", height)
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2})`);
 
+    // Dibuja el pastel
     const arcs = svg.selectAll("arc")
         .data(pie(valores))
         .enter()
@@ -590,11 +620,30 @@ function renderGraficoPastelTiempo(data, selector) {
         .attr("d", arc)
         .attr("fill", d => color(d.data.etiqueta));
 
-    arcs.append("text")
-        .attr("transform", d => `translate(${arc.centroid(d)})`)
-        .attr("text-anchor", "middle")
-        .style("font-size", "10px")
-        .text(d => `${d.data.etiqueta}: ${d.data.valor}`);
+    // Leyenda al costado
+    const legend = d3.select(selector).select("svg")
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${width + 20},${height / 2 - valores.length * 15})`);
+
+    legend.selectAll("rect")
+        .data(valores)
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", (d, i) => i * 25)
+        .attr("width", 18)
+        .attr("height", 18)
+        .attr("fill", d => color(d.etiqueta));
+
+    legend.selectAll("text")
+        .data(valores)
+        .enter()
+        .append("text")
+        .attr("x", 25)
+        .attr("y", (d, i) => i * 25 + 13)
+        .text(d => d.etiqueta)
+        .attr("font-size", "14px");
 }
 
 

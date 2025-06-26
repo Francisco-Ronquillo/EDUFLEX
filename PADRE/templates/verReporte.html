@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Reporte del Niño</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/verReporte.css' %}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="{% static 'js/graficas_reportes.js' %}"></script>
 </head>
 <body>
-
     <div class="regresar">
         <a href="{% url 'padre:report_total' nino %}" class="boton-recuperar">← Regresar</a>
     </div>
@@ -19,8 +19,7 @@
             <button class="tab-btn active" data-tab="datos">📋 Datos</button>
             <button class="tab-btn" data-tab="graficas">📊 Gráficas</button>
         </div>
-        <h1 style="text-align: center;">📋 Reporte de Evaluación del Niñooooo</h1>
-
+        <h1 style="text-align: center;">📋 Reporte de Evaluación del Niño</h1>
 
         <div id="tab-datos" class="tab-content active">
             <div class="resumen">
@@ -39,8 +38,8 @@
                             <p class="tiempo">🕒 {{ duracion }} segundos</p>
                         </div>
                     {% empty %}
-                        <p>No hay imágenes de somnolencia.</p>
                     {% endfor %}
+                        <p>No hay imágenes de somnolencia.</p>
                 </div>
             </section>
 
@@ -53,46 +52,53 @@
                             <p class="tiempo">🕒 {{ duracion }} segundos</p>
                         </div>
                     {% empty %}
-                        <p>No hay imágenes de distracción.</p>
                     {% endfor %}
+                        <p>No hay imágenes de distracción.</p>
                 </div>
                 <h2>Comentarios</h2>
                 <h3>{{ reporte.comentario }}</h3>
             </section>
         </div>
 
-
         <div id="tab-graficas" class="tab-content">
-           {% if total_distraccion > 4 or total_distraccion > 4 %}
-                <div class="grafico-title">📊 Gráfica del Reporte</div>
-                <div id="grafico_Distraccion_Somnolencia" style="margin-top: 20px;"></div>
-                <div class="grafico-title">📈 Evolución de Tiempos de Somnolencia</div>
-                <div class="grafico-title">
-                    <span>Promedio de somonolencia: </span>
-                    <span>{{promedio_somnolencia}}s</span>
+            {% if total_distraccion > 4 or total_somnolencia > 4 %}
+                <div class="graficas-row">
+                    <div class="grafica-col">
+                        <div class="grafico-title"> Gráfica de Distracción y Somnolencia</div>
+                        <div id="grafico_Distraccion_Somnolencia"></div>
+                    </div>
+                    <div class="grafica-col">
+                        <div class="grafico-title"> Distribución de Tiempos de Evaluación</div>
+                        <div id="grafico_tiempos_de_evaluavion"></div>
+                    </div>
                 </div>
-                <div class="grafico-title">
-                    <span>Total de tiempo de somnolencias: </span>
-                    <span>{{total_somnolencia}}s</span>
+                <div class="graficas-row">
+                    <div class="grafica-col">
+                        <div class="grafico-title"> Gráfico de Distracciones</div>
+                        <div class="grafico-title">
+                            <span>Promedio de distracción: </span>
+                            <span>{{ promedio_distraccion }}s</span>
+                        </div>
+                        <div class="grafico-title">
+                            <span>Total de tiempo de distracciones: </span>
+                            <span>{{ total_distraccion }}s</span>
+                        </div>
+                        <div id="grafico_distraccion"></div>
+                    </div>
+                    <div class="grafica-col">
+                        <div class="grafico-title"> Evolución de Tiempos de Somnolencia</div>
+                        <div class="grafico-title">
+                            <span>Promedio de somnolencia: </span>
+                            <span>{{ promedio_somnolencia }} </span>
+                            <span>Total de tiempo de somnolencias: </span>
+                            <span>{{ total_somnolencia }}s</span>
+                        </div>
+                        <div id="grafico_tiempos_somnolencia"></div>
+                    </div>
                 </div>
-                <div id="grafico_tiempos_somnolencia" style="height: 300px;"></div>
-                <div class="grafico-title">📈 Gráfico de Distracciones</div>
-                <div class="grafico-title">
-                    <span>Promedio de somonolencia: </span>
-                    <span>{{promedio_distraccion}}s</span>
-
-                </div>
-                <div class="grafico-title">
-                    <span>Total de tiempo de distracciones: </span>
-                    <span>{{total_distraccion}}s</span>
-                </div>
-                <div id="grafico_distraccion" style="margin-top: 30px;"></div>
-
-                <div id="grafico_tiempos_de_evaluavion"></div>
-           {% else%}
+            {% else %}
                 <h2>No hay suficientes datos para generar gráficas.</h2>
-           {% endif %}
-
+            {% endif %}
         </div>
     </div>
 
@@ -102,7 +108,7 @@
         const datosGrafico = {
             total_tiempo_distraccion: {{ total_distraccion }},
             total_somnolencia: {{ total_somnolencia }},
-            total_tiempo_evaluacion: {{ tiempo_concentracion.total_seconds}},
+            total_tiempo_evaluacion: {{ tiempo_concentracion.total_seconds }},
         };
         let graficaMostrada = false;
 
@@ -110,13 +116,11 @@
             btn.addEventListener('click', () => {
                 const tab = btn.getAttribute('data-tab');
 
-
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
                 btn.classList.add('active');
                 document.getElementById('tab-' + tab).classList.add('active');
-
 
                 if (tab === 'graficas' && !graficaMostrada) {
                     renderGraficoPastelReporte(dataReporte, "#grafico_Distraccion_Somnolencia");
