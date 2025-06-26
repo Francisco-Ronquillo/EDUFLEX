@@ -438,12 +438,10 @@ class EditarPerfilView(View):
         try:
             niño = Niño.objects.get(pk=nino_id)
 
-
             nuevo_usuario = request.POST.get("usuario", "").strip()
             nuevo_email = request.POST.get("email", "").strip()
             nuevos_nombres = request.POST.get("nombres", "").strip()
             nuevos_apellidos = request.POST.get("apellidos", "").strip()
-
 
             if nuevo_usuario:
                 if Niño.objects.filter(usuario=nuevo_usuario).exclude(pk=niño.pk).exists():
@@ -452,7 +450,6 @@ class EditarPerfilView(View):
                         'mensaje': 'Ese nombre de usuario ya está en uso. Intenta con otro.'
                     }, status=400)
                 niño.usuario = nuevo_usuario
-
 
             if nuevo_email:
                 try:
@@ -469,20 +466,10 @@ class EditarPerfilView(View):
                         'mensaje': 'Ese correo electrónico ya está en uso. Intenta con otro.'
                     }, status=400)
                 niño.email = nuevo_email
-
-            if nuevos_nombres and nuevos_apellidos:
-                if Niño.objects.filter(
-                    nombres__iexact=nuevos_nombres,
-                    apellidos__iexact=nuevos_apellidos
-                ).exclude(pk=niño.pk).exists():
-                    return JsonResponse({
-                        'estado': 'error',
-                        'mensaje': 'Ya existe un usuario con esos mismos nombres y apellidos.'
-                    }, status=400)
-
+            if nuevos_nombres:
                 niño.nombres = nuevos_nombres
+            if nuevos_apellidos:
                 niño.apellidos = nuevos_apellidos
-
 
             if 'foto' in request.FILES:
                 niño.foto_perfil = request.FILES['foto']
@@ -606,18 +593,30 @@ class NivelesDiscalculiaView(View):
 class cerrar_juegoView(View):
     def get(self, request):
         stop_event.set()
+        niño = None
+
         reporte_id = request.session.get('reporte_id')
         if reporte_id:
             try:
-                niño= Niño.objects.get(pk=request.session.get('nino_id'))
+                niño = Niño.objects.get(pk=request.session.get('nino_id'))
                 Reporte.objects.filter(pk=reporte_id).delete()
             except Exception:
                 pass
             request.session.pop('reporte_id', None)
-        if niño.especialidad=='D':
-            return redirect('niño:niveles_disgrafia')
-        elif niño.especialidad=='DC':
 
+
+        if niño is None:
+            try:
+                niño = Niño.objects.get(pk=request.session.get('nino_id'))
+            except Niño.DoesNotExist:
+                return redirect('niño:seleccionar_nivel')
+            except Exception:
+                return redirect('niño:seleccionar_nivel')
+
+
+        if niño.especialidad == 'D':
+            return redirect('niño:niveles_disgrafia')
+        elif niño.especialidad == 'DC':
             return redirect('niño:niveles_discalculia')
         else:
             return redirect('niño:niveles_cartas')

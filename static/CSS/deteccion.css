@@ -1,4 +1,4 @@
-/* Fondo y tipografía */
+
 body {
     font-family: 'Segoe UI', sans-serif;
     background: #f2f2f2;
@@ -9,7 +9,7 @@ body {
     align-items: center;
 }
 
-/* Contenedor principal */
+
 .container {
     max-width: 600px;
     width: 100%;
@@ -20,7 +20,7 @@ body {
     text-align: center;
 }
 
-/* Títulos */
+
 h1 {
     color: #333333;
     margin-bottom: 10px;
@@ -31,7 +31,7 @@ h2 {
     color: #0066cc;
 }
 
-/* Botón */
+
 button {
     background-color: #4CAF50;
     color: white;
@@ -48,7 +48,6 @@ button:hover {
     background-color: #45a049;
 }
 
-/* Resultados */
 .result-box {
     margin-top: 30px;
     background-color: #eaf7ea;

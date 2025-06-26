@@ -1,4 +1,3 @@
-/* Reset básico */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,7 +11,7 @@ body {
   background-repeat: no-repeat;
 }
 
-/* Header */
+
 .header {
   background-color: #009E49;
   display: flex;
@@ -70,7 +69,7 @@ body {
       transition: all 0.3s ease;
       cursor: pointer;
     }
-/* Main section */
+
 .main {
   color: white;
   padding: 40px 20px;
@@ -87,7 +86,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* Features section */
+
 .features {
   display: flex;
   justify-content: center;
@@ -97,7 +96,7 @@ body {
 }
 
 .card {
-  flex: 0 1 220px; /* Ancho base de 220px, no crecer */
+  flex: 0 1 220px;
   min-width: 200px;
   max-width: 240px;
   border-radius: 20px;

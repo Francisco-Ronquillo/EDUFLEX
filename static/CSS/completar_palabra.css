@@ -99,7 +99,7 @@ h1 {
   z-index: 1001;
 }
 
-/* ======= MODAL OVERLAY (FONDO OPACO) ======= */
+
 .modal-overlay {
   display: none;
   position: fixed;
@@ -107,16 +107,16 @@ h1 {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); /* Gris translúcido */
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 999;
 }
 
-/* Se muestra cuando se activa */
+
 .modal-overlay.show {
   display: block;
 }
 
-/* ======= MODAL DE PAUSA ======= */
+
 .container {
   display: none;
   position: fixed;
@@ -148,6 +148,8 @@ h1 {
   background-color: #0ba59e;
   color: white;
   border: none;
+  text-decoration: none;
+  color:white;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -159,9 +161,9 @@ h1 {
 }
 
 
-/* Imagen con bordes redondeados y sombra */
+
 .imagen-guia {
-  max-width: 150px;       /* Ajusta este valor según tu preferencia */
+  max-width: 150px;
   height: auto;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -170,21 +172,21 @@ h1 {
 }
 
 
-/* Botones de "Verificar" e "Intentar de nuevo" */
+
 button {
-  margin-top: 4px;        /* más cerca del cuadro */
+  margin-top: 4px;
   font-size: 14px;
   padding: 6px 14px;
-  background-color: #f74e44; /* Color de fondo */
-  color: #ffffff;              /* Color de texto */
+  background-color: #f74e44;
+  color: #ffffff;
   border: none;
-  border-radius: 12px;       /* Bordes redondeados */
+  border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0b0487; /* Color al pasar mouse */
+  background-color: #0b0487;
 }
 
 
@@ -194,7 +196,7 @@ button:hover {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 128, 0, 0.85); /* verde semi-transparente */
+  background-color: rgba(0, 128, 0, 0.85);
   color: white;
   padding: 15px 30px;
   border-radius: 12px;
@@ -202,24 +204,24 @@ button:hover {
   font-size: 20px;
   font-weight: 700;
   z-index: 2000;
-  display: none; /* oculto por defecto */
+  display: none;
   user-select: none;
   white-space: nowrap;
 }
 
-/* Ventana sombreada transparente, oculta por defecto */
+
 .ventana-nivel-oculta {
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* fondo negro translúcido */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1500;
 
   justify-content: center;
   align-items: center;
 }
 
-/* Contenedor blanco redondeado */
+
 .contenedor-ventana {
   background: rgba(255, 255, 255, 0.85);
   padding: 30px 50px;
@@ -228,7 +230,7 @@ button:hover {
   text-align: center;
 }
 
-/* Botón */
+
 .btn-nivel {
   font-size: 22px;
   font-weight: bold;
@@ -248,14 +250,13 @@ button:hover {
   background-color: #087e75;
 }
 
-/* Flecha multicolor animada */
 .flecha {
   font-size: 28px;
   animation: cambioColores 3s infinite alternate;
   display: inline-block;
 }
 
-/* Animación cambio de colores */
+
 @keyframes cambioColores {
   0% { color: #ff0000; }
   25% { color: #ff7f00; }
@@ -264,7 +265,7 @@ button:hover {
   100% { color: #0000ff; }
 }
 #ventanaSiguienteNivel.show {
-  display: flex; /* visible y centrado */
+  display: flex;
 }
 
 .ventana-estadisticas {
@@ -298,12 +299,12 @@ button:hover {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 10px auto; /* esto centra el cuadro horizontalmente */
+  margin: 10px auto;
 }
 
 
 
-/* Contenedor principal del juego */
+
 main {
   display: flex;
   justify-content: center;

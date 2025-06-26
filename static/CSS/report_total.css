@@ -6,7 +6,7 @@ body {
   padding-bottom: 40px;
 }
 
-/* Header */
+
 header {
   background: #ffffff;
   display: flex;
@@ -51,7 +51,7 @@ header {
   background-color: #e45757;
 }
 
-/* Botón regresar */
+
 .regresar {
   margin: 20px 40px;
 }
@@ -70,14 +70,14 @@ header {
   background-color: #d1d5db;
 }
 
-/* Contenido Principal */
+
 main h4 {
   font-size: 1.8rem;
   margin-left: 40px;
   color: #4A90E2;
 }
 
-/* Contenedor de Reportes */
+
 .estudiante {
   background-color: #ffffff;
   border-radius: 20px;
@@ -87,7 +87,7 @@ main h4 {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
-/* Tarjetas */
+
 .reportes {
   display: flex;
   flex-wrap: wrap;
@@ -123,7 +123,7 @@ main h4 {
   color: #374151;
 }
 
-/* Filtros */
+
 .filtros {
   background-color: #ffffff;
   margin: 20px auto;
@@ -192,7 +192,7 @@ main h4 {
 .btn-return{
     font-size: 25px;
     border-radius: 20px;
-    /*border: none;*/
+
 }
 
 

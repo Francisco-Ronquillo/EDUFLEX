@@ -67,7 +67,7 @@ h1 {
     color: #34495e;
 }
 
-/* Cards resumen */
+
 .resumen {
     display: flex;
     flex-wrap: wrap;
@@ -103,7 +103,7 @@ h1 {
     font-style: italic;
 }
 
-/* Secciones de imágenes */
+
 section {
     margin-top: 40px;
 }
@@ -116,7 +116,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Galería de imágenes */
+
 .galeria {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -151,7 +151,7 @@ h2 {
 
 
 
-/* --- Botón regresar --- */
+
 .regresar {
     margin: 20px 40px;
 }

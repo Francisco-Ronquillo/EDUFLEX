@@ -1,4 +1,4 @@
-/* === ESTILO GENERAL DEL BODY === */
+
 body {
   font-family: 'Inter', sans-serif;
   color: #fff;
@@ -16,7 +16,7 @@ body {
   background-color: #aaeb87;
 }
 
-/* === TÍTULO PRINCIPAL === */
+
 h1 {
   font-size: 2.8em;
   margin-bottom: 40px;
@@ -27,7 +27,7 @@ h1 {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* === MENSAJE FLOTANTE === */
+
 #mensaje-flotante {
   position: fixed;
   top: 60px;
@@ -46,7 +46,7 @@ h1 {
   text-align: center;
 }
 
-/* === BOTÓN DE VOLVER === */
+
 .back-link {
   position: absolute;
   top: 20px;
@@ -66,7 +66,6 @@ h1 {
   background-color: #e6c200;
 }
 
-/* === BOTONES DE NIVELES === */
 .nivel-boton-estatico {
   width: 120px;
   height: 120px;
@@ -86,9 +85,9 @@ h1 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.3); /* Sombra sutil */
-  letter-spacing: 1px; /* Espaciado entre letras */
-  font-family: 'Poppins', sans-serif; /* Fuente moderna */
+  text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
 }
 
@@ -102,7 +101,7 @@ h1 {
   cursor: not-allowed;
 }
 
-/* === CONTENEDOR DE BOTONES DE NIVELES === */
+
 .grid-niveles-estatico {
   display: flex;
   flex-wrap: wrap;
@@ -112,7 +111,7 @@ h1 {
   margin: 20px auto;
 }
 
-/* === TARJETAS DE JUEGOS === */
+
 .game-card-wrapper {
   display: flex;
   justify-content: center;
@@ -146,7 +145,7 @@ h1 {
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* === COLORES ESPECÍFICOS DE CADA JUEGO === */
+
 .traza-y-gana-card {
   background-color: #f74e44;
   align-items: flex-start;
@@ -161,7 +160,7 @@ h1 {
   background-color: #36a704;
 }
 
-/* === IMÁGENES DE LOS JUEGOS === */
+
 .game-icon,
 .game-numbers {
   display: flex;
@@ -181,7 +180,7 @@ h1 {
   margin: 0 auto 15px;
 }
 
-/* === NOMBRE DEL JUEGO === */
+
 .game-name {
   font-size: 1.5em;
   color: #fff;
@@ -201,21 +200,21 @@ body.texto-grande .game-name {
 body.texto-grande .nivel-boton-estatico {
   font-size: 2.4em !important;
 }
-/* Colores personalizados para cada botón de nivel */
+
 .grid-niveles-estatico a:nth-child(1) {
-  background-color: #FF7043; /* Naranja */
+  background-color: #FF7043;
 }
 .grid-niveles-estatico a:nth-child(2) {
-  background-color: #42A5F5; /* Azul */
+  background-color: #42A5F5;
 }
 .grid-niveles-estatico a:nth-child(3) {
-  background-color: #66BB6A; /* Verde */
+  background-color: #66BB6A;
 }
 .grid-niveles-estatico a:nth-child(4) {
-  background-color: #AB47BC; /* Morado */
+  background-color: #AB47BC;
 }
 .grid-niveles-estatico a:nth-child(5) {
-  background-color: #FFD54F; /* Amarillo */
+  background-color: #FFD54F;
 }
 
 .grid-niveles-estatico a:nth-child(1):hover {

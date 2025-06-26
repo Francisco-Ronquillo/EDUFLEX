@@ -202,7 +202,9 @@ h1 {
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  min-width: 150px; /* ✅ Fuerza un ancho común mínimo */
+  min-width: 150px;
+  text-decoration: none;
+  color:black ;
   text-align: center;
 
 }
@@ -211,7 +213,7 @@ h1 {
     background-color: #0056b3;
 }
 
-/* === Decoración: burbujas === */
+
 #burbujas-container {
     position: fixed;
     top: 0;
@@ -238,7 +240,7 @@ h1 {
     100% { transform: translateY(-100vh); opacity: 0; }
 }
 
-/* === Animaciones de imágenes === */
+
 #tiburon {
     position: fixed;
     bottom: 320px;
@@ -261,17 +263,17 @@ h1 {
 
 #mensaje-flotante {
     position: fixed;
-    top: 10px; /* antes estaba en 20px */
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 128, 0, 0.85); /* verde por defecto */
+    background-color: rgba(0, 128, 0, 0.85);
     color: white;
     padding: 15px 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     font-size: 22px;
     font-weight: 700;
-    z-index: 3000; /* más alto para estar por encima del contenedor */
+    z-index: 3000;
     display: none;
     user-select: none;
     white-space: nowrap;
@@ -293,12 +295,12 @@ h1 {
 }
 
 .opcion.correcta {
-    background-color: #28a745 !important; /* verde */
+    background-color: #28a745 !important;
     color: white;
 }
 
 .opcion.incorrecta {
-    background-color: #dc3545 !important; /* rojo fuerte */
+    background-color: #dc3545 !important;
     color: white;
 }
 
@@ -328,5 +330,5 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Espacio entre botones */
+    gap: 15px;
 }

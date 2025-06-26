@@ -21,16 +21,14 @@
 
     <h2>INICIAR SESIÓN</h2>
 
-    <!-- Mostrar errores -->
 
-    <!-- Botones para elegir rol -->
     <div class="role-buttons">
       <button type="button" onclick="mostrarFormulario('padre')">Padre</button>
       <button type="button" onclick="mostrarFormulario('nino')">Niño</button>
       <button type="button" onclick="mostrarFormulario('profesor')">Profesor</button>
     </div>
 
-    <!-- Formulario PADRE -->
+
     <form id="form-padre" class="form-role active" method="post">
       {% csrf_token %}
        {% if messages %}
@@ -53,7 +51,7 @@
       </div>
     </form>
 
-    <!-- Formulario NIÑO -->
+
     <form id="form-nino" class="form-role" method="post">
       {% csrf_token %}
          {% if messages %}

@@ -13,10 +13,10 @@
 </script>
 
 <body>
-  <!-- Botón de Pausa -->
+
   <button id="pausaBtn" class="button"> | | </button>
 
-  <!-- Overlay y modal de pausa -->
+
   <div id="modalOverlay" class="modal-overlay"></div>
   <div class="container" id="modalPausa">
     <div class="input-field">
@@ -25,11 +25,11 @@
     </div>
   </div>
 
-  <!-- Contenido principal -->
+
   <main class="contenido-juego">
     <h1>¡Completa la Palabra!</h1>
 
-    <!-- 🔽 Agrupamos todo en un cuadro -->
+
     <div class="cuadro-juego">
       <img id="imagenGuia" src="" alt="Guía visual" class="imagen-guia">
       <div class="palabra" id="contenedorPalabra"></div>
@@ -38,7 +38,7 @@
     </div>
   </main>
 
-  <!-- Ventana para Siguiente Nivel -->
+
   <div id="ventanaSiguienteNivel" class="ventana-nivel-oculta">
     <div class="contenedor-ventana">
       <button id="btnSiguienteNivel" class="btn-nivel" onclick="irSiguiente()">
@@ -48,23 +48,23 @@
     </div>
   </div>
 
-  <!-- Mensaje flotante -->
+
   <div id="mensaje-flotante"></div>
 
-  <!-- Música de fondo -->
+
   <audio id="musicaJuegos" loop autoplay>
     <source src="{% static 'musica/castle (mp3cut.net).mp3' %}" type="audio/mpeg">
     Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Variables para JS -->
+
   <script>
     const jsonUrl = "{% static 'json/niveles.json' %}?v={{ now|date:'U' }}";
     const urlNivelesDisgrafia = "{% url 'niño:niveles_disgrafia' %}";
     const guardarUrl = "{% url 'niño:guardar_progreso' %}";
   </script>
 
-  <!-- Script del juego -->
+
   <script src="{% static 'JS/completar_palabra.js' %}" defer></script>
 </body>
 </html>

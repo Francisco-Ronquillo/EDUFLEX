@@ -1,4 +1,4 @@
-/* Reset básico */
+
 * {
   margin: 0;
   padding: 0;
@@ -11,17 +11,16 @@ html, body {
   width: 100vw;
 }
 
-/* Contenedor principal */
+
 .recuperacion-container {
   display: flex;
   height: 100%;
   width: 100%;
 }
 
-/* Panel izquierdo (verde + logo) */
 .left-panel {
   width: 50%;
-  background-color: #2ab676; /* verde medio */
+  background-color: #2ab676;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,16 +30,16 @@ html, body {
   width: 90px;
 }
 
-/* Panel derecho (verde claro + formulario) */
+
 .right-panel {
   width: 50%;
-  background-color: #b4fba7; /* verde claro */
+  background-color: #b4fba7;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Tarjeta del formulario */
+
 .form-box {
   background-color: white;
   width: 340px;
@@ -50,7 +49,7 @@ html, body {
   text-align: center;
 }
 
-/* Flecha para volver */
+
 .back-arrow {
   font-size: 20px;
   text-decoration: none;
@@ -60,14 +59,14 @@ html, body {
   text-align: left;
 }
 
-/* Título */
+
 h2 {
   font-size: 18px;
   margin-bottom: 8px;
   color: #1e1e1e;
 }
 
-/* Texto explicativo */
+
 p {
   font-size: 13px;
   color: #555;
@@ -75,7 +74,7 @@ p {
   line-height: 1.4;
 }
 
-/* Campo de entrada */
+
 input[type="email"],
 input[type="text"],
 input {
@@ -89,7 +88,6 @@ input {
   outline: none;
 }
 
-/* Botón amarillo */
 button.btn {
   width: 100%;
   background-color: #ffcc00;
@@ -107,7 +105,6 @@ button.btn:hover {
   background-color: #e6b800;
 }
 
-/* Mensajes (Django) */
 ul.messages {
   list-style: none;
   margin-bottom: 15px;
